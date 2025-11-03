@@ -25,6 +25,7 @@ function logout() {
 
 // === LOGIN ===
 function handleLogin() {
+  // do login logic → redirect to index.html
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
   const msg = document.getElementById("loginMessage");
@@ -86,9 +87,13 @@ function initAssessmentPage() {
     buildAssessmentForm(deptCode, deptData);
     loadSelections(deptCode, deptData);
     updateLiveScore(deptCode, deptData);
+<<<<<<< HEAD
     if (window.hideLoader) window.hideLoader();
 
 
+=======     
+
+>>>>>>> 7cb39a4e807e26eb63656e8267c665e4437dccc4
     const rep = document.getElementById("reportSection");
     if (rep) rep.style.display = "none";
   };

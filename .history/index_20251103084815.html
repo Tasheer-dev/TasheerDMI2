@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tasheer DMI – Assessment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body onload="initAssessmentPage()">
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1 id="assessmentTitle">Digital Maturity Assessment</h1>
+        <p id="assessmentSubTitle" class="subtitle"></p>
+      </div>
+      <div class="logo-container">
+        <img src="assets/img/company-logo.png" alt="Tasheer" />
+      </div>
+    </div>
+
+    <div id="saveStatus" class="save-status">✅ Progress Saved Automatically!</div>
+
+    <div class="assessment-layout">
+      <div class="live-score-sidebar">
+        <div class="live-score-card">
+          <h4>Live DMI Score</h4>
+          <div class="live-score-chart-container">
+            <canvas id="liveMaturityChart"></canvas>
+            <span class="score-percentage-center" id="liveScorePercentage">0%</span>
+          </div>
+          <div class="score-status" id="liveScoreStatus">0 / 0 Questions Answered</div>
+          <button class="mini-link-btn" onclick="openEvidenceFolder()">📂 Upload Evidence</button>
+          <button class="mini-link-btn warning" onclick="logout()">⏻ Logout</button>
+        </div>
+      </div>
+
+      <div class="assessment-form-wrapper">
+        <form id="assessmentForm">
+          <h2>Please complete all questions below:</h2>
+        </form>
+        <button type="button" class="submit-button" onclick="finalizeAssessment()">
+          Finalize Assessment & Generate Detailed Report
+        </button>
+      </div>
+    </div>
+
+    <div id="reportSection" style="display:none;">
+      <div class="report-header" id="reportHeaderTitle">DMI Final Assessment Report</div>
+      <div class="report-grid">
+        <div class="report-summary">
+          <h3>Overall Digital Maturity Score</h3>
+          <div class="score-display" id="maturityScoreDisplay">0.00%</div>
+          <div class="score-metadata">
+            Based on an overall score of
+            <span id="totalScoreText">0</span> out of
+            <span id="maxScoreText">0</span> possible points.
+          </div>
+          <h3 style="margin-top: 20px;">Maturity Level Classification</h3>
+          <div id="maturityLevelText"></div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="finalMaturityChart"></canvas>
+        </div>
+      </div>
+      <button type="button" class="print-button" onclick="window.print()">🖨️ Print Report / Save as PDF</button>
+
+      <h3>Detailed Question Score Breakdown</h3>
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th style="width: 60px;">#</th>
+            <th>Question</th>
+            <th style="width: 60px; text-align: center;">Score</th>
+            <th style="width: 300px;">Selected Answer</th>
+          </tr>
+        </thead>
+        <tbody id="detailedScoreBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+<script src="users.js"></script>
+  <script src="logic.js"></script>
+  <script src="questions.js"></script>
+  <script src="questions1.js"></script>
+
+</body>
+</html>

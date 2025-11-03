@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tasheer DMI – Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body class="login-body">
+  <div class="login-container" id="loginPage">
+    <div class="login-logo">
+      <img src="assets/img/company-logo.png" alt="Tasheer" />
+    </div>
+    <h2 class="login-title">Tasheer Digital Maturity Index</h2>
+    <p class="login-text">
+      Please sign in with your assigned department username and password.<br />
+      (procurement / product / data_analytics / admin)
+    </p>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input id="username" type="text" placeholder="e.g. procurement" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="••••••" />
+    </div>
+
+    <button class="login-button" onclick="handleLogin()">
+      <div class="login-icon">
+        <i class="fa fa-lock-open"></i>
+      </div>
+      LOGIN
+    </button>
+
+    <div id="loginMessage"></div>
+
+    <p class="small-footer">
+      © 2025 Tasheer Digitalization & Technology Division. EA Department. All rights reserved.
+    </p>
+    <p class="small-footer">
+      Need access? contact: <a href="mailto:afeky@tasheer.com">afeky@tasheer.com</a>
+    </p>
+  </div>
+
+  <script src="users.js"></script>
+  <script src="maturitybands.js"></script>
+  <script src="logic.js"></script>
+  <script src="quizjs"></script>
+  <script src="questions1.js"></script>
+    
+</body>
+</html>

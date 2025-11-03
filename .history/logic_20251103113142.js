@@ -86,8 +86,6 @@ function initAssessmentPage() {
     buildAssessmentForm(deptCode, deptData);
     loadSelections(deptCode, deptData);
     updateLiveScore(deptCode, deptData);
-    if (window.hideLoader) window.hideLoader();
-
 
     const rep = document.getElementById("reportSection");
     if (rep) rep.style.display = "none";
