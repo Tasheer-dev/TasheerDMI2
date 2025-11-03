@@ -1,12 +1,11 @@
-// quizzes/quiz_finance.js
-export const QUIZ_FINANCE = {
-  title: "Finance Department Digital Maturity Assessment",
-  shortcode: "FIN",
-  totalQuestions: 10,
-  maxScore: 10 * 5,
 
-  
-
+// quizzes/quiz_procurement.js
+window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
+DMI_QUESTION_SETS["procurement"] = {
+  title: "Procurement Digital Maturity Assessment (DMI)",
+  shortcode: "PROC",
+  totalQuestions: 14,
+  maxScore: 14 * 5,
 
   sections: [
       { name: "1) Service Catalogue & Requests", questions: ["Q1", "Q2"] },

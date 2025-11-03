@@ -1,10 +1,6 @@
-// logic.js - pure frontend DMI (refactored for dynamic quiz loading)
+// logic.js - pure frontend DMI
 let liveChartInstance = null;
 let finalChartInstance = null;
-
-// Ensure global containers exist
-window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
-window.TASHER_USERS = window.TASHER_USERS || [];
 
 // === SESSION HELPERS ===
 function requireLogin() {
@@ -69,31 +65,48 @@ function initAssessmentPage() {
     return;
   }
 
-  // Dynamically load quiz file for this department
-  const script = document.createElement("script");
-  script.src = `./quizzes/quiz_${deptCode}.js`;
-  script.onload = () => {
-    const deptData = window.DMI_QUESTION_SETS[deptCode];
-    if (!deptData) {
-      alert("No question set found for: " + deptCode);
-      return;
-    }
+  const deptData = DMI_QUESTION_SETS[deptCode];
+  if (!deptData) {
+    alert("No question set found for: " + deptCode);
+    return;
+  }
+async function initAssessmentPage() {
+  if (!requireLogin()) return;
+
+  const deptCode = sessionStorage.getItem("dmi_deptCode");
+  const displayName = sessionStorage.getItem("dmi_displayName");
+
+  try {
+    const module = await import(`./quizzes/quiz_${deptCode}.js`);
+    const deptData = Object.values(module)[0]; // first export
+    if (!deptData) throw new Error();
 
     document.getElementById("assessmentTitle").textContent = deptData.title;
-    document.getElementById("assessmentSubTitle").textContent = displayName + " – please answer all questions.";
-    document.getElementById("reportHeaderTitle").textContent = deptData.title + " – Final Report";
+    document.getElementById("assessmentSubTitle").textContent =
+      `${displayName} – please answer all questions.`;
+    document.getElementById("reportHeaderTitle").textContent =
+      deptData.title + " – Final Report";
 
     buildAssessmentForm(deptCode, deptData);
     loadSelections(deptCode, deptData);
     updateLiveScore(deptCode, deptData);
+  } catch (err) {
+    alert(`⚠️ No quiz file found for: ${deptCode}`);
+    console.error(err);
+  }
+}
 
-    const rep = document.getElementById("reportSection");
-    if (rep) rep.style.display = "none";
-  };
-  script.onerror = () => {
-    alert(`⚠️ Could not load quiz file for department: ${deptCode}\nExpected: quizzes/quiz_${deptCode}.js`);
-  };
-  document.body.appendChild(script);
+  document.getElementById("assessmentTitle").textContent = deptData.title;
+  document.getElementById("assessmentSubTitle").textContent = displayName + " – please answer all questions.";
+  document.getElementById("reportHeaderTitle").textContent = deptData.title + " – Final Report";
+
+  buildAssessmentForm(deptCode, deptData);
+  loadSelections(deptCode, deptData);
+  updateLiveScore(deptCode, deptData);
+
+  // hide report at start
+  const rep = document.getElementById("reportSection");
+  if (rep) rep.style.display = "none";
 }
 
 function getStorageKeyFor(deptCode) {
@@ -181,7 +194,6 @@ function updateLiveScore(deptCode, deptData) {
   const ctx = document.getElementById("liveMaturityChart");
   if (ctx) {
     if (liveChartInstance) liveChartInstance.destroy();
-    // Chart.js is loaded from index.html
     liveChartInstance = new Chart(ctx, {
       type: "doughnut",
       data: {
@@ -225,7 +237,7 @@ function getColorByScore(p) {
 }
 
 function openEvidenceFolder() {
-  window.open(window.EVIDENCE_SHARED_FOLDER, "_blank");
+  window.open(EVIDENCE_SHARED_FOLDER, "_blank");
 }
 
 // === FINALIZE (generate report) ===
@@ -250,7 +262,7 @@ function finalizeAssessment() {
   document.getElementById("totalScoreText").textContent = total;
   document.getElementById("maxScoreText").textContent = deptData.maxScore;
 
-  const band = (deptData.maturityBands || window.COMMON_MATURITY_BANDS)
+  const band = (deptData.maturityBands || COMMON_MATURITY_BANDS)
     .find(b => percent >= b.range[0] && percent <= b.range[1]);
   document.getElementById("maturityLevelText").textContent =
     band ? `${band.name} – ${band.description}` : "No band matched.";
@@ -259,7 +271,7 @@ function finalizeAssessment() {
   tbody.innerHTML = "";
   deptData.questions.forEach(q => {
     const val = saved[q.id] || 0;
-    const txt = (q.choices.find(c => c.value == val) || {}).text || "Not answered";
+    const txt = q.choices.find(c => c.value == val)?.text || "Not answered";
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${q.id}</td>
@@ -309,24 +321,22 @@ function initAdminPage() {
   tbody.innerHTML = "";
 
   const all = JSON.parse(localStorage.getItem("tasheer_dmi_all") || "{}");
-
-  // Build dept list from users (all departments)
-  const depts = TASHER_USERS.filter(u => u.role === "department");
+  const deptCodes = ["procurement", "product", "data_analytics"];
 
   let sum = 0, count = 0;
 
-  depts.forEach(user => {
-    const code = user.deptCode;
+  deptCodes.forEach(code => {
     const rec = all[code];
-    const deptName = user.displayName || code;
+    const conf = DMI_QUESTION_SETS[code];
     const tr = document.createElement("tr");
+    const deptName = conf ? conf.title : code;
 
     let percent = "-", updated = "-", who = "-";
     if (rec) {
-      percent = (rec.percent ?? 0) + "%";
+      percent = rec.percent + "%";
       updated = new Date(rec.updated).toLocaleString();
       who = rec.who || code;
-      sum += (rec.percent ?? 0);
+      sum += rec.percent;
       count++;
     }
 
