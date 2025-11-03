@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loading – Tasheer DMI</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #f9fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    .loader-container {
+      text-align: center;
+    }
+
+    .loader-logo img {
+      width: 120px;
+      animation: fadeIn 1s ease-in-out infinite alternate;
+    }
+
+    .loader {
+      margin-top: 30px;
+      border: 8px solid #e0e0e0;
+      border-top: 8px solid #005baa;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      animation: spin 1s linear infinite;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      color: #004080;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0.5; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-container">
+    <div class="loader-logo">
+      <img src="assets/img/company-logo.png" alt="Tasheer Logo" />
+    </div>
+    <div class="loader"></div>
+    <div class="loading-text">Loading Digital Maturity Platform...</div>
+  </div>
+
+  <script>
+    // Simulate script load delay
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 2000); // 2 seconds for smoother UX
+    });
+  </script>
+</body>
+</html>

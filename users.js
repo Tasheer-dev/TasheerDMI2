@@ -1,12 +1,5 @@
-// config.js
-// Users (departments + admin)
-const TASHER_USERS = [
-  { username: "procurement", password: "1", role: "department", deptCode: "procurement", displayName: "Procurement Department" },
-  { username: "product", password: "Prod@2025", role: "department", deptCode: "product", displayName: "Product & Business Team" },
-  { username: "data_analytics", password: "Data@2025", role: "department", deptCode: "data_analytics", displayName: "Data Analytics Department" },
-  { username: "admin", password: "Admin@2025", role: "admin", deptCode: "admin", displayName: "DMI Administrator" },
-
-
+// users.js
+window.TASHER_USERS = [
   { username: "finance", password: "1", role: "department", deptCode: "finance", displayName: "Finance Department" },
   { username: "tech_strategy", password: "1", role: "department", deptCode: "tech_strategy", displayName: "Tech Strategy & Enterprise Architecture" },
   { username: "solution_delivery", password: "1", role: "department", deptCode: "solution_delivery", displayName: "Solution Development & Delivery" },
@@ -25,8 +18,9 @@ const TASHER_USERS = [
   { username: "product_mgmt", password: "1", role: "department", deptCode: "product_mgmt", displayName: "Product Management" },
   { username: "marketing", password: "1", role: "department", deptCode: "marketing", displayName: "Marketing & Communications" },
   { username: "pmo", password: "1", role: "department", deptCode: "pmo", displayName: "PMO" },
+  { username: "procurement", password: "1", role: "department", deptCode: "procurement", displayName: "Procurement Department" },
+  { username: "product", password: "1", role: "department", deptCode: "product", displayName: "Product & Business Team" },
   { username: "admin", password: "Admin@2025", role: "admin", deptCode: "admin", displayName: "DMI Administrator" }
 ];
 
-const EVIDENCE_SHARED_FOLDER = "https://tasheer.sharepoint.com/sites/DMI/Shared%20Documents";
-
+window.EVIDENCE_SHARED_FOLDER = "https://tasheer.sharepoint.com/sites/DMI/Shared%20Documents";

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tasheer DMI</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    /* Loading Screen Styles */
+    #loadingScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    #loadingScreen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loader-container {
+      text-align: center;
+    }
+    
+    .loader-logo img {
+      width: 120px;
+      animation: fadeIn 1s ease-in-out infinite alternate;
+    }
+    
+    .spinner {
+      margin: 25px auto 0;
+      border: 6px solid #ddd;
+      border-top: 6px solid #005baa;
+      border-radius: 50%;
+      width: 65px;
+      height: 65px;
+      animation: spin 1s linear infinite;
+    }
+    
+    .loading-text {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #005baa;
+      font-weight: 500;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
+    
+    /* Hide login page initially */
+    .login-body {
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+    
+    .login-body.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="login-body">
+  <!-- Loading Screen -->
+  <div id="loadingScreen">
+    <div class="loader-container">
+      <div class="loader-logo">
+        <img src="assets/img/company-logo.png" alt="Tasheer Logo">
+      </div>
+      <div class="spinner"></div>
+      <div class="loading-text">Loading Tasheer Digital Platform...</div>
+    </div>
+  </div>
+
+  <!-- Login Page -->
+  <div class="login-container" id="loginPage">
+    <div class="login-logo">
+      <img src="assets/img/company-logo.png" alt="Tasheer" />
+    </div>
+    <h2 class="login-title">Tasheer Digital Maturity Index</h2>
+    <p class="login-text">
+      Please sign in with your assigned department username and password.
+    </p>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input id="username" type="text" placeholder="e.g. procurement" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="••••••" />
+    </div>
+
+    <button class="login-button" onclick="handleLogin()">
+      <div class="login-icon">
+        <i class="fa fa-lock-open"></i>
+      </div>
+      LOGIN
+    </button>
+
+    <div id="loginMessage"></div>
+
+    <p class="small-footer">
+      © 2025 Tasheer Digitalization & Technology Division. EA Department. All rights reserved.
+    </p>
+    <p class="small-footer">
+      Need access? contact: <a href="mailto:afeky@tasheer.com">afeky@tasheer.com</a>
+    </p>
+  </div>
+
+  <script src="maturitybands.js"></script>
+  <script src="users.js"></script>
+  <script src="logic.js"></script>
+  
+  <script>
+    // Show loading screen on page load
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loadingScreen');
+        const loginBody = document.querySelector('.login-body');
+        
+        // Fade out loading screen
+        loadingScreen.classList.add('fade-out');
+        
+        // Fade in login page
+        loginBody.classList.add('visible');
+        
+        // Remove loading screen from DOM after animation
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 500);
+      }, 1500);
+    });
+    
+    // Function to show loading screen during transitions (e.g., between users)
+    function showLoadingScreen(callback, duration = 1000) {
+      const loadingScreen = document.getElementById('loadingScreen');
+      const loginBody = document.querySelector('.login-body');
+      
+      // Show loading screen
+      loadingScreen.style.display = 'flex';
+      loadingScreen.classList.remove('fade-out');
+      loginBody.classList.remove('visible');
+      
+      setTimeout(() => {
+        if (callback) callback();
+        
+        // Fade out loading and fade in content
+        loadingScreen.classList.add('fade-out');
+        loginBody.classList.add('visible');
+        
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 500);
+      }, duration);
+    }
+  </script>
+</body>
+</html>

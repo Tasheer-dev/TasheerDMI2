@@ -6,41 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-  <!-- Inline loader styles (lightweight, no extra file) -->
-  <style>
-    #pageLoader {
-      position: fixed; inset: 0;
-      background: linear-gradient(135deg,#f5f7fa,#e8edf3);
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 9999; transition: opacity .45s ease;
-    }
-    #pageLoader.fade-out { opacity: 0; pointer-events: none; }
-    #pageLoader img { width: 120px; animation: logoPulse 1.2s ease-in-out infinite alternate; }
-    .loaderSpinner {
-      margin-top: 24px; width: 64px; height: 64px; border-radius: 50%;
-      border: 6px solid #d9dee7; border-top-color: #005baa; animation: spin 1s linear infinite;
-    }
-    .loaderText {
-      margin-top: 14px; font-weight: 600; font-size: 16px;
-      background: linear-gradient(90deg,#004080,#0070e0,#004080);
-      background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
-      animation: shimmer 2s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg) } }
-    @keyframes logoPulse { from { opacity:.6 } to { opacity:1 } }
-    @keyframes shimmer { to { background-position: 200% center } }
-  </style>
 </head>
-
 <body onload="initAssessmentPage()">
-  <!-- Loader overlay (merged inside index.html) -->
-  <div id="pageLoader" aria-label="Loading">
-    <img src="assets/img/company-logo.png" alt="Tasheer Logo" />
-    <div class="loaderSpinner"></div>
-    <div class="loaderText">Loading Tasheer Digital Platform...</div>
-  </div>
-
   <div class="container">
     <div class="header">
       <div>
@@ -92,7 +59,9 @@
           <h3 style="margin-top: 20px;">Maturity Level Classification</h3>
           <div id="maturityLevelText"></div>
         </div>
-        <div class="chart-wrapper"><canvas id="finalMaturityChart"></canvas></div>
+        <div class="chart-wrapper">
+          <canvas id="finalMaturityChart"></canvas>
+        </div>
       </div>
       <button type="button" class="print-button" onclick="window.print()">🖨️ Print Report / Save as PDF</button>
 
@@ -114,17 +83,14 @@
   <script src="maturitybands.js"></script>
   <script src="users.js"></script>
   <script src="logic.js"></script>
-
-  <!-- tiny helper so logic.js can hide the loader exactly when quizzes are ready -->
-  <script>
-    window.hideLoader = function() {
-      const el = document.getElementById('pageLoader');
-      if (!el) return;
-      el.classList.add('fade-out');
-      setTimeout(() => { el.style.display = 'none'; }, 450);
-    };
-    // fallback: if something goes wrong, auto-hide after 4s so page remains usable
-    setTimeout(() => window.hideLoader && window.hideLoader(), 4000);
+ <script src="logic.js"></script>
+    <script>
+    // Simulate script load delay
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 2000); // 2 seconds for smoother UX
+    });
   </script>
 </body>
 </html>

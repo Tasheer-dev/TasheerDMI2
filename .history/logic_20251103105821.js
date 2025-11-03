@@ -25,6 +25,7 @@ function logout() {
 
 // === LOGIN ===
 function handleLogin() {
+    document.body.insertAdjacentHTML('beforeend', '<div id="miniLoader">Loading...</div>');
   // do login logic → redirect to index.html
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
@@ -87,8 +88,6 @@ function initAssessmentPage() {
     buildAssessmentForm(deptCode, deptData);
     loadSelections(deptCode, deptData);
     updateLiveScore(deptCode, deptData);
-    if (window.hideLoader) window.hideLoader();
-
 
     const rep = document.getElementById("reportSection");
     if (rep) rep.style.display = "none";
