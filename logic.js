@@ -390,257 +390,169 @@ function initAdminPage() {
 }
 
 
-// === Enhancements: Reset/Random, Validation, Final-only view, Area Bars, Print ===
-
-// Centered error overlay helpers
+// === Overlay helpers ===
 function showCenterError(msg) {
   const o = document.getElementById('centerErrorOverlay');
   const t = document.getElementById('centerErrorText');
-  if (o && t) {
-    t.textContent = msg;
-    o.style.display = 'flex';
-  } else {
-    alert(msg);
-  }
+  if (o && t) { t.textContent = msg; o.style.display = 'flex'; }
+  else { alert(msg); }
 }
-function hideCenterError() {
-  const o = document.getElementById('centerErrorOverlay');
-  if (o) o.style.display = 'none';
-}
+function hideCenterError(){ const o = document.getElementById('centerErrorOverlay'); if (o) o.style.display='none'; }
 
-// Reset all selections for current dept
-function resetAllSelections() {
-  const deptCode = sessionStorage.getItem("dmi_deptCode");
-  if (!deptCode) return;
+
+
+// === Reset & Random ===
+function resetAllSelections(){
+  const deptCode = sessionStorage.getItem('dmi_deptCode');
   const key = getStorageKeyFor(deptCode);
   localStorage.removeItem(key);
-
-  // Clear UI selects
   const form = document.getElementById('assessmentForm');
-  if (form) {
-    const selects = form.querySelectorAll('select');
-    selects.forEach(sel => { sel.value = ""; });
-  }
-
+  if (form){ form.querySelectorAll('select').forEach(s=>s.value=""); }
   const deptData = DMI_QUESTION_SETS[deptCode];
   updateLiveScore(deptCode, deptData);
 }
 
-// Randomize selections with a minimum overall threshold (e.g., 57%)
-function randomizeSelections(minPercent) {
-  const deptCode = sessionStorage.getItem("dmi_deptCode");
+function randomizeSelections(minPercent){
+  const deptCode = sessionStorage.getItem('dmi_deptCode');
   const deptData = DMI_QUESTION_SETS[deptCode];
-  if (!deptData) return;
-
+  if(!deptData) return;
   const key = getStorageKeyFor(deptCode);
   const saved = {};
-  const max = deptData.maxScore || (deptData.questions.length * 5);
-  let total = 0;
-
-  // First pass: random 1..5 for all
-  deptData.questions.forEach(q => {
-    const v = Math.floor(Math.random() * 5) + 1;
-    saved[q.id] = v;
-    total += v;
-  });
-
-  // If below threshold, boost randomly-chosen items up to hit threshold (cap at 5)
-  const desired = Math.ceil((minPercent / 100) * max);
-  let i = 0;
-  while (total < desired && i < 10000) {
-    const q = deptData.questions[Math.floor(Math.random() * deptData.questions.length)];
-    if (saved[q.id] < 5) {
-      saved[q.id] += 1;
-      total += 1;
-    }
+  let total=0;
+  const max = (deptData.questions.length*5);
+  deptData.questions.forEach(q=>{ const v = Math.floor(Math.random()*5)+1; saved[q.id]=v; total+=v; });
+  const desired = Math.ceil((minPercent/100)*max);
+  let i=0;
+  while(total<desired && i<10000){
+    const q = deptData.questions[Math.floor(Math.random()*deptData.questions.length)];
+    if(saved[q.id]<5){ saved[q.id]++; total++; }
     i++;
   }
-
   localStorage.setItem(key, JSON.stringify(saved));
-
-  // Reflect in UI
   const form = document.getElementById('assessmentForm');
-  if (form) {
-    deptData.questions.forEach(q => {
-      const sel = form.querySelector(`select[data-qid="${q.id}"]`);
-      if (sel) sel.value = String(saved[q.id]);
-    });
-  }
+  if (form){ deptData.questions.forEach(q=>{ const sel=form.querySelector(`select[data-qid="${q.id}"]`); if(sel) sel.value=String(saved[q.id]); }); }
   updateLiveScore(deptCode, deptData);
 }
 
-// Compute area/category scores (7 areas + overall).
-// Uses q.area or q.group if present; otherwise assigns questions evenly into 7 buckets.
-function computeAreaScores(deptData, savedMap) {
-  const questions = deptData.questions || [];
-  const areas = {};
-  const areaOrder = []; // to keep insertion order
 
-  // Identify available area key
-  function getAreaLabel(q, idx) {
-    return q.area || q.group || `Area ${((idx % 7) + 1)}`;
-  }
 
-  questions.forEach((q, idx) => {
-    const a = getAreaLabel(q, idx);
-    if (!(a in areas)) {
-      areas[a] = { total: 0, max: 0 };
-      areaOrder.push(a);
-    }
-    const val = Number(savedMap[q.id] || 0);
-    areas[a].total += val;
+// === Dynamic 7+1 area computation ===
+function computeDynamicAreaScores(deptData, savedMap){
+  const questions = deptData.questions||[];
+  const areas={}, order=[];
+  questions.forEach((q,idx)=>{
+    const a = q.area || q.group || `Area ${((idx%7)+1)}`;
+    if(!areas[a]){ areas[a]={total:0,max:0}; order.push(a); }
+    const v = Number(savedMap[q.id]||0);
+    areas[a].total += v;
     areas[a].max += 5;
   });
-
-  const results = areaOrder.map(a => {
-    const { total, max } = areas[a];
-    const pct = max ? Math.round((total / max) * 100) : 0;
-    return { area: a, percent: pct };
+  const limited = order.slice(0,7);
+  const results = limited.map(a=>{
+    const obj=areas[a]; const pct = obj.max? Math.round((obj.total/obj.max)*100):0;
+    return { area:a, percent:pct };
   });
-
-  const overallPct = Math.round(
-    (results.reduce((s, r) => s + r.percent, 0) / (results.length || 1))
-  );
-
-  return { areas: results, overall: overallPct };
+  const overall = Math.round(results.reduce((s,r)=>s+r.percent,0)/(results.length||1));
+  return { areas: results, overall };
 }
 
-// Draw horizontal bar chart on the right side
-let areaBarInstance = null;
-function renderAreaBars(areaSummary) {
-  const ctx = document.getElementById('areaBarChart');
-  if (!ctx) return;
-  const labels = areaSummary.areas.map(r => r.area).concat(['Overall Progress']);
-  const data = areaSummary.areas.map(r => r.percent).concat([areaSummary.overall]);
 
-  if (areaBarInstance) {
-    areaBarInstance.destroy();
-  }
+
+// === Render horizontal 7+1 bar chart ===
+let areaBarInstance=null;
+function renderAreaBars(summary){
+  const ctx = document.getElementById('areaBarChart');
+  if(!ctx) return;
+  const labels = summary.areas.map(r=>r.area).concat(['Overall Progress']);
+  const data = summary.areas.map(r=>r.percent).concat([summary.overall]);
+  if(areaBarInstance){ areaBarInstance.destroy(); }
   areaBarInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        data,
-        borderWidth: 1
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { min: 0, max: 100, ticks: { stepSize: 10 } }
-      }
+    type:'bar',
+    data:{ labels, datasets:[{ data, borderWidth:1 }]},
+    options:{
+      indexAxis:'y',
+      responsive:true,
+      plugins:{ legend:{ display:false }},
+      scales:{ x:{ min:0, max:100, ticks:{ stepSize:10 } } }
     }
   });
 }
 
-// Override finalizeAssessment with validation and final-only view
-async function finalizeAssessment() {
-  const deptCode = sessionStorage.getItem("dmi_deptCode");
+
+
+function backToAnswers(){
+  const report = document.getElementById('reportSection'); if(report) report.style.display='none';
+  const layout = document.querySelector('.assessment-layout'); if(layout) layout.style.display='flex';
+  const formWrap = document.querySelector('.assessment-form-wrapper'); if(formWrap) formWrap.style.display='block';
+  const deptCode = sessionStorage.getItem('dmi_deptCode');
   const deptData = DMI_QUESTION_SETS[deptCode];
-  if (!deptData) return;
+  if (deptCode && deptData) updateLiveScore(deptCode, deptData);
+}
 
+
+// === Unified Finalize Assessment ===
+async function finalizeAssessment(){
+  const deptCode = sessionStorage.getItem('dmi_deptCode');
+  const deptData = DMI_QUESTION_SETS[deptCode];
+  if(!deptData) return;
   const key = getStorageKeyFor(deptCode);
-  const saved = JSON.parse(localStorage.getItem(key) || "{}");
+  const saved = JSON.parse(localStorage.getItem(key)||"{}");
 
-  // Count unanswered
-  let unanswered = 0;
-  deptData.questions.forEach(q => { if (!saved[q.id]) unanswered++; });
-
-  if (unanswered > 0) {
+  // Validate unanswered
+  let unanswered=0;
+  deptData.questions.forEach(q=>{ if(!saved[q.id]) unanswered++; });
+  if(unanswered>0){
     const totalQ = deptData.questions.length;
     showCenterError(`There are still ${unanswered} out of ${totalQ} questions not evaluated. Please return to the assessment and complete your selections.`);
     return;
   }
 
-  // Build final report
-  // Overall as integer
-  const percent = Math.round(
-    (Object.values(saved).reduce((s, v) => s + Number(v), 0) / (deptData.maxScore || (deptData.questions.length * 5))) * 100
-  );
+  // Totals
+  const totalPoints = Object.values(saved).reduce((s,v)=>s+Number(v),0);
+  const maxPoints = deptData.maxScore || (deptData.questions.length*5);
+  const percent = Math.round((totalPoints/maxPoints)*100);
 
-  // Populate report UI
-  const report = document.getElementById('reportSection');
-  if (report) report.style.display = 'block';
+  // Swap views
+  const report = document.getElementById('reportSection'); if(report) report.style.display='block';
+  const layout = document.querySelector('.assessment-layout'); if(layout) layout.style.display='none';
+  const formWrap = document.querySelector('.assessment-form-wrapper'); if(formWrap) formWrap.style.display='none';
 
-  const layout = document.querySelector('.assessment-layout');
-  const formWrap = document.querySelector('.assessment-form-wrapper');
-  if (layout) layout.style.display = 'none';
-  if (formWrap) formWrap.style.display = 'none';
+  // Update overall display
+  const pctEl = document.getElementById('maturityScoreDisplay'); if(pctEl) pctEl.textContent = percent + '%';
+  const tEl = document.getElementById('totalScoreText'); if(tEl) tEl.textContent = totalPoints;
+  const mEl = document.getElementById('maxScoreText'); if(mEl) mEl.textContent = maxPoints;
 
-  // Update existing final doughnut (if your code already draws it elsewhere, we just ensure integer text)
-  const pctEl = document.getElementById('finalScorePercent');
-  if (pctEl) pctEl.textContent = `${percent}%`;
+  // Build final doughnut if helper exists
+  if(typeof buildFinalReportChart === 'function'){ try{ buildFinalReportChart(percent); }catch(e){} }
 
-  // Build area bars
-  const areaSummary = computeAreaScores(deptData, saved);
+  // Dynamic area 7+1
+  const areaSummary = computeDynamicAreaScores(deptData, saved);
   renderAreaBars(areaSummary);
 
-  // Detailed answers + recommendations list
-  const detailEl = document.getElementById('finalDetailedAnswers');
-  if (detailEl) {
-    let html = '<ol>';
-    deptData.questions.forEach(q => {
+  // Populate breakdown table body
+  const tbody = document.getElementById('detailedScoreBody');
+  if (tbody){
+    let rows='';
+    deptData.questions.forEach((q,i)=>{
       const val = saved[q.id];
-      const choice = (q.choices || []).find(c => String(c.value) === String(val));
-      const choiceText = choice ? (choice.text || choice.label || `Level ${val}`) : `Level ${val}`;
-      html += `<li><strong>${q.title || q.question}</strong><br/>Selected: ${choiceText}</li>`;
+      const choice = (q.choices||[]).find(c=>String(c.value)===String(val));
+      const ans = choice ? (choice.text || choice.label || ('Level '+val)) : '-';
+      rows += `<tr><td>${i+1}</td><td>${q.title || q.question}</td><td style="text-align:center;">${val||'-'}</td><td>${ans}</td></tr>`;
     });
-    html += '</ol>';
-    detailEl.innerHTML = html;
+    tbody.innerHTML = rows;
   }
 
+  // Recommendations list if exists
   const recEl = document.getElementById('finalRecommendations');
-  if (recEl) {
+  if (recEl){
     let html = '<ul>';
-    deptData.questions.forEach(q => {
+    deptData.questions.forEach(q=>{
       const val = saved[q.id];
-      const choice = (q.choices || []).find(c => String(c.value) === String(val));
-      const recText = choice ? (choice.text || choice.label || `Level ${val}`) : `Level ${val}`;
-      html += `<li>${recText}</li>`;
+      const choice = (q.choices||[]).find(c=>String(c.value)===String(val));
+      const rec = choice ? (choice.text || choice.label || ('Level '+val)) : ('Level '+val);
+      html += `<li>${rec}</li>`;
     });
     html += '</ul>';
     recEl.innerHTML = html;
   }
-
-  // Trigger any existing final chart draw if present
-  if (typeof buildFinalReportChart === 'function') {
-    try { buildFinalReportChart(percent); } catch(e) {}
-  }
-}
-
-
-// === Added Back to My Answers and Table Population Fix ===
-
-// Go back from Final Report to Assessment
-function backToAnswers() {
-  const report = document.getElementById('reportSection');
-  if (report) report.style.display = 'none';
-
-  const layout = document.querySelector('.assessment-layout');
-  const formWrap = document.querySelector('.assessment-form-wrapper');
-  if (layout) layout.style.display = 'flex';
-  if (formWrap) formWrap.style.display = 'block';
-
-  const deptCode = sessionStorage.getItem("dmi_deptCode");
-  const deptData = DMI_QUESTION_SETS[deptCode];
-  if (deptCode && deptData) {
-    updateLiveScore(deptCode, deptData);
-  }
-}
-
-// Update detailed question breakdown table
-function populateDetailedBreakdown(deptData, saved) {
-  const table = document.getElementById('detailedScoreTable');
-  if (!table) return;
-  let html = '<tr><th>#</th><th>Question</th><th>Selected Level</th><th>Description</th></tr>';
-  deptData.questions.forEach((q, i) => {
-    const val = saved[q.id];
-    const choice = (q.choices || []).find(c => String(c.value) === String(val));
-    const text = choice ? (choice.text || choice.label || `Level ${val}`) : '-';
-    html += `<tr><td>${i + 1}</td><td>${q.title || q.question}</td><td>${val || '-'}</td><td>${text}</td></tr>`;
-  });
-  table.innerHTML = html;
 }

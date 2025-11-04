@@ -47,7 +47,7 @@ window.TASHER_USERS = [
   { username: "pmo", password: "ta@2025", role: "department", deptCode: "pmo", displayName: "PMO" },
 
   // 1️⃣6️⃣ Procurement Department
-  { username: "procurement", password: "ta@2025", role: "department", deptCode: "procurement", displayName: "Procurement Department" },
+  { username: "procurement", password: "1", role: "department", deptCode: "procurement", displayName: "Procurement Department" },
 
   // 1️⃣7️⃣ Product Management
   { username: "product_mgmt", password: "ta@2025", role: "department", deptCode: "product_mgmt", displayName: "Product Management" },
