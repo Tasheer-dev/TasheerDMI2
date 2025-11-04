@@ -28,7 +28,6 @@ window.TASHER_USERS = [
   // 9️⃣ Human Capital Department
   { username: "human_capital", password: "ta@2025", role: "department", deptCode: "human_capital", displayName: "Human Capital Department" },
 
-  // 🔟 Infrastructure and Network Operations
   { username: "infra-ops", password: "ta@2025", role: "department", deptCode: "infra-ops", displayName: "Infrastructure and Network Operations" },
 
   // 1️⃣1️⃣ Internal Audit Department
@@ -60,8 +59,6 @@ window.TASHER_USERS = [
 
   // 2️⃣0️⃣ Tech Strategy & Enterprise Architecture
   { username: "tech_strategy", password: "ta@2025", role: "department", deptCode: "tech_strategy", displayName: "Tech Strategy & Enterprise Architecture" },
-  
-
   
   // 🅰️ Admin Account
   { username: "admin", password: "ta@2025", role: "admin", deptCode: "admin", displayName: "DMI Administrator" }

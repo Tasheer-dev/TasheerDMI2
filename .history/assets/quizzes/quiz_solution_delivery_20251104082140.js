@@ -1,6 +1,6 @@
 // quizzes/quiz_solutions_delivery.js
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
-DMI_QUESTION_SETS["solution_delivery"] = {
+DMI_QUESTION_SETS[""] = {
   title: "Solutions Delivery Department Digital Maturity Assessment (DMI)",
   shortcode: "SOLDEV",
   totalQuestions: 16,

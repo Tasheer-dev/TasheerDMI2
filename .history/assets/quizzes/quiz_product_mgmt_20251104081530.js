@@ -1,6 +1,6 @@
 // quizzes/quiz_product.js
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
-DMI_QUESTION_SETS["product_mgmt"] = {
+DMI_QUESTION_SETS["ta@2025"] = {
   title: "Product Management Digital Maturity Assessment (DMI)",
   shortcode: "PROD",
   totalQuestions: 15,

@@ -1,6 +1,6 @@
 // quizzes/quiz_infra_network.js
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
-DMI_QUESTION_SETS["infra_network"] = {
+DMI_QUESTION_SETS["ta@2025s"] = {
   title: "Infrastructure & Network Operations Digital Maturity Assessment (DMI)",
   shortcode: "INFRA",
   totalQuestions: 16,
