@@ -27,19 +27,13 @@ window.TASHER_USERS = [
   { username: "marketing", password: "ta@2025", role: "department", deptCode: "marketing", displayName: "Marketing & Communications" },
 
   { username: "platforms_it", password: "ta@2025", role: "department", deptCode: "platforms_it", displayName: "Platforms & IT Solution Operations" },
-
-  { username: "pmo", password: "ta@2025", role: "department", deptCode: "pmo", displayName: "PMO" },
-
-  { username: "procurement", password: "ta@2025", role: "department", deptCode: "procurement", displayName: "Procurement Department" },
-
-  { username: "product_mgmt", password: "ta@2025", role: "department", deptCode: "product_mgmt", displayName: "Product Management" },
-
-  { username: "SAP", password: "ta@2025", role: "department", deptCode: "SAP", displayName: "SAP Department" },
-
-  { username: "solution_delivery", password: "ta@2025", role: "department", deptCode: "solution_delivery", displayName: "Solution Development & Delivery" },
-
-  { username: "tech_strategy", password: "ta@2025", role: "department", deptCode: "tech_strategy", displayName: "Tech Strategy & Enterprise Architecture" },
   
+  { username: "pmo", password: "ta@2025", role: "department", deptCode: "pmo", displayName: "PMO" },
+  { username: "procurement", password: "ta@2025", role: "department", deptCode: "procurement", displayName: "Procurement Department" },
+  { username: "product_mgmt", password: "ta@2025", role: "department", deptCode: "product_mgmt", displayName: "Product Management" },
+  { username: "SAP", password: "ta@2025", role: "department", deptCode: "SAP", displayName: "SAP Department" },
+  { username: "solution_delivery", password: "ta@2025", role: "department", deptCode: "solution_delivery", displayName: "Solution Development & Delivery" },
+  { username: "tech_strategy", password: "ta@2025", role: "department", deptCode: "tech_strategy", displayName: "Tech Strategy & Enterprise Architecture" },
   { username: "admin", password: "ta@2025", role: "admin", deptCode: "admin", displayName: "DMI Administrator" }
 ];
 
