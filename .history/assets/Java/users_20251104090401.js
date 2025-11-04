@@ -53,7 +53,7 @@ window.TASHER_USERS = [
   { username: "product_mgmt", password: "ta@2025", role: "department", deptCode: "product_mgmt", displayName: "Product Management" },
 
   // 1️⃣8️⃣ SAP Department
-  { username: "sap", password: "sap", role: "department", deptCode: "sap", displayName: "SAP ERP Department" },
+  { username: "sap1", password: "ta@2025", role: "department", deptCode: "sap", displayName: "SAP Department" },
 
   // 1️⃣9️⃣ Solution Development & Delivery
   { username: "solution_delivery", password: "ta@2025", role: "department", deptCode: "solution_delivery", displayName: "Solution Development & Delivery" },
