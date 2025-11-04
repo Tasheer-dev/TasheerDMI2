@@ -1,8 +1,13 @@
 // quizzes/quiz_tech_strategy.js
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["tech_strategy"] = {
-  title: "Enterprise Architecture & Digital Transformation Strategy Assessment",
+  title: "Tech Strategy & Enterprise Architecture Digital Maturity Assessment",
   shortcode: "TECH_STRATEGY",
+  // quizzes/quiz_ea.js
+window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
+DMI_QUESTION_SETS["ea"] = {
+  title: "Enterprise Architecture & Digital Transformation Strategy Assessment",
+  shortcode: "EA",
   totalQuestions: 14,
   maxScore: 14 * 5,
   sections: [

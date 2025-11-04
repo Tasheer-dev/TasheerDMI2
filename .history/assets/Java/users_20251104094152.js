@@ -59,11 +59,10 @@ window.TASHER_USERS = [
   { username: "solution_delivery", password: "ta@2025", role: "department", deptCode: "solution_delivery", displayName: "Solution Development & Delivery" },
 
   // 2️⃣0️⃣ Tech Strategy & Enterprise Architecture
-  { username: "onclick", password: "ta@2025", role: "department", deptCode: "tech_ITSM", displayName: "Tech Strategy & Enterprise Architecture" },
+  { username: "onclick", password: "ta@2025", role: "department", deptCode: "itsm", displayName: "Tech Strategy & Enterprise Architecture" },
   
-
   // 2️⃣1️⃣ Tech Strategy & Enterprise Architecture
-  { username: "tech_strategy", password: "ta@2025", role: "department", deptCode: "tech_strategy", displayName: "Tech Strategy & Enterprise Architecture" },
+  { username: "tech_EA", password: "ta@2025", role: "department", deptCode: "tech_EA", displayName: "Tech Strategy & Enterprise Architecture" },
 
   // 🅰️ Admin Account
   { username: "admin", password: "ta@2025", role: "admin", deptCode: "admin", displayName: "DMI Administrator" }
