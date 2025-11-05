@@ -83,7 +83,7 @@
 
     <div id="reportSection" style="display:none;">
       <div class="report-header" id="reportHeaderTitle">DMI Final Assessment Report</div>
-      <button class="print-button" onclick="backToAssessment()" style="margin-bottom: 20px;">← Back to Assessment</button>
+      <button class="btn btn-secondary" onclick="backToAssessment()" style="margin-bottom: 20px;">← Back to Assessment</button>
       <div class="report-grid">
         <div class="report-summary">
           <h3>Overall Digital Maturity Score</h3>
@@ -113,10 +113,10 @@
             <th style="width: 300px;">Recommendation for Next Level</th>
           </tr>
         </thead>
+              <button type="button" class="print-button" onclick="window.print()">🖨️ Print Report / Save as PDF</button>
+
         <tbody id="detailedScoreBody"></tbody>
       </table>
-                    <button type="button" class="print-button" onclick="window.print()">🖨️ Print Report / Save as PDF</button>
-
     </div>
   </div>
 
