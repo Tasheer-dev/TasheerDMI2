@@ -83,6 +83,7 @@
 
     <div id="reportSection" style="display:none;">
       <div class="report-header" id="reportHeaderTitle">DMI Final Assessment Report</div>
+      <button class="btn btn-secondary" onclick="backToAssessment()" style="margin-bottom: 20px;">← Back to Assessment</button>
       <div class="report-grid">
         <div class="report-summary">
           <h3>Overall Digital Maturity Score</h3>
@@ -95,9 +96,12 @@
           <h3 style="margin-top: 20px;">Maturity Level Classification</h3>
           <div id="maturityLevelText"></div>
         </div>
-        <div class="chart-wrapper"><canvas id="finalMaturityChart"></canvas></div>
+        <div class="chart-wrapper"><canvas id="areaBarChart"></canvas></div>
       </div>
       <button type="button" class="print-button" onclick="window.print()">🖨️ Print Report / Save as PDF</button>
+
+      <h3 style="margin-top: 30px;">Final Report Comments</h3>
+      <textarea id="finalReportComments" class="form-control" rows="5" placeholder="Enter your final comments on the assessment here. These comments will be included in the final PDF report."></textarea>
 
       <h3>Detailed Question Score Breakdown</h3>
       <table class="score-table">
@@ -107,6 +111,7 @@
             <th>Question</th>
             <th style="width: 60px; text-align: center;">Score</th>
             <th style="width: 300px;">Selected Answer</th>
+            <th style="width: 300px;">Recommendation for Next Level</th>
           </tr>
         </thead>
         <tbody id="detailedScoreBody"></tbody>

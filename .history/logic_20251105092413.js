@@ -24,7 +24,7 @@
    Global Chart References (We store them so we can destroy/rebuild dynamically)
 ----------------------------------------------------------------------------- */
 let liveChartInstance = null;
-let areaBarInstance = null; // For 7+1 bar chart in final report
+let areaBarInstance = null; // For horizontal 7+1 bar chart in final report
 
 
 /* -----------------------------------------------------------------------------
@@ -400,61 +400,23 @@ function renderAreaBars(summary) {
   const ctx = document.getElementById("areaBarChart");
   if (!ctx) return;
 
-  const labels = summary.areas.map(r => r.area).concat(["Overall Score"]);
+  const labels = summary.areas.map(r => r.area).concat(["Overall Progress"]);
   const data = summary.areas.map(r => r.percent).concat([summary.overall]);
-  const colors = data.map(p => getColorByScore(p));
 
   if (areaBarInstance) areaBarInstance.destroy();
 
   areaBarInstance = new Chart(ctx, {
     type: "bar",
-    data: {
-      labels,
-      datasets: [{
-        label: "Maturity Percentage",
-        data,
-        backgroundColor: colors,
-        borderColor: colors.map(c => c.replace(/,1\)/, ', 0.8)')), // Slightly darker border
-        borderWidth: 1
-      }]
-    },
+    data: { labels, datasets: [{ data, borderWidth: 1 }] },
     options: {
+      indexAxis: "y",
       responsive: true,
-      maintainAspectRatio: false,
       plugins: { legend: { display: false } },
-      scales: {
-        y: { min: 0, max: 100, ticks: { stepSize: 10 } },
-        x: { grid: { display: false } }
-      }
+      scales: { x: { min: 0, max: 100, ticks: { stepSize: 10 } } }
     }
   });
 }
 
-/**
- * getNextLevelRecommendation(q, selectedValue)
- * Finds the text for the next maturity level (selectedValue + 1).
- */
-function getNextLevelRecommendation(q, selectedValue) {
-  const nextValue = Number(selectedValue) + 1;
-  if (nextValue > 5) return "Optimized (Level 5) achieved. Focus on continuous improvement and innovation.";
-
-  const nextChoice = q.choices.find(c => Number(c.value) === nextValue);
-  return nextChoice ? nextChoice.text : "N/A";
-}
-
-
-/**
- * finalizeAssessment()
- * Validates all questions are answered, then:
- * - Calculates final maturity percent
- * - Hides input UI and shows final report
- * - Builds final charts and recommendations
- */
-function backToAssessment() {
-  document.querySelector(".assessment-layout").style.display = "block";
-  document.querySelector(".assessment-form-wrapper").style.display = "block";
-  document.getElementById("reportSection").style.display = "none";
-}
 
 /**
  * finalizeAssessment()
@@ -499,16 +461,7 @@ function finalizeAssessment() {
     const val = saved[q.id];
     const choice = q.choices.find(c => String(c.value) === String(val));
     const label = choice ? choice.text : "-";
-    const nextRec = getNextLevelRecommendation(q, val);
-    const color = getColorByScore(val * 20); // Scale 1-5 to 20-100 for color function
-
-    return `<tr>
-      <td>${q.id}</td>
-      <td>${q.title}</td>
-      <td style="text-align: center; background-color: ${color.replace(/,1\)/, ', 0.2)')};">${val}</td>
-      <td>${label}</td>
-      <td>${nextRec}</td>
-    </tr>`;
+    return `<tr><td>${q.id}</td><td>${q.title}</td><td>${val}</td><td>${label}</td></tr>`;
   }).join("");
 
   // Build recommendations list simply by listing selected choice text
@@ -518,16 +471,5 @@ function finalizeAssessment() {
     const choice = q.choices.find(c => String(c.value) === String(val));
     return `<li>${choice ? choice.text : "-"}</li>`;
   }).join("") + "</ul>";
-
-  // Save comments to localStorage (or load if already present)
-  const commentsKey = getStorageKeyFor(deptCode) + "_comments";
-  const savedComments = localStorage.getItem(commentsKey) || "";
-  const commentsBox = document.getElementById("finalReportComments");
-  commentsBox.value = savedComments;
-
-  // Add event listener to save comments on input
-  commentsBox.oninput = () => {
-    localStorage.setItem(commentsKey, commentsBox.value);
-  };
 }
 
