@@ -119,10 +119,42 @@
     </div>
   </div>
 
-  <script src="assets/js/maturitybands.js"></script>
-  <script src="assets/js/users.js"></script>
-  <script src="logic.js"></script>
+  <script src="maturitybands.js"></script>
+  <script src="users.js"></script>
+I still need a few updates to the PDF report after printing:
 
+Remove the "Upload" button from the PDF version (from the first attachment).
+
+After the heading "Overall Digital Maturity Score", add the department name dynamically.
+
+Remove the sentence: "Based on an overall score of 41 out of 70 possible points."
+
+Do not include the printed photo shown in Attachment 2.
+
+Update the PDF title to be:
+"Tasheer DMI – Assessment Report for <Department Name>" (dynamic).
+
+Set the PDF orientation to Landscape.
+
+In the details table, change the columns to:
+
+Question
+
+Answer
+
+Level (in words)
+
+Recommendation (remove numbering before recommendations)
+
+Findings (last column, used for written comments and must appear in the printed PDF)
+
+Footer Update:
+
+Remove the current footer text:
+"file:///C:/001_OneDrive/.../index.html 2/4"
+
+Replace it with:
+"This report is generated based on the department’s assessment documentation and findings. All copyrights belong to SAUDI COMPANY FOR VISA AND TRAVEL SOLUTIONS."
 
   <!-- tiny helper so logic.js can hide the loader exactly when quizzes are ready -->
   <script>
