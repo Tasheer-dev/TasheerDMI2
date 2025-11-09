@@ -504,7 +504,7 @@ function finalizeAssessment() {
 
     return `<tr>
       <td>${q.id}</td>
-      <td>${q.title}</td>
+      <td><strong>${q.title}</strong><br><small style="color:#555;">${q.text}</small></td>
       <td style="text-align: center; background-color: ${color.replace(/,1\)/, ', 0.2)')};">${val}</td>
       <td>${label}</td>
       <td>${nextRec}</td>
