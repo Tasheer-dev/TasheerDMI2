@@ -154,10 +154,6 @@ body {
     @keyframes shimmer { to { background-position: 200% center } }
 
 
-
-
-    /* PDF layout */
-
 @media print {
   @page {
     size: A4 landscape;
@@ -203,17 +199,5 @@ body {
   .score-table th:nth-child(1) { width: 6%; }
   .score-table th:nth-child(2) { width: 44%; } /* question column */
   .score-table th:nth-child(3) { width: 10%; text-align: center; }
-  .score-table th:nth-child(4) { width: 20%; }
-  .score-table th:nth-child(5) { width: 20%; }
-
-  /* Images or charts scale correctly */
-  canvas {
-    max-width: 100% !important;
-    height: auto !important;
-  }
-
-  .report-grid, .container {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-}
+  .score-table th:nth-child(4) { width:
+    

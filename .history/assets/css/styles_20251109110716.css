@@ -153,67 +153,38 @@ body {
     @keyframes logoPulse { from { opacity:.6 } to { opacity:1 } }
     @keyframes shimmer { to { background-position: 200% center } }
 
-
-
-
-    /* PDF layout */
-
 @media print {
+  .report-grid, .container {
+    margin: 0 auto;
+  }
   @page {
     size: A4 landscape;
     margin: 1cm;
   }
-
   html, body {
-    width: 297mm;
-    height: 210mm;
-    overflow: visible !important;
+    width: 297mm;   /* A4 landscape width */
+    height: 210mm;  /* A4 landscape height */
   }
-
   body {
+    transform: rotate(0deg);
+    transform-origin: center;
+    background: white !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-    background: white !important;
   }
 
-  #reportSection {
-    width: 100% !important;
-    max-width: 100% !important;
+  /* Optional: scale down content slightly for better fit */
+  .container {
+    transform: scale(0.95);
+    transform-origin: top left;
   }
 
-  /* Full width table – auto stretch */
-  .score-table {
-    width: 100% !important;
-    border-collapse: collapse;
-    table-layout: auto !important;   /* FIX #1 */
-    word-break: break-word !important; /* FIX #2 */
-  }
-
-  .score-table th,
-  .score-table td {
-    padding: 8px;
-    border: 1px solid #ccc !important;
-    font-size: 12px;
-    vertical-align: top;
-    text-align: left;
-    white-space: normal !important;  /* FIX #3 */
-  }
-
-  /* More natural column proportions */
-  .score-table th:nth-child(1) { width: 6%; }
-  .score-table th:nth-child(2) { width: 44%; } /* question column */
-  .score-table th:nth-child(3) { width: 10%; text-align: center; }
-  .score-table th:nth-child(4) { width: 20%; }
-  .score-table th:nth-child(5) { width: 20%; }
-
-  /* Images or charts scale correctly */
-  canvas {
+    canvas {
     max-width: 100% !important;
     height: auto !important;
   }
 
-  .report-grid, .container {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
+  
 }
+
+
