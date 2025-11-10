@@ -255,16 +255,16 @@ DMI_QUESTION_SETS["data_analytics"] = {
     ,
     {
       id: "Q18", area: "Customer Experience & Insight-Driven Actionability",
-      title: "Customer Experience & Insight-Driven Tracking",
+      title: "Performance Measurement & KPI Tracking",
       text: "How effectively are analytics and insights used to improve customer experience and services?",
-           Evidence: "User feedback, analytics-driven initiatives, satisfaction surveys.",
+           Evidence: "Internal Tableau KPI dashboard, SLA reports, ITSM analytics.",
  
       choices: [
-        { value: 1, text: "1. Ad-hoc feedback considered." },
-        { value: 2, text: "2. Manual feedback by E-mail , No customer-focused analytics system .." },
-        { value: 3, text: "3. Regular Customer data analyzed feed back for service improvements." },
-        { value: 4, text: "4. Automated Customer feedback request analytical system ." },
-        { value: 5, text: "5. Personalized dashboards or campaigns based on insights from Customer Experience ." }
+        { value: 1, text: "1. Manual measurement No KPIs defined system ." },
+        { value: 2, text: "2. KPIs exist but not monitored." },
+        { value: 3, text: "3. Regular KPI tracking for analytics delivery." },
+        { value: 4, text: "4. Automated performance dashboards with SLA metrics." },
+        { value: 5, text: "5. Predictive KPI monitoring for service optimization and forecasting." }
       ]
     }
   ],

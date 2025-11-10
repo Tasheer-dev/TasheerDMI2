@@ -263,7 +263,7 @@ DMI_QUESTION_SETS["data_analytics"] = {
         { value: 1, text: "1. Ad-hoc feedback considered." },
         { value: 2, text: "2. Manual feedback by E-mail , No customer-focused analytics system .." },
         { value: 3, text: "3. Regular Customer data analyzed feed back for service improvements." },
-        { value: 4, text: "4. Automated Customer feedback request analytical system ." },
+        { value: 4, text: "4. Automated Cur." },
         { value: 5, text: "5. Personalized dashboards or campaigns based on insights from Customer Experience ." }
       ]
     }

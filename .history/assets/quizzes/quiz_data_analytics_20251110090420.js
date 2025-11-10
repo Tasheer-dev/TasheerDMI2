@@ -3,14 +3,14 @@ window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["data_analytics"] = {
   title: "Data Analytics Department Digital Maturity Assessment (DMI)",
   shortcode: "DATA",
-  totalQuestions: 18,
-  maxScore: 18 * 5,
+  totalQuestions: 17,
+  maxScore: 17 * 5,
   sections: [
     { name: "1) Service Catalogue & Documentation", questions: ["Q1", "Q2", "Q3", "Q4"] },
     { name: "2) Data Management & Quality", questions: ["Q5", "Q6", "Q7", "Q8", "Q9", "Q10"] },
     { name: "3) Knowledge Base & Template Standardization ", questions: ["Q11", "Q12"] },
-    { name: "4) Compliance & Policy Adoption", questions: ["Q13", "Q14"] },
-    { name: "5) Technology Stack Modernization", questions: ["Q15",  "Q16", "Q17", "Q18"] }
+    { name: "4) Compliance & Policy Adoption", questions: ["Q13", "Q14", "Q15"] },
+    { name: "5) Knowledge Repository & Templates", questions: ["Q16", "Q17"] }
   ],
   questions: [
     {
@@ -112,17 +112,17 @@ DMI_QUESTION_SETS["data_analytics"] = {
       ]
     },
     {
-      id: "Q8", area: "Data Architecture & Infrastructure Readiness",
-      title: "Data Architecture & Infrastructure Readiness",
-      text: "How capable is the data architecture (e.g., warehouse, integration, cloud readiness) in supporting scalable analytics?",
-           Evidence: "Architecture diagrams, integration logs, cloud migration plan.",
+      id: "Q8", area: "Governance",
+      title: "Data Governance & Compliance Policies",
+      text: "Are analytics policies and data governance procedures documented, approved, and aligned with national (NCA/GDPR) standards?",
+           Evidence: "compliance report, or governance check list .",
 
       choices: [
-        { value: 1, text: "1. Legacy, siloed data systems." },
-        { value: 2, text: "2. Partial integration with limited scalability." },
-        { value: 3, text: "3. Modern architecture supporting cross-department analytics." },
-        { value: 4, text: "4. Cloud-ready and API-enabled infrastructure." },
-        { value: 5, text: "5. Fully cloud-native, integrated, and resilient data ecosystem." }
+        { value: 1, text: "1. Ad-hoc activity; policies not documented." },
+        { value: 2, text: "2. Initial drafts under review" },
+        { value: 3, text: "3. Comprehensive compliance report compliance ,Compliance documented and partially implemented." },
+        { value: 4, text: "4. Digitally version-controlled compliance report accessible to stakeholders." },
+        { value: 5, text: "5. Automated data governance platform with compliance dashboards and audit tracking." }
       ]
     },
     {
@@ -156,115 +156,99 @@ DMI_QUESTION_SETS["data_analytics"] = {
     {
       id: "Q11", area: "SOPs",
       title: "Procedures & Runbooks for Analytics Operations",
-      text: "Are SOPs/Procedures available for recurring analytics activities (e.g., pipeline restart, report refresh, data validation, user onboarding)?",
+      text: "Are SOPs/runbooks available for recurring analytics activities (e.g., pipeline restart, report refresh, data validation, user onboarding)?",
            Evidence: "Pdf documentation, diagrams , or flowcharts .",
 
       choices: [
         { value: 1, text: "1. Ad-hoc activity; SOPs not defined." },
-        { value: 2, text: "2. Basic workflow exist for limited use cases." },
+        { value: 2, text: "2. Basic SOPs exist for limited use cases." },
         { value: 3, text: "3. Documented runbooks for analytics operations." },
-        { value: 4, text: "4. Approved runbook repository." },
-        { value: 5, text: "5. Fully digital runbook repository integrated with monitoring tools." }
+        { value: 4, text: "4. Fully digital runbook repository integrated with monitoring tools." },
+        { value: 5, text: "5. Intelligent runbook automation system that triggers playbooks based on alerts." }
       ]
     },
     {
-      id: "Q12", area: "Templates",
-      title: "Templates & Reuse Process",
-      text: "Is there a centralized template repository for analytics templates, projects, and pre recommending case templates ?",
-           Evidence: "SharePoint analytics, or reuse tracking report,portal, template repository, or BI wiki .",
+      id: "Q12", area: "Testing",
+      title: "SOP Testing & Updates",
+      text: "Are runbooks tested and updated regularly to reflect new tools, data sources, and incidents?",
+           Evidence: "Pdf documentation, diagrams , or flowcharts .",
 
       choices: [
-        { value: 1, text: "1. No structured repository, but Rarely updated.." },
-        { value: 2, text: "2. Updated manually after some cases on an ad-hoc basis." },
-        { value: 3, text: "3. Basic collection of templates manually." },
-        { value: 4, text: "4. Organized repository with approved templates." },
-        { value: 5, text: "5. Tool knowledge hub recommending templates dynamically." }
+        { value: 1, text: "1. Ad-hoc activity; no update schedule." },
+        { value: 2, text: "2. Updated after incidents on an ad-hoc basis." },
+        { value: 3, text: "3. Periodic reviews conducted manually." },
+        { value: 4, text: "4. Scheduled testing and version-controlled updates." },
+        { value: 5, text: "5. Continuous improvement loop with auto-testing and change-tracking analytics." }
       ]
     },
-      {
+    {
       id: "Q13", area: "Compliance",
-      title: "Data Governance & Compliance ",
-      text: "Are analytics data governance procedures documented, approved, and aligned with national (NCA/GDPR) standards?",
-           Evidence: "compliance report, or governance check list .",
+      title: "Compliance & Data Policy Measurement",
+      text: "Do you measure compliance with data policies (e.g., data classification, access rights, GDPR/NCA, ISO 27001)?",
+           Evidence: "Pdf documentation, diagrams , or flowcharts .",
 
       choices: [
-        { value: 1, text: "1. Ad-hoc activity; policies not documented." },
-        { value: 2, text: "2. Initial drafts under review" },
-        { value: 3, text: "3. Comprehensive compliance report compliance ,Compliance documented and partially implemented." },
-        { value: 4, text: "4. Digitally version-controlled compliance report accessible to stakeholders." },
-        { value: 5, text: "5. Automated data governance platform with compliance dashboards and audit tracking." }
+        { value: 1, text: "1. Ad-hoc activity; compliance not tracked." },
+        { value: 2, text: "2. Manual review of policy adherence." },
+        { value: 3, text: "3. Periodic compliance audits with reports." },
+        { value: 4, text: "4. Automated compliance dashboards and audit alerts." },
+        { value: 5, text: "5. AI-enabled data compliance engine with predictive compliance scoring." }
       ]
     },
-
     {
-      id: "Q14", area: "Policy Communication & Adoption",
-      title: "Policy Communication & Adoption",
-      text: "Are analytics and data management policies communicated and accessible to all staff and stakeholders?",
-           Evidence: "Share Folder repository, policy portal, acknowledgment records.",
+      id: "Q14", area: "WorkflowAdherence",
+      title: "Workflow Adherence & Non-Compliance Handling",
+      text: "What percentage of analytics processes (requests, pipeline changes, reports) follow documented workflows? How is non-compliance handled?",
+           Evidence: "Pdf documentation, diagrams , or flowcharts .",
  
       choices: [
-        { value: 1, text: "1. Ad-hoc activity; Policies scattered or unavailable." },
-        { value: 2, text: "2. low tracking Uploaded to shared folders but not maintained." },
-        { value: 3, text: "3. Policy partially developed and under review ." },
-        { value: 4, text: "4. Approved Central repository accessible to analytics staff." },
-        { value: 5, text: "5. Fully digital portal with acknowledgment tracking." }
+        { value: 1, text: "1. Ad-hoc activity; no workflow tracking." },
+        { value: 2, text: "2. Manual tracking of workflow compliance." },
+        { value: 3, text: "3. Digital reporting for workflow adherence." },
+        { value: 4, text: "4. Automated workflow compliance dashboards with deviation alerts." },
+        { value: 5, text: "5. Intelligent workflow governance system with real-time scoring and escalation triggers." }
       ]
     },
     {
-      id: "Q15", area: "Tools & Platform Utilization",
-      title: "Tools & Platform Utilization",
-      text: "How effectively are BI, data science, and visualization tools utilized to meet organizational analytics needs?",
-           Evidence: "Tableau usage stats, license reports, performance dashboards..",
+      id: "Q15", area: "Awareness",
+      title: "Data Literacy & Awareness",
+      text: "Are business users trained and aware of analytics usage policies (data privacy, acceptable use, interpretation of KPIs)?",
+           Evidence: "Pdf documentation, diagrams , or flowcharts .",
 
       choices: [
-        { value: 1, text: "1. Tools underutilized or misaligned with needs." },
-        { value: 2, text: "2. Basic usage limited to few users." },
-        { value: 3, text: "3. Department-wide adoption of BI platforms." },
-        { value: 4, text: "4. Integrated BI + ML toolchain supporting collaboration." },
-        { value: 5, text: "5. Optimized tool ecosystem enabling innovation, scalability, and data." }
+        { value: 1, text: "1. Ad-hoc activity; no structured training." },
+        { value: 2, text: "2. Occasional awareness sessions conducted manually." },
+        { value: 3, text: "3. Regular training programs tracked through LMS." },
+        { value: 4, text: "4. Digital training platform with analytics-specific courses and completion reports." },
+        { value: 5, text: "5. Continuous learning ecosystem integrated with LMS and adaptive data-literacy analytics." }
       ]
     },
     {
-      id: "Q16", area: "Automation Across the Analytics Lifecycle",
-      title: "Automation Across the Analytics Lifecycle",
+      id: "Q16", area: "KnowledgeBase",
+      title: "Knowledge Base & Templates",
       text: "Where is the analytics knowledge base hosted, and what templates/playbooks exist for analysts and business users (e.g., dashboard standards, data model templates, KPI definitions)?",
-           Evidence: "ITSM workflows, ADF pipelines, refresh schedules.",
- 
+          Evidence: "Pdf documentation, diagrams , or flowcharts .",
+  
       choices: [
-        { value: 1, text: "1. Manual processing." },
-        { value: 2, text: "2. Partial automation for select workflows." },
-        { value: 3, text: "3. Majority automated with exceptions logged." },
-        { value: 4, text: "4. Fully automated with exception handling and monitoring." },
-        { value: 5, text: "5. Fully automated with exception handling and monitoring, with Tableau reports." }
+        { value: 1, text: "1. Ad-hoc activity; templates scattered across shared drives." },
+        { value: 2, text: "2. Basic knowledge repository created for reference." },
+        { value: 3, text: "3. Structured data knowledge base hosted on SharePoint or Data Catalog." },
+        { value: 4, text: "4. Fully digital, version-controlled analytics knowledge hub." },
+        { value: 5, text: "5. AI-augmented knowledge repository with dynamic template recommendations and usage tracking." }
       ]
     },
     {
-      id: "Q17", area: "Performance Measurement & KPI Tracking",
-      title: "Performance Measurement & KPI Tracking",
-      text: "Are there defined KPIs that measure the success and timeliness of analytics services?",
-           Evidence: "Internal Tableau KPI dashboard, SLA reports, ITSM analytics.",
+      id: "Q17", area: "KnowledgeReuse",
+      title: "Knowledge Update & Reuse",
+      text: "Are knowledge articles updated after project delivery, incidents, or governance changes?",
+           Evidence: "Pdf documentation, diagrams , or flowcharts .",
  
       choices: [
-        { value: 1, text: "1. Manual measurement No KPIs defined system ." },
-        { value: 2, text: "2. KPIs exist but not monitored." },
-        { value: 3, text: "3. Regular KPI tracking for analytics delivery." },
-        { value: 4, text: "4. Automated performance dashboards with SLA metrics." },
-        { value: 5, text: "5. Predictive KPI monitoring for service optimization and forecasting." }
-      ]
-    }
-    ,
-    {
-      id: "Q18", area: "Customer Experience & Insight-Driven Actionability",
-      title: "Customer Experience & Insight-Driven Tracking",
-      text: "How effectively are analytics and insights used to improve customer experience and services?",
-           Evidence: "User feedback, analytics-driven initiatives, satisfaction surveys.",
- 
-      choices: [
-        { value: 1, text: "1. Ad-hoc feedback considered." },
-        { value: 2, text: "2. Manual feedback by E-mail , No customer-focused analytics system .." },
-        { value: 3, text: "3. Regular Customer data analyzed feed back for service improvements." },
-        { value: 4, text: "4. Automated Customer feedback request analytical system ." },
-        { value: 5, text: "5. Personalized dashboards or campaigns based on insights from Customer Experience ." }
+        { value: 1, text: "1. Ad-hoc activity; knowledge rarely updated." },
+        { value: 2, text: "2. Manual updates after major incidents." },
+        { value: 3, text: "3. Periodic reviews scheduled by governance team." },
+        { value: 4, text: "4. Automated update cycles integrated with data governance workflows." },
+        { value: 5, text: "5. Continuous AI-driven knowledge improvement system tracking reuse and relevance." }
       ]
     }
   ],

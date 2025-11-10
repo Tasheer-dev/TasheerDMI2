@@ -260,11 +260,11 @@ DMI_QUESTION_SETS["data_analytics"] = {
            Evidence: "User feedback, analytics-driven initiatives, satisfaction surveys.",
  
       choices: [
-        { value: 1, text: "1. Ad-hoc feedback considered." },
-        { value: 2, text: "2. Manual feedback by E-mail , No customer-focused analytics system .." },
-        { value: 3, text: "3. Regular Customer data analyzed feed back for service improvements." },
-        { value: 4, text: "4. Automated Customer feedback request analytical system ." },
-        { value: 5, text: "5. Personalized dashboards or campaigns based on insights from Customer Experience ." }
+        { value: 1, text: "1. Manual No customer-focused analytics ." },
+        { value: 2, text: "2. KPIs exist but not monitored." },
+        { value: 3, text: "3. Regular KPI tracking for analytics delivery." },
+        { value: 4, text: "4. Automated performance dashboards with SLA metrics." },
+        { value: 5, text: "5. Predictive KPI monitoring for service optimization and forecasting." }
       ]
     }
   ],

@@ -10,7 +10,7 @@ DMI_QUESTION_SETS["data_analytics"] = {
     { name: "2) Data Management & Quality", questions: ["Q5", "Q6", "Q7", "Q8", "Q9", "Q10"] },
     { name: "3) Knowledge Base & Template Standardization ", questions: ["Q11", "Q12"] },
     { name: "4) Compliance & Policy Adoption", questions: ["Q13", "Q14"] },
-    { name: "5) Technology Stack Modernization", questions: ["Q15",  "Q16", "Q17", "Q18"] }
+    { name: "5) Technology Stack Modernization", questions: ["Q15",  "Q16", "Q17", "Q17"] }
   ],
   questions: [
     {
@@ -255,16 +255,16 @@ DMI_QUESTION_SETS["data_analytics"] = {
     ,
     {
       id: "Q18", area: "Customer Experience & Insight-Driven Actionability",
-      title: "Customer Experience & Insight-Driven Tracking",
-      text: "How effectively are analytics and insights used to improve customer experience and services?",
-           Evidence: "User feedback, analytics-driven initiatives, satisfaction surveys.",
+      title: "Performance Measurement & KPI Tracking",
+      text: "Are there defined KPIs that measure the success and timeliness of analytics services?",
+           Evidence: "Internal Tableau KPI dashboard, SLA reports, ITSM analytics.",
  
       choices: [
-        { value: 1, text: "1. Ad-hoc feedback considered." },
-        { value: 2, text: "2. Manual feedback by E-mail , No customer-focused analytics system .." },
-        { value: 3, text: "3. Regular Customer data analyzed feed back for service improvements." },
-        { value: 4, text: "4. Automated Customer feedback request analytical system ." },
-        { value: 5, text: "5. Personalized dashboards or campaigns based on insights from Customer Experience ." }
+        { value: 1, text: "1. Manual measurement No KPIs defined system ." },
+        { value: 2, text: "2. KPIs exist but not monitored." },
+        { value: 3, text: "3. Regular KPI tracking for analytics delivery." },
+        { value: 4, text: "4. Automated performance dashboards with SLA metrics." },
+        { value: 5, text: "5. Predictive KPI monitoring for service optimization and forecasting." }
       ]
     }
   ],

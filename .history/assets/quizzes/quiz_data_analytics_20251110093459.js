@@ -3,14 +3,14 @@ window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["data_analytics"] = {
   title: "Data Analytics Department Digital Maturity Assessment (DMI)",
   shortcode: "DATA",
-  totalQuestions: 18,
-  maxScore: 18 * 5,
+  totalQuestions: 17,
+  maxScore: 17 * 5,
   sections: [
     { name: "1) Service Catalogue & Documentation", questions: ["Q1", "Q2", "Q3", "Q4"] },
     { name: "2) Data Management & Quality", questions: ["Q5", "Q6", "Q7", "Q8", "Q9", "Q10"] },
     { name: "3) Knowledge Base & Template Standardization ", questions: ["Q11", "Q12"] },
     { name: "4) Compliance & Policy Adoption", questions: ["Q13", "Q14"] },
-    { name: "5) Technology Stack Modernization", questions: ["Q15",  "Q16", "Q17", "Q18"] }
+    { name: "5) Technology Stack Modernization", questions: ["Q15",  "Q16", "Q17"] }
   ],
   questions: [
     {
@@ -228,43 +228,28 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q16", area: "Automation Across the Analytics Lifecycle",
       title: "Automation Across the Analytics Lifecycle",
       text: "Where is the analytics knowledge base hosted, and what templates/playbooks exist for analysts and business users (e.g., dashboard standards, data model templates, KPI definitions)?",
-           Evidence: "ITSM workflows, ADF pipelines, refresh schedules.",
- 
+          Evidence: "Pdf documentation, diagrams , or flowcharts .",
+  
       choices: [
-        { value: 1, text: "1. Manual processing." },
-        { value: 2, text: "2. Partial automation for select workflows." },
-        { value: 3, text: "3. Majority automated with exceptions logged." },
-        { value: 4, text: "4. Fully automated with exception handling and monitoring." },
-        { value: 5, text: "5. Fully automated with exception handling and monitoring, with Tableau reports." }
+        { value: 1, text: "1. Ad-hoc activity; templates scattered across shared drives." },
+        { value: 2, text: "2. Basic knowledge repository created for reference." },
+        { value: 3, text: "3. Structured data knowledge base hosted on SharePoint or Data Catalog." },
+        { value: 4, text: "4. Fully digital, version-controlled analytics knowledge hub." },
+        { value: 5, text: "5. AI-augmented knowledge repository with dynamic template recommendations and usage tracking." }
       ]
     },
     {
-      id: "Q17", area: "Performance Measurement & KPI Tracking",
-      title: "Performance Measurement & KPI Tracking",
-      text: "Are there defined KPIs that measure the success and timeliness of analytics services?",
-           Evidence: "Internal Tableau KPI dashboard, SLA reports, ITSM analytics.",
+      id: "Q17", area: "KnowledgeReuse",
+      title: "Knowledge Update & Reuse",
+      text: "Are knowledge articles updated after project delivery, incidents, or governance changes?",
+           Evidence: "Pdf documentation, diagrams , or flowcharts .",
  
       choices: [
-        { value: 1, text: "1. Manual measurement No KPIs defined system ." },
-        { value: 2, text: "2. KPIs exist but not monitored." },
-        { value: 3, text: "3. Regular KPI tracking for analytics delivery." },
-        { value: 4, text: "4. Automated performance dashboards with SLA metrics." },
-        { value: 5, text: "5. Predictive KPI monitoring for service optimization and forecasting." }
-      ]
-    }
-    ,
-    {
-      id: "Q18", area: "Customer Experience & Insight-Driven Actionability",
-      title: "Customer Experience & Insight-Driven Tracking",
-      text: "How effectively are analytics and insights used to improve customer experience and services?",
-           Evidence: "User feedback, analytics-driven initiatives, satisfaction surveys.",
- 
-      choices: [
-        { value: 1, text: "1. Ad-hoc feedback considered." },
-        { value: 2, text: "2. Manual feedback by E-mail , No customer-focused analytics system .." },
-        { value: 3, text: "3. Regular Customer data analyzed feed back for service improvements." },
-        { value: 4, text: "4. Automated Customer feedback request analytical system ." },
-        { value: 5, text: "5. Personalized dashboards or campaigns based on insights from Customer Experience ." }
+        { value: 1, text: "1. Ad-hoc activity; knowledge rarely updated." },
+        { value: 2, text: "2. Manual updates after major incidents." },
+        { value: 3, text: "3. Periodic reviews scheduled by governance team." },
+        { value: 4, text: "4. Automated update cycles integrated with data governance workflows." },
+        { value: 5, text: "5. Continuous AI-driven knowledge improvement system tracking reuse and relevance." }
       ]
     }
   ],
