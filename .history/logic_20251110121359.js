@@ -531,28 +531,9 @@ function finalizeAssessment() {
   };
 }
 
-
-
 function initAdminPage() {
   if (!requireLogin()) return;
-  // TODO: build admin dashboard from localStorage data
+  // TODO: aggregate localStorage and render admin tables/charts
 }
 
-function openEvidenceFolder() {
-  const url = (window.EVIDENCE_SHARED_FOLDER || '').trim();
-  if (url) window.open(url, "_blank");
-  else alert("Evidence folder URL is not configured.");
-}
 
-// Update text fields
-document.getElementById("maturityScoreDisplay").textContent = percent + "%";
-document.getElementById("totalScoreText").textContent = totalPoints;
-document.getElementById("maxScoreText").textContent = deptData.maxScore;
-
-// Header & classification
-const header = document.getElementById("reportHeaderTitle");
-if (header) header.textContent = `${deptData.title} — Final Assessment Report`;
-const bands = (deptData.maturityBands || window.COMMON_MATURITY_BANDS || []);
-const band = bands.find(b => percent >= b.range[0] && percent <= b.range[1]);
-const levelEl = document.getElementById("maturityLevelText");
-if (levelEl) levelEl.innerHTML = band ? `<strong>${band.name}</strong><br><small>${band.description}</small>` : "—";
