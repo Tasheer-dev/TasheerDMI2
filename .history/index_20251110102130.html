@@ -8,11 +8,76 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-</head>
+  <style>
+    @media print {
+      @page { size: A4 landscape; margin: 1cm; }
+      html, body { width: 297mm; height: 210mm; }
+      body {
+        background: white !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
 
+      /* Hide non-report UI elements */
+      .mini-link-btn, .submit-button, .btn, .print-button, .warning, .danger,
+      .accent, .live-score-sidebar, #pageLoader, #saveStatus {
+        display: none !important;
+      }
+
+      /* Show only report */
+      body * { visibility: hidden; }
+      #reportSection, #reportSection * { visibility: visible; }
+      #reportSection {
+        position: absolute;
+        left: 0; top: 0;
+        width: 100%; max-width: 100%;
+      }
+
+      /* Table full width */
+      .score-table {
+        width: 100% !important;
+        table-layout: fixed;
+        border-collapse: collapse;
+        word-wrap: break-word;
+      }
+      .score-table th, .score-table td {
+        border: 1px solid #ccc !important;
+        padding: 8px;
+        font-size: 11px;
+        vertical-align: top;
+      }
+      .score-table th:nth-child(1){width:5%;}
+      .score-table th:nth-child(2){width:40%;}
+      .score-table th:nth-child(3){width:5%;text-align:center;}
+      .score-table th:nth-child(4){width:25%;}
+      .score-table th:nth-child(5){width:25%;}
+
+      /* Comments fully expanded */
+      #finalReportComments {
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+        white-space: pre-wrap;
+        border: 1px solid #ccc;
+        padding: 10px;
+        min-height: 200px;
+        resize: none;
+      }
+    }
+
+    .report-header {
+      background: #004b93;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
 <body onload="initAssessmentPage()">
-  <!-- Loader overlay (merged inside index.html) -->
-  <div id="pageLoader" aria-label="Loading">
+  <div id="pageLoader">
     <img src="assets/img/company-logo.png" alt="Tasheer Logo" />
     <div class="loaderSpinner"></div>
     <div class="loaderText">Loading Tasheer Digital Platform...</div>
@@ -58,15 +123,13 @@
     </div>
 
     <div id="reportSection" style="display:none;">
-      <div class="report-header" id="reportHeaderTitle">DMI Final Assessment Report</div>
-      <button class="print-button" onclick="backToAssessment()" style="margin-bottom: 20px;">← Back to Assessment</button>
+      <div class="report-header">DMI Final Assessment Report</div>
       <div class="report-grid">
         <div class="report-summary">
           <h3>Overall Digital Maturity Score</h3>
           <div class="score-display" id="maturityScoreDisplay">0.00%</div>
           <div class="score-metadata">
-            Based on an overall score of
-            <span id="totalScoreText">0</span> out of
+            Based on an overall score of <span id="totalScoreText">0</span> out of
             <span id="maxScoreText">0</span> possible points.
           </div>
           <h3 style="margin-top: 20px;">Maturity Level Classification</h3>
@@ -76,7 +139,8 @@
       </div>
 
       <h3 style="margin-top: 30px;">Final Report Comments</h3>
-      <textarea id="finalReportComments" class="form-control" rows="5" placeholder="Enter your final comments on the assessment here. These comments will be included in the final PDF report."></textarea>
+      <textarea id="finalReportComments" class="form-control" rows="5"
+        placeholder="Enter your final comments here..."></textarea>
 
       <h3>Detailed Question Score Breakdown</h3>
       <table class="score-table">
@@ -86,31 +150,16 @@
             <th>Question</th>
             <th style="width: 60px; text-align: center;">Score</th>
             <th style="width: 300px;">Selected Answer</th>
-            <th style="width: 300px;">Recommendations </th>
+            <th style="width: 300px;">Recommendation for Next Level</th>
           </tr>
         </thead>
         <tbody id="detailedScoreBody"></tbody>
       </table>
-  <button type="button" class="print-button" onclick="window.print()">🖨️ Print Report / Save as PDF</button>
-
     </div>
   </div>
 
   <script src="maturitybands.js"></script>
   <script src="users.js"></script>
   <script src="logic.js"></script>
-
-
-  <!-- tiny helper so logic.js can hide the loader exactly when quizzes are ready -->
-  <script>
-    window.hideLoader = function() {
-      const el = document.getElementById('pageLoader');
-      if (!el) return;
-      el.classList.add('fade-out');
-      setTimeout(() => { el.style.display = 'none'; }, 450);
-    };
-    // fallback: if something goes wrong, auto-hide after 4s so page remains usable
-    setTimeout(() => window.hideLoader && window.hideLoader(), 4000);
-  </script>
 </body>
 </html>
