@@ -23,7 +23,7 @@ DMI_QUESTION_SETS["data_analytics"] = {
         { value: 1, text: "1. Ad-hoc activity; no formal service catalogue for analytics exists." },
         { value: 2, text: "2. Basic list of analytics services maintained manually or in Excel." },
         { value: 3, text: "3. Documented analytics service catalogue with partial SLAs and owners." },
-        { value: 4, text: "4️.Digital catalogue published in ITSM or BI portal with SLA visibility." },
+        { value: 4, text: "4️. Digital catalogue published in ITSM or BI portal with SLA visibility." },
         { value: 5, text: "5. Dynamic analytics catalogue integrated with BI portal, automated SLA tracking, and ownership matrix." }
       ]
     },
