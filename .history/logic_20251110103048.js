@@ -141,7 +141,7 @@ function initAssessmentPage() {
   // Create script tag to load the quiz file dynamically
   const script = document.createElement("script");
   script.src = `./assets/quizzes/quiz_${deptCode}.js`;
-  script.src = `./quiz_${deptCode}.js`;
+script.src = `./quiz_${deptCode}.js`;
   script.onload = () => {
     // Retrieve department's quiz data structure
     const deptData = DMI_QUESTION_SETS[deptCode];
