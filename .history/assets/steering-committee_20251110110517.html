@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steering Committee Meeting Manager</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --primary: #0f4c81;
+      --primary-dark: #0c3a61;
+      --accent: #f0f4f9;
+      --success: #1b998b;
+      --warning: #ffb703;
+      --danger: #e63946;
+      --border: #dde3eb;
+      --text: #1f2933;
+      --muted: #5c6c7c;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(160deg, #f2f7fc 0%, #ffffff 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 32px 24px 24px;
+      box-shadow: 0 12px 30px rgba(15, 76, 129, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: rgba(255,255,255,0.85);
+      max-width: 780px;
+      font-size: 16px;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) 1fr;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 12px 24px rgba(15, 76, 129, 0.08);
+      border: 1px solid var(--border);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 20px;
+      color: var(--primary-dark);
+    }
+
+    .card h3 {
+      margin-top: 24px;
+      color: var(--primary);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background-color: #fafcff;
+      font-size: 15px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.18);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field-grid.two {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .field-grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .agenda-list,
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .agenda-list th,
+    .agenda-list td,
+    .action-table th,
+    .action-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .agenda-list th,
+    .action-table th {
+      background: var(--accent);
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    .agenda-controls,
+    .action-controls {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .agenda-controls {
+      grid-template-columns: 1fr 120px;
+    }
+
+    .action-controls {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+
+    @media (max-width: 640px) {
+      .agenda-controls,
+      .action-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button.primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(15, 76, 129, 0.18);
+    }
+
+    button.secondary {
+      background: var(--accent);
+      color: var(--primary-dark);
+    }
+
+    button.danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .meetings-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .meeting-tile {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .meeting-tile.active {
+      border-color: var(--primary);
+      box-shadow: 0 10px 22px rgba(15, 76, 129, 0.18);
+    }
+
+    .meeting-tile:hover {
+      border-color: var(--primary);
+    }
+
+    .meeting-tile h4 {
+      margin: 0 0 6px;
+      font-size: 17px;
+    }
+
+    .meeting-tile p {
+      margin: 2px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-open { background: rgba(230, 57, 70, 0.12); color: var(--danger); }
+    .status-progress { background: rgba(255, 183, 3, 0.18); color: #b08904; }
+    .status-postponed { background: rgba(87, 117, 144, 0.18); color: #44576b; }
+    .status-done { background: rgba(27, 153, 139, 0.18); color: var(--success); }
+
+    .attendee-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .attendee-table th,
+    .attendee-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .attendee-table th {
+      background: var(--accent);
+      color: var(--primary-dark);
+    }
+
+    .inline-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px 0;
+      color: var(--muted);
+    }
+
+    .tagline {
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 12px;
+      opacity: 0.75;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="tagline">Governance & Strategic Alignment</div>
+    <h1>Steering Committee Meeting Manager</h1>
+    <p>Create structured agendas, capture decisions, and keep follow-up actions on track for your Steering Committee meetings. All meetings are stored securely in your browser using local storage—no database required.</p>
+  </header>
+
+  <main>
+    <section class="card" aria-label="Saved meetings">
+      <h2>Saved Meetings</h2>
+      <button type="button" class="primary" style="width:100%; margin-bottom:16px;" onclick="startNewMeeting()">➕ Schedule New Meeting</button>
+      <ul id="meetingsList" class="meetings-list"></ul>
+      <div id="emptyState" class="empty-state" hidden>
+        <p>No meetings stored yet. Start by scheduling a new Steering Committee meeting.</p>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Meeting form">
+      <h2 id="formTitle">New Meeting Session</h2>
+      <div class="field-grid two">
+        <div>
+          <label for="meetingDate">Meeting Date</label>
+          <input type="date" id="meetingDate" />
+        </div>
+        <div class="field-grid two">
+          <div>
+            <label for="startTime">Start Time</label>
+            <input type="time" id="startTime" />
+          </div>
+          <div>
+            <label for="endTime">End Time</label>
+            <input type="time" id="endTime" />
+          </div>
+        </div>
+        <div>
+          <label for="meetingTopic">Meeting Topic</label>
+          <input type="text" id="meetingTopic" placeholder="e.g. IT Steering Committee Regular Meeting" />
+        </div>
+        <div>
+          <label for="meetingReference">Reference Number</label>
+          <input type="text" id="meetingReference" placeholder="e.g. 102025.ITSC" />
+        </div>
+      </div>
+
+      <h3>Steering Committee Members</h3>
+      <p class="muted">The official attendee roster is fixed for every meeting to ensure consistent oversight.</p>
+      <table class="attendee-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Membership</th>
+          </tr>
+        </thead>
+        <tbody id="attendeeBody"></tbody>
+      </table>
+
+      <h3>Agenda Builder</h3>
+      <p class="muted">Capture the sequence of topics and objectives that will guide the discussion.</p>
+      <div class="agenda-controls">
+        <input type="text" id="agendaInput" placeholder="Add agenda topic, e.g. Digital Maturity Index updates" />
+        <button type="button" class="secondary" onclick="addAgendaItem()">Add Agenda Item</button>
+      </div>
+      <table class="agenda-list" id="agendaTable" hidden>
+        <thead>
+          <tr>
+            <th style="width:60px;">#</th>
+            <th>Agenda Topic</th>
+            <th style="width:80px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="agendaBody"></tbody>
+      </table>
+
+      <h3>Discussion Notes</h3>
+      <textarea id="discussionNotes" placeholder="Document structured notes such as follow-up on previous items, strategic project status updates, challenges and resolutions..."></textarea>
+
+      <h3>Action Items Tracker</h3>
+      <div class="action-controls">
+        <input type="text" id="actionTitle" placeholder="Action item description" />
+        <select id="actionOwner"></select>
+        <input type="date" id="actionDueDate" />
+        <select id="actionStatus">
+          <option value="Open">Open</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Postponed">Postponed</option>
+          <option value="Done">Done</option>
+        </select>
+      </div>
+      <div class="inline-actions">
+        <button type="button" class="secondary" onclick="addActionItem()">Add Action Item</button>
+      </div>
+      <table class="action-table" id="actionTable" hidden>
+        <thead>
+          <tr>
+            <th style="width:50px;">#</th>
+            <th>Action Item</th>
+            <th style="width:160px;">Owner</th>
+            <th style="width:140px;">Due Date</th>
+            <th style="width:140px;">Status</th>
+            <th style="width:80px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="actionBody"></tbody>
+      </table>
+
+      <div class="inline-actions">
+        <button type="button" class="primary" onclick="saveMeeting()">💾 Save Meeting</button>
+        <button type="button" class="secondary" onclick="exportMeetingToPDF()">📄 Export PDF</button>
+        <button type="button" class="secondary" onclick="exportMeetingToExcel()">📊 Export Excel</button>
+        <button type="button" class="danger" onclick="deleteMeeting()">🗑️ Delete Meeting</button>
+      </div>
+      <div id="formStatus" class="muted"></div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-/p1R9frN7kYM/qf+oCuWHa3gwxObn2ymlk/wEYBLETymFcpnSUsctNk6heAQ7Ez+KQEiC5EvhczFMMz9Yx0h1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" integrity="sha512-y7xGFdwNvDKhiJ9IE44U+HbyNnv8abLMWh7Txq6Qm2FJEM9Kj76EygDaw6R5mM8Zq1Fj7da9EFDh9UpAJZciVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    const attendees = [
+      { number: 1, name: 'Nasser Al Yousef', position: 'Digitalization & Technology GM', membership: 'Chairman' },
+      { number: 2, name: 'Faisal Hassan Alhaiti', position: 'Executive Infrastructure & Operations Director', membership: 'Member' },
+      { number: 3, name: 'Khaled Ahmad Abdullah', position: 'Solutions Delivery Director', membership: 'Member' },
+      { number: 4, name: 'Mohammed Najeh Romaneh', position: 'SAP Support Manager', membership: 'Member' },
+      { number: 5, name: 'Sameh Mohamed Abdelhamid', position: 'Chief Enterprise Architect', membership: 'Member' },
+      { number: 6, name: 'Abdulmohsen Saud Almutairi', position: 'Business Operation Director', membership: 'Member' },
+      { number: 7, name: 'Saleh Mohammed Alghamdi', position: 'Enterprise Applications Director', membership: 'Member' },
+      { number: 8, name: 'Adel Abdelfattah Alfeky', position: 'Chief Enterprise Architect', membership: 'Member' }
+    ];
+
+    const STORAGE_KEY = 'sc-meetings-records';
+    let meetings = [];
+    let currentMeetingId = null;
+    let agendaItems = [];
+    let actionItems = [];
+
+    function init() {
+      renderAttendees();
+      populateOwnerSelect();
+      loadMeetingsFromStorage();
+      renderMeetingsList();
+      startNewMeeting();
+    }
+
+    function renderAttendees() {
+      const tbody = document.getElementById('attendeeBody');
+      tbody.innerHTML = attendees.map(att => `
+        <tr>
+          <td>${att.number}</td>
+          <td>${att.name}</td>
+          <td>${att.position}</td>
+          <td>${att.membership}</td>
+        </tr>
+      `).join('');
+    }
+
+    function populateOwnerSelect() {
+      const select = document.getElementById('actionOwner');
+      select.innerHTML = '<option value="">Select owner</option>' + attendees.map(att => `<option value="${att.name}">${att.name}</option>`).join('');
+    }
+
+    function loadMeetingsFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        meetings = raw ? JSON.parse(raw) : [];
+      } catch (err) {
+        console.error('Failed to parse stored meetings', err);
+        meetings = [];
+      }
+    }
+
+    function persistMeetings() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(meetings));
+    }
+
+    function renderMeetingsList() {
+      const list = document.getElementById('meetingsList');
+      const emptyState = document.getElementById('emptyState');
+
+      if (!meetings.length) {
+        list.innerHTML = '';
+        emptyState.hidden = false;
+        return;
+      }
+
+      emptyState.hidden = true;
+      list.innerHTML = meetings
+        .slice()
+        .sort((a, b) => new Date(b.details.date || 0) - new Date(a.details.date || 0))
+        .map(meeting => {
+          const actionSummary = meeting.actionItems?.filter(item => item.status !== 'Done').length || 0;
+          const isActive = meeting.id === currentMeetingId;
+          return `
+            <li class="meeting-tile ${isActive ? 'active' : ''}" onclick="loadMeeting('${meeting.id}')">
+              <h4>${meeting.details.topic || 'Untitled Meeting'}</h4>
+              <p>${formatDateForDisplay(meeting.details.date)} · ${formatTimeRange(meeting.details.startTime, meeting.details.endTime)}</p>
+              <p>Ref: ${meeting.details.reference || '—'}</p>
+              <p>Outstanding items: <span class="status-pill ${actionSummary ? 'status-open' : 'status-done'}">${actionSummary}</span></p>
+            </li>
+          `;
+        })
+        .join('');
+    }
+
+    function formatDateForDisplay(date, fallback = 'No date') {
+      if (!date) return fallback;
+      const d = new Date(date + 'T00:00');
+      return isNaN(d.getTime()) ? fallback : d.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function formatTimeRange(start, end) {
+      if (!start && !end) return 'Time TBD';
+      const opts = { hour: '2-digit', minute: '2-digit' };
+      const locale = undefined;
+      const startFormatted = start ? new Date(`1970-01-01T${start}`).toLocaleTimeString(locale, opts) : '—';
+      const endFormatted = end ? new Date(`1970-01-01T${end}`).toLocaleTimeString(locale, opts) : '—';
+      return `${startFormatted} – ${endFormatted}`;
+    }
+
+    function startNewMeeting() {
+      currentMeetingId = null;
+      agendaItems = [];
+      actionItems = [];
+      document.getElementById('meetingDate').value = '';
+      document.getElementById('startTime').value = '';
+      document.getElementById('endTime').value = '';
+      document.getElementById('meetingTopic').value = '';
+      document.getElementById('meetingReference').value = '';
+      document.getElementById('discussionNotes').value = '';
+      document.getElementById('formTitle').textContent = 'New Meeting Session';
+      document.getElementById('formStatus').textContent = '';
+      renderAgendaTable();
+      renderActionTable();
+      renderMeetingsList();
+    }
+
+    function addAgendaItem() {
+      const input = document.getElementById('agendaInput');
+      const value = input.value.trim();
+      if (!value) {
+        showStatus('Enter an agenda topic before adding.', true);
+        return;
+      }
+      agendaItems.push(value);
+      input.value = '';
+      renderAgendaTable();
+      showStatus('Agenda item added.', false);
+    }
+
+    function removeAgendaItem(index) {
+      agendaItems.splice(index, 1);
+      renderAgendaTable();
+    }
+
+    function renderAgendaTable() {
+      const table = document.getElementById('agendaTable');
+      const body = document.getElementById('agendaBody');
+      if (!agendaItems.length) {
+        table.hidden = true;
+        body.innerHTML = '';
+        return;
+      }
+      table.hidden = false;
+      body.innerHTML = agendaItems.map((item, index) => `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item}</td>
+          <td><button type="button" class="secondary" onclick="removeAgendaItem(${index})">Remove</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function addActionItem() {
+      const title = document.getElementById('actionTitle').value.trim();
+      const owner = document.getElementById('actionOwner').value;
+      const dueDate = document.getElementById('actionDueDate').value;
+      const status = document.getElementById('actionStatus').value;
+
+      if (!title || !owner || !dueDate) {
+        showStatus('Please provide an action description, owner, and due date.', true);
+        return;
+      }
+
+      actionItems.push({ title, owner, dueDate, status });
+      document.getElementById('actionTitle').value = '';
+      document.getElementById('actionOwner').value = '';
+      document.getElementById('actionDueDate').value = '';
+      document.getElementById('actionStatus').value = 'Open';
+      renderActionTable();
+      showStatus('Action item added to the tracker.', false);
+    }
+
+    function removeActionItem(index) {
+      actionItems.splice(index, 1);
+      renderActionTable();
+    }
+
+    function updateActionStatus(index, status) {
+      actionItems[index].status = status;
+      showStatus('Action item status updated.', false);
+    }
+
+    function renderActionTable() {
+      const table = document.getElementById('actionTable');
+      const body = document.getElementById('actionBody');
+      if (!actionItems.length) {
+        table.hidden = true;
+        body.innerHTML = '';
+        return;
+      }
+      table.hidden = false;
+      body.innerHTML = actionItems.map((item, index) => `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.title}</td>
+          <td>${item.owner}</td>
+          <td>${formatDateForDisplay(item.dueDate, '—')}</td>
+          <td>
+            <select onchange="updateActionStatus(${index}, this.value)">
+              ${['Open','In Progress','Postponed','Done'].map(status => `
+                <option value="${status}" ${item.status === status ? 'selected' : ''}>${status}</option>
+              `).join('')}
+            </select>
+          </td>
+          <td><button type="button" class="secondary" onclick="removeActionItem(${index})">Remove</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function saveMeeting() {
+      const details = {
+        date: document.getElementById('meetingDate').value,
+        startTime: document.getElementById('startTime').value,
+        endTime: document.getElementById('endTime').value,
+        topic: document.getElementById('meetingTopic').value.trim(),
+        reference: document.getElementById('meetingReference').value.trim()
+      };
+
+      if (!details.date || !details.startTime || !details.endTime || !details.topic || !details.reference) {
+        showStatus('Please complete the meeting date, time, topic, and reference number before saving.', true);
+        return;
+      }
+
+      const meetingRecord = {
+        id: currentMeetingId || `mtg-${Date.now()}`,
+        details,
+        attendees,
+        agenda: agendaItems.slice(),
+        notes: document.getElementById('discussionNotes').value.trim(),
+        actionItems: actionItems.slice()
+      };
+
+      const existingIndex = meetings.findIndex(m => m.id === meetingRecord.id);
+      if (existingIndex > -1) {
+        meetings[existingIndex] = meetingRecord;
+      } else {
+        meetings.push(meetingRecord);
+      }
+
+      currentMeetingId = meetingRecord.id;
+      persistMeetings();
+      renderMeetingsList();
+      showStatus('Meeting saved successfully to local storage.', false);
+      document.getElementById('formTitle').textContent = 'Editing: ' + meetingRecord.details.topic;
+    }
+
+    function loadMeeting(id) {
+      const meeting = meetings.find(m => m.id === id);
+      if (!meeting) return;
+      currentMeetingId = id;
+      document.getElementById('meetingDate').value = meeting.details.date || '';
+      document.getElementById('startTime').value = meeting.details.startTime || '';
+      document.getElementById('endTime').value = meeting.details.endTime || '';
+      document.getElementById('meetingTopic').value = meeting.details.topic || '';
+      document.getElementById('meetingReference').value = meeting.details.reference || '';
+      document.getElementById('discussionNotes').value = meeting.notes || '';
+      agendaItems = meeting.agenda ? meeting.agenda.slice() : [];
+      actionItems = meeting.actionItems ? meeting.actionItems.slice() : [];
+      renderAgendaTable();
+      renderActionTable();
+      renderMeetingsList();
+      document.getElementById('formTitle').textContent = 'Editing: ' + (meeting.details.topic || 'Meeting');
+      showStatus('Loaded meeting from local storage.', false);
+    }
+
+    function deleteMeeting() {
+      if (!currentMeetingId) {
+        showStatus('Select a meeting to delete.', true);
+        return;
+      }
+      const meeting = meetings.find(m => m.id === currentMeetingId);
+      if (!meeting) return;
+      const confirmed = confirm(`Delete meeting "${meeting.details.topic}"? This cannot be undone.`);
+      if (!confirmed) return;
+      meetings = meetings.filter(m => m.id !== currentMeetingId);
+      persistMeetings();
+      startNewMeeting();
+      renderMeetingsList();
+      showStatus('Meeting deleted.', false);
+    }
+
+    function exportMeetingToPDF() {
+      if (!currentMeetingId) {
+        showStatus('Save or select a meeting before exporting to PDF.', true);
+        return;
+      }
+      const meeting = meetings.find(m => m.id === currentMeetingId);
+      if (!meeting) return;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'pt' });
+
+      const title = 'Steering Committee Meeting Minutes';
+      doc.setFontSize(18);
+      doc.text(title, 40, 50);
+
+      doc.setFontSize(12);
+      const infoLines = [
+        `Topic: ${meeting.details.topic}`,
+        `Reference: ${meeting.details.reference}`,
+        `Date: ${formatDateForDisplay(meeting.details.date)}`,
+        `Time: ${formatTimeRange(meeting.details.startTime, meeting.details.endTime)}`
+      ];
+      infoLines.forEach((line, index) => doc.text(line, 40, 80 + index * 18));
+
+      doc.setFontSize(14);
+      doc.text('Attendees', 40, 170);
+      doc.autoTable({
+        startY: 180,
+        head: [['#', 'Name', 'Position', 'Membership']],
+        body: attendees.map(a => [a.number, a.name, a.position, a.membership]),
+        styles: { fontSize: 11 }
+      });
+
+      let yCursor = doc.lastAutoTable.finalY + 20;
+      doc.setFontSize(14);
+      doc.text('Agenda Items', 40, yCursor);
+      yCursor += 10;
+      doc.setFontSize(12);
+      if (meeting.agenda.length) {
+        meeting.agenda.forEach((item, idx) => {
+          doc.text(`${idx + 1}. ${item}`, 50, yCursor + idx * 16);
+        });
+        yCursor += meeting.agenda.length * 16 + 10;
+      } else {
+        doc.text('No agenda items documented.', 50, yCursor);
+        yCursor += 20;
+      }
+
+      doc.setFontSize(14);
+      doc.text('Discussion Notes', 40, yCursor);
+      yCursor += 16;
+      doc.setFontSize(12);
+      const notes = meeting.notes || 'No notes recorded.';
+      const wrapped = doc.splitTextToSize(notes, 520);
+      doc.text(wrapped, 50, yCursor);
+
+      yCursor = doc.lastAutoTable ? Math.max(doc.lastAutoTable.finalY + 40, yCursor + wrapped.length * 14 + 20) : yCursor + wrapped.length * 14 + 40;
+
+      doc.setFontSize(14);
+      doc.text('Action Items', 40, yCursor);
+      doc.autoTable({
+        startY: yCursor + 10,
+        head: [['#', 'Action Item', 'Owner', 'Due Date', 'Status']],
+        body: meeting.actionItems.length ? meeting.actionItems.map((item, index) => [
+          index + 1,
+          item.title,
+          item.owner,
+          formatDateForDisplay(item.dueDate, '—'),
+          item.status
+        ]) : [[ '', 'No action items captured.', '', '', '' ]],
+        styles: { fontSize: 11 }
+      });
+
+      doc.save(`${meeting.details.reference || 'meeting'}-minutes.pdf`);
+    }
+
+    function exportMeetingToExcel() {
+      if (!currentMeetingId) {
+        showStatus('Save or select a meeting before exporting to Excel.', true);
+        return;
+      }
+      const meeting = meetings.find(m => m.id === currentMeetingId);
+      if (!meeting) return;
+
+      const headerRows = `
+        <tr><th colspan="4">Steering Committee Meeting Minutes</th></tr>
+        <tr><td>Topic</td><td colspan="3">${escapeHtml(meeting.details.topic)}</td></tr>
+        <tr><td>Reference</td><td colspan="3">${escapeHtml(meeting.details.reference)}</td></tr>
+        <tr><td>Date</td><td>${escapeHtml(formatDateForDisplay(meeting.details.date))}</td><td>Time</td><td>${escapeHtml(formatTimeRange(meeting.details.startTime, meeting.details.endTime))}</td></tr>
+      `;
+
+      const attendeeRows = attendees.map(att => `
+        <tr>
+          <td>${att.number}</td>
+          <td>${escapeHtml(att.name)}</td>
+          <td>${escapeHtml(att.position)}</td>
+          <td>${escapeHtml(att.membership)}</td>
+        </tr>
+      `).join('');
+
+      const agendaRows = meeting.agenda.length ? meeting.agenda.map((item, idx) => `
+        <tr><td>${idx + 1}</td><td colspan="3">${escapeHtml(item)}</td></tr>
+      `).join('') : '<tr><td colspan="4">No agenda items captured.</td></tr>';
+
+      const actionRows = meeting.actionItems.length ? meeting.actionItems.map((item, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${escapeHtml(item.title)}</td>
+          <td>${escapeHtml(item.owner)}</td>
+          <td>${escapeHtml(formatDateForDisplay(item.dueDate, '—'))}</td>
+          <td>${escapeHtml(item.status)}</td>
+        </tr>
+      `).join('') : '<tr><td colspan="5">No action items captured.</td></tr>';
+
+      const html = `
+        <table border="1">
+          ${headerRows}
+          <tr><th colspan="4">Attendees</th></tr>
+          <tr><th>#</th><th>Name</th><th>Position</th><th>Membership</th></tr>
+          ${attendeeRows}
+          <tr><th colspan="4">Agenda</th></tr>
+          ${agendaRows}
+          <tr><th colspan="5">Action Items</th></tr>
+          <tr><th>#</th><th>Action Item</th><th>Owner</th><th>Due Date</th><th>Status</th></tr>
+          ${actionRows}
+          <tr><th colspan="5">Discussion Notes</th></tr>
+          <tr><td colspan="5">${escapeHtml(meeting.notes || 'No notes recorded.')}</td></tr>
+        </table>
+      `;
+
+      const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${meeting.details.reference || 'meeting'}-minutes.xls`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showStatus('Excel export generated.', false);
+    }
+
+    function escapeHtml(value) {
+      return value ? value.replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]) : '';
+    }
+
+    function showStatus(message, isError) {
+      const status = document.getElementById('formStatus');
+      status.textContent = message;
+      const errorColor = varColor('--danger') || '#e63946';
+      const defaultColor = varColor('--muted') || '#5c6c7c';
+      status.style.color = isError ? errorColor : defaultColor;
+    }
+
+    function varColor(name) {
+      return (getComputedStyle(document.documentElement).getPropertyValue(name) || '').trim();
+    }
+
+    window.addEventListener('load', init);
+  </script>
+</body>
+</html>
