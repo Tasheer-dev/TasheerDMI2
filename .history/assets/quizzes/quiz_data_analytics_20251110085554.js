@@ -143,14 +143,14 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q10", area: "Analytics & Capabilities",
       title: "Analytical Techniques & Maturity",
       text: "What level of analytical methods are regularly applied by the department?",
-            Evidence: "Project examples, Tableau dashboards, ML/AI reports.",
+            Evidence: "Project examples, Tableau dashboards, ML/AI reports..",
 
       choices: [
-        { value: 1, text: "1. Descriptive only (what happened)." },
-        { value: 2, text: "2. Diagnostic (why it happened)." },
-        { value: 3, text: "3. Predictive (what will happen)." },
-        { value: 4, text: "4. Prescriptive (what should we do)." },
-        { value: 5, text: "5. Cognitive/AI-driven analytics with automation and adaptive learning." }
+        { value: 1, text: "1. Ad-hoc activity; policies scattered across emails or folders." },
+        { value: 2, text: "2. Central shared repository available to limited users." },
+        { value: 3, text: "3. Knowledge base available to analytics staff." },
+        { value: 4, text: "4. Fully digital governance portal with access analytics." },
+        { value: 5, text: "5. Intelligent knowledge platform with AI search, access metrics, and acknowledgment tracking." }
       ]
     },
     {

@@ -7,7 +7,7 @@ DMI_QUESTION_SETS["data_analytics"] = {
   maxScore: 17 * 5,
   sections: [
     { name: "1) Service Catalogue & Documentation", questions: ["Q1", "Q2", "Q3", "Q4"] },
-    { name: "2) Data Management & Quality", questions: ["Q5", "Q6", "Q7", "Q8", "Q9", "Q10"] },
+    { name: "2) Workflow, Monitoring & Integration", questions: ["Q5", "Q6", "Q7", "Q8", "Q9", "Q10"] },
     { name: "3) Runbooks & Standard Operating Procedures (SOPs)", questions: ["Q11", "Q12"] },
     { name: "4) Compliance & Policy Adoption", questions: ["Q13", "Q14", "Q15"] },
     { name: "5) Knowledge Repository & Templates", questions: ["Q16", "Q17"] }
@@ -17,22 +17,20 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q1", area: "Catalogue",
       title: "Data Analytics Service Catalogue",
       text: "To what extent does the department maintain a centralized catalogue of analytics services (dashboards, reports, predictive models, data APIs) with ownership and SLAs?",
-      Evidence: "Published service catalogue, BI portal page, or SLA documentations.",
+      Evidence: "Published service catalogue, BI portal page, or SLA documentation.",
 
       choices: [
         { value: 1, text: "1. Ad-hoc activity; no formal service catalogue for analytics exists." },
         { value: 2, text: "2. Basic list of analytics services maintained manually or in Excel." },
         { value: 3, text: "3. Documented analytics service catalogue with partial SLAs and owners." },
-        { value: 4, text: "4️.Digital catalogue published in ITSM or BI portal with SLA visibility." },
+        { value: 4, text: "4. Fully digital analytics catalogue published internally with ownership and SLA coverage." },
         { value: 5, text: "5. Dynamic analytics catalogue integrated with BI portal, automated SLA tracking, and ownership matrix." }
       ]
     },
     {
-      id: "Q2", area: "Documentation of processes",
-      title: "Documentation of Analytics Assets",
+      id: "Q2", area: "Documentation",
+      title: "Analytics Documentation Coverage",
       text: "What percentage of dashboards, reports, and models are fully documented (scope, workflows, owners, data sources, KPIs)?",
-      Evidence: "Pdf documentation, diagrams , or flowcharts .",
-
       choices: [
         { value: 1, text: "1. Ad-hoc activity; documentation incomplete or informal." },
         { value: 2, text: "2. Partial documentation for selected dashboards or reports." },
@@ -43,12 +41,10 @@ DMI_QUESTION_SETS["data_analytics"] = {
     },
     {
       id: "Q3", area: "Automation",
-      title: "Automation of Data Workflows & Integrations",
+      title: "Analytics Automation Coverage",
       text: "What percentage of data pipelines (ETL/ELT), reports, and dashboards are automated (vs. manual refresh)?",
-            Evidence: "Workflow swimlanes, ADF pipelines, ITSM request flow.",
-
       choices: [
-        { value: 1, text: "1. Mostly manual.." },
+        { value: 1, text: "1. Ad-hoc activity; most analytics workflows are manual." },
         { value: 2, text: "2. 25–50% automation for recurring dashboards or reports." },
         { value: 3, text: "3. 50–75% of data workflows automated with orchestration tools." },
         { value: 4, text: "4. Fully automated pipelines and dashboards with monitoring dashboards." },
@@ -59,8 +55,6 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q4", area: "Roadmap",
       title: "Analytics Automation Roadmap",
       text: "Is there a documented backlog/roadmap of manual analytics tasks targeted for automation?",
-           Evidence: "DevOps/Jira backlog, ITSM enhancement queue.",
-
       choices: [
         { value: 1, text: "1. Ad-hoc activity; automation plans not documented." },
         { value: 2, text: "2. Informal backlog maintained for improvement initiatives." },
@@ -70,42 +64,36 @@ DMI_QUESTION_SETS["data_analytics"] = {
       ]
     },
     {
-      id: "Q5", area: "Data Quality",
-      title: "Data Quality",
-      text: "Are data quality dimensions (accuracy, completeness, consistency, timeliness) defined, monitored, and remediated?",
-            Evidence: "Data quality dashboard, issue log, governance reports .",
-
+      id: "Q5", area: "Workflow",
+      title: "Workflow, Monitoring & Integration",
+      text: "Can you share examples of automated workflows for data ingestion, transformation, quality checks, and dashboard refresh? Which steps are still manual?",
       choices: [
-        { value: 1, text: "1. Ad-hoc activity; No formal quality checks." },
-        { value: 2, text: "2. Manual corrections after issues arise." },
-        { value: 3, text: "3. Defined dimensions with periodic checks." },
-        { value: 4, text: "4. Automated Data quality monitoring and remediation workflows." },
-        { value: 5, text: "5. Continuous data quality scoring with predictive issue detection." }
+        { value: 1, text: "1. Ad-hoc activity; no consistent automation." },
+        { value: 2, text: "2. Partial automation for key data ingestion processes." },
+        { value: 3, text: "3. End-to-end automation for core pipelines with manual exceptions." },
+        { value: 4, text: "4. Fully automated orchestration workflows with error-handling and recovery logs." },
+        { value: 5, text: "5. AI-managed data orchestration framework with real-time anomaly prediction and resolution." }
       ]
     },
     {
-      id: "Q6", area: "Monitoring & Alert Framework",
-      title: "Monitoring & Alert Framework",
-      text: "Are data pipelines and dashboards monitored for failure or data quality thresholds through integrated alert systems?",
-          Evidence: "Monitoring dashboards, email/SMS alerts, ADF/Azure Monitor logs .",
-
+      id: "Q6", area: "Monitoring",
+      title: "Monitoring & Alert Integration",
+      text: "Are data platforms integrated with monitoring tools (e.g., alerts for pipeline failure, data quality thresholds)?",
       choices: [
         { value: 1, text: "1. Ad-hoc activity; monitoring handled manually." },
-        { value: 2, text: "2. Periodical Manual checks only." },
-        { value: 3, text: "3. Centralized monitoring without dashboards." },
-        { value: 4, text: "4. Centralized monitoring of data pipelines via dashboards." },
-        { value: 5, text: "5. Fully integrated monitoring and alerting system for all data platforms." }
+        { value: 2, text: "2. Partial integration for select data systems." },
+        { value: 3, text: "3. Centralized monitoring of data pipelines via dashboards." },
+        { value: 4, text: "4. Fully integrated monitoring and alerting system for all data platforms." },
+        { value: 5, text: "5. Predictive monitoring framework with auto-remediation workflows." }
       ]
     },
     {
       id: "Q7", area: "AIOps",
-      title: "Incident Feedback & Resolution Tracking",
-      text: "Do you use automated mechanisms to capture and analyze failed data jobs or Tableau refresh incidents for continuous improvement?, predictive alerts, rollback triggers, MTTR tracking for failed jobs)?",
-           Evidence: "ITSM incident logs, MTTR dashboards, or AIOps analytics .",
- 
+      title: "Automated Feedback & AIOps",
+      text: "Do you have automated feedback loops (e.g., anomaly detection, predictive alerts, rollback triggers, MTTR tracking for failed jobs)?",
       choices: [
-        { value: 1, text: "1. Failures handled manually with no tracking." },
-        { value: 2, text: "2. Manual logs in shared spreadsheets." },
+        { value: 1, text: "1. Ad-hoc activity; no automated feedback or alerts." },
+        { value: 2, text: "2. Manual alerts based on failure logs." },
         { value: 3, text: "3. Semi-automated feedback loops using AIOps tools." },
         { value: 4, text: "4. Fully automated analytics alerting system with performance tracking." },
         { value: 5, text: "5. AI-driven anomaly detection and automated remediation platform." }
@@ -114,51 +102,43 @@ DMI_QUESTION_SETS["data_analytics"] = {
     {
       id: "Q8", area: "Governance",
       title: "Data Governance & Compliance Policies",
-      text: "Are analytics policies and data governance procedures documented, approved, and aligned with national (NCA/GDPR) standards?",
-           Evidence: "compliance report, or governance check list .",
-
+      text: "Do documented policies exist for data governance, access control, quality management, retention, backup/DR, and compliance (GDPR/NCA)?",
       choices: [
         { value: 1, text: "1. Ad-hoc activity; policies not documented." },
-        { value: 2, text: "2. Initial drafts under review" },
-        { value: 3, text: "3. Comprehensive compliance report compliance ,Compliance documented and partially implemented." },
-        { value: 4, text: "4. Digitally version-controlled compliance report accessible to stakeholders." },
+        { value: 2, text: "2. Basic data governance policies documented for limited scope." },
+        { value: 3, text: "3. Comprehensive policy library covering governance, DR, and compliance." },
+        { value: 4, text: "4. Digitally version-controlled data governance repository accessible to stakeholders." },
         { value: 5, text: "5. Automated data governance platform with compliance dashboards and audit tracking." }
       ]
     },
     {
-      id: "Q9", area: "Metadata Management",
-      title: "Metadata Management",
-      text: "Is metadata (data definitions, lineage, ownership) actively managed and made available to users??",
-          Evidence: "Data catalog, metadata documentation, Tableau/Power BI data source definitions.",
-
+      id: "Q9", area: "GapAnalysis",
+      title: "Gap Analysis for Data Procedures",
+      text: "Can you share a gap analysis of documented vs. missing data analytics procedures?",
       choices: [
-        { value: 1, text: "1. Ad-hoc activity; No metadata documentation." },
-        { value: 2, text: "2. No metadata documentation." },
-        { value: 3, text: "3. Central metadata repository with manual updates." },
-        { value: 4, text: "4. Automated metadata extraction from BI and ETL tools." },
-        { value: 5, text: "5. Fully integrated data catalog with searchable metadata and lineage visualization." }
+        { value: 1, text: "1. Ad-hoc activity; no gap analysis conducted." },
+        { value: 2, text: "2. Informal identification of documentation gaps." },
+        { value: 3, text: "3. Structured gap analysis performed annually." },
+        { value: 4, text: "4. Regular digital reviews of documentation completeness." },
+        { value: 5, text: "5. Continuous gap analysis dashboard integrated with governance scoring." }
       ]
     },
     {
-      id: "Q10", area: "Analytics & Capabilities",
-      title: "Analytical Techniques & Maturity",
-      text: "What level of analytical methods are regularly applied by the department?",
-            Evidence: "Project examples, Tableau dashboards, ML/AI reports.",
-
+      id: "Q10", area: "Accessibility",
+      title: "Accessibility of Data Policies & Procedures",
+      text: "Are all data policies and procedures accessible via a knowledge base or data governance portal?",
       choices: [
-        { value: 1, text: "1. Descriptive only (what happened)." },
-        { value: 2, text: "2. Diagnostic (why it happened)." },
-        { value: 3, text: "3. Predictive (what will happen)." },
-        { value: 4, text: "4. Prescriptive (what should we do)." },
-        { value: 5, text: "5. Cognitive/AI-driven analytics with automation and adaptive learning." }
+        { value: 1, text: "1. Ad-hoc activity; policies scattered across emails or folders." },
+        { value: 2, text: "2. Central shared repository available to limited users." },
+        { value: 3, text: "3. Knowledge base available to analytics staff." },
+        { value: 4, text: "4. Fully digital governance portal with access analytics." },
+        { value: 5, text: "5. Intelligent knowledge platform with AI search, access metrics, and acknowledgment tracking." }
       ]
     },
     {
       id: "Q11", area: "SOPs",
       title: "SOPs & Runbooks for Analytics Operations",
       text: "Are SOPs/runbooks available for recurring analytics activities (e.g., pipeline restart, report refresh, data validation, user onboarding)?",
-           Evidence: "Pdf documentation, diagrams , or flowcharts .",
-
       choices: [
         { value: 1, text: "1. Ad-hoc activity; SOPs not defined." },
         { value: 2, text: "2. Basic SOPs exist for limited use cases." },
@@ -171,8 +151,6 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q12", area: "Testing",
       title: "SOP Testing & Updates",
       text: "Are runbooks tested and updated regularly to reflect new tools, data sources, and incidents?",
-           Evidence: "Pdf documentation, diagrams , or flowcharts .",
-
       choices: [
         { value: 1, text: "1. Ad-hoc activity; no update schedule." },
         { value: 2, text: "2. Updated after incidents on an ad-hoc basis." },
@@ -185,8 +163,6 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q13", area: "Compliance",
       title: "Compliance & Data Policy Measurement",
       text: "Do you measure compliance with data policies (e.g., data classification, access rights, GDPR/NCA, ISO 27001)?",
-           Evidence: "Pdf documentation, diagrams , or flowcharts .",
-
       choices: [
         { value: 1, text: "1. Ad-hoc activity; compliance not tracked." },
         { value: 2, text: "2. Manual review of policy adherence." },
@@ -199,8 +175,6 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q14", area: "WorkflowAdherence",
       title: "Workflow Adherence & Non-Compliance Handling",
       text: "What percentage of analytics processes (requests, pipeline changes, reports) follow documented workflows? How is non-compliance handled?",
-           Evidence: "Pdf documentation, diagrams , or flowcharts .",
- 
       choices: [
         { value: 1, text: "1. Ad-hoc activity; no workflow tracking." },
         { value: 2, text: "2. Manual tracking of workflow compliance." },
@@ -213,8 +187,6 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q15", area: "Awareness",
       title: "Data Literacy & Awareness",
       text: "Are business users trained and aware of analytics usage policies (data privacy, acceptable use, interpretation of KPIs)?",
-           Evidence: "Pdf documentation, diagrams , or flowcharts .",
-
       choices: [
         { value: 1, text: "1. Ad-hoc activity; no structured training." },
         { value: 2, text: "2. Occasional awareness sessions conducted manually." },
@@ -227,8 +199,6 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q16", area: "KnowledgeBase",
       title: "Knowledge Base & Templates",
       text: "Where is the analytics knowledge base hosted, and what templates/playbooks exist for analysts and business users (e.g., dashboard standards, data model templates, KPI definitions)?",
-          Evidence: "Pdf documentation, diagrams , or flowcharts .",
-  
       choices: [
         { value: 1, text: "1. Ad-hoc activity; templates scattered across shared drives." },
         { value: 2, text: "2. Basic knowledge repository created for reference." },
@@ -241,8 +211,6 @@ DMI_QUESTION_SETS["data_analytics"] = {
       id: "Q17", area: "KnowledgeReuse",
       title: "Knowledge Update & Reuse",
       text: "Are knowledge articles updated after project delivery, incidents, or governance changes?",
-           Evidence: "Pdf documentation, diagrams , or flowcharts .",
- 
       choices: [
         { value: 1, text: "1. Ad-hoc activity; knowledge rarely updated." },
         { value: 2, text: "2. Manual updates after major incidents." },

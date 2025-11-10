@@ -150,7 +150,7 @@ DMI_QUESTION_SETS["data_analytics"] = {
         { value: 2, text: "2. Diagnostic (why it happened)." },
         { value: 3, text: "3. Predictive (what will happen)." },
         { value: 4, text: "4. Prescriptive (what should we do)." },
-        { value: 5, text: "5. Cognitive/AI-driven analytics with automation and adaptive learning." }
+        { value: 5, text: "5. Intelligent knowledge platform with AI search, access metrics, and acknowledgment tracking." }
       ]
     },
     {

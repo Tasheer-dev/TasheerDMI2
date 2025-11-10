@@ -92,20 +92,20 @@ DMI_QUESTION_SETS["data_analytics"] = {
       choices: [
         { value: 1, text: "1. Ad-hoc activity; monitoring handled manually." },
         { value: 2, text: "2. Periodical Manual checks only." },
-        { value: 3, text: "3. Centralized monitoring without dashboards." },
-        { value: 4, text: "4. Centralized monitoring of data pipelines via dashboards." },
-        { value: 5, text: "5. Fully integrated monitoring and alerting system for all data platforms." }
+        { value: 3, text: "3. Centralized monitoring of data pipelines via dashboards." },
+        { value: 4, text: "4. Fully integrated monitoring and alerting system for all data platforms." },
+        { value: 5, text: "5. Predictive monitoring framework with auto-remediation workflows." }
       ]
     },
     {
       id: "Q7", area: "AIOps",
-      title: "Incident Feedback & Resolution Tracking",
-      text: "Do you use automated mechanisms to capture and analyze failed data jobs or Tableau refresh incidents for continuous improvement?, predictive alerts, rollback triggers, MTTR tracking for failed jobs)?",
-           Evidence: "ITSM incident logs, MTTR dashboards, or AIOps analytics .",
+      title: "Automated Feedback & AIOps",
+      text: "Do you have automated feedback loops (e.g., anomaly detection, predictive alerts, rollback triggers, MTTR tracking for failed jobs)?",
+           Evidence: "Pdf documentation, diagrams , or flowcharts .",
  
       choices: [
-        { value: 1, text: "1. Failures handled manually with no tracking." },
-        { value: 2, text: "2. Manual logs in shared spreadsheets." },
+        { value: 1, text: "1. Ad-hoc activity; no automated feedback or alerts." },
+        { value: 2, text: "2. Manual alerts based on failure logs." },
         { value: 3, text: "3. Semi-automated feedback loops using AIOps tools." },
         { value: 4, text: "4. Fully automated analytics alerting system with performance tracking." },
         { value: 5, text: "5. AI-driven anomaly detection and automated remediation platform." }
@@ -114,43 +114,43 @@ DMI_QUESTION_SETS["data_analytics"] = {
     {
       id: "Q8", area: "Governance",
       title: "Data Governance & Compliance Policies",
-      text: "Are analytics policies and data governance procedures documented, approved, and aligned with national (NCA/GDPR) standards?",
-           Evidence: "compliance report, or governance check list .",
+      text: "Do documented policies exist for data governance, access control, quality management, retention, backup/DR, and compliance (GDPR/NCA)?",
+           Evidence: "Pdf documentation, diagrams , or flowcharts .",
 
       choices: [
         { value: 1, text: "1. Ad-hoc activity; policies not documented." },
-        { value: 2, text: "2. Initial drafts under review" },
-        { value: 3, text: "3. Comprehensive compliance report compliance ,Compliance documented and partially implemented." },
-        { value: 4, text: "4. Digitally version-controlled compliance report accessible to stakeholders." },
+        { value: 2, text: "2. Basic data governance policies documented for limited scope." },
+        { value: 3, text: "3. Comprehensive policy library covering governance, DR, and compliance." },
+        { value: 4, text: "4. Digitally version-controlled data governance repository accessible to stakeholders." },
         { value: 5, text: "5. Automated data governance platform with compliance dashboards and audit tracking." }
       ]
     },
     {
-      id: "Q9", area: "Metadata Management",
-      title: "Metadata Management",
-      text: "Is metadata (data definitions, lineage, ownership) actively managed and made available to users??",
-          Evidence: "Data catalog, metadata documentation, Tableau/Power BI data source definitions.",
+      id: "Q9", area: "GapAnalysis",
+      title: "Gap Analysis for Data Procedures",
+      text: "Can you share a gap analysis of documented vs. missing data analytics procedures?",
+          Evidence: "Pdf documentation, diagrams , or flowcharts .",
 
       choices: [
-        { value: 1, text: "1. Ad-hoc activity; No metadata documentation." },
-        { value: 2, text: "2. No metadata documentation." },
-        { value: 3, text: "3. Central metadata repository with manual updates." },
-        { value: 4, text: "4. Automated metadata extraction from BI and ETL tools." },
-        { value: 5, text: "5. Fully integrated data catalog with searchable metadata and lineage visualization." }
+        { value: 1, text: "1. Ad-hoc activity; no gap analysis conducted." },
+        { value: 2, text: "2. Informal identification of documentation gaps." },
+        { value: 3, text: "3. Structured gap analysis performed annually." },
+        { value: 4, text: "4. Regular digital reviews of documentation completeness." },
+        { value: 5, text: "5. Continuous gap analysis dashboard integrated with governance scoring." }
       ]
     },
     {
-      id: "Q10", area: "Analytics & Capabilities",
-      title: "Analytical Techniques & Maturity",
-      text: "What level of analytical methods are regularly applied by the department?",
-            Evidence: "Project examples, Tableau dashboards, ML/AI reports.",
+      id: "Q10", area: "Accessibility",
+      title: "Accessibility of Data Policies & Procedures",
+      text: "Are all data policies and procedures accessible via a knowledge base or data governance portal?",
+            Evidence: "Pdf documentation, diagrams , or flowcharts .",
 
       choices: [
-        { value: 1, text: "1. Descriptive only (what happened)." },
-        { value: 2, text: "2. Diagnostic (why it happened)." },
-        { value: 3, text: "3. Predictive (what will happen)." },
-        { value: 4, text: "4. Prescriptive (what should we do)." },
-        { value: 5, text: "5. Cognitive/AI-driven analytics with automation and adaptive learning." }
+        { value: 1, text: "1. Ad-hoc activity; policies scattered across emails or folders." },
+        { value: 2, text: "2. Central shared repository available to limited users." },
+        { value: 3, text: "3. Knowledge base available to analytics staff." },
+        { value: 4, text: "4. Fully digital governance portal with access analytics." },
+        { value: 5, text: "5. Intelligent knowledge platform with AI search, access metrics, and acknowledgment tracking." }
       ]
     },
     {
