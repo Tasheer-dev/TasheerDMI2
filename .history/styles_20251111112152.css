@@ -83,7 +83,9 @@ body {
 .level-select { width: 100%; padding: 9px 10px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.95rem; }
 .submit-button { width: 100%; margin-top: 20px; background: var(--primary-blue); color: #fff; border: none; padding: 13px; border-radius: 6px; font-size: 1rem; cursor: pointer; }
 .save-status { display: none; background: #e8f5e9; color: var(--secondary-green); text-align: center; padding: 10px; border-radius: 4px; margin-bottom: 15px; border: 1px solid #c8e6c9; font-weight: 600; }
-
+.report-header { background: var(--primary-blue); color: #fff; padding: 12px 15px; border-radius: 6px 6px 0 0; font-size: 1.4rem; }
+.report-grid { display: flex; gap: 25px; margin-bottom: 20px; background: #fff; padding: 20px; border-radius: 0 0 6px 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.report-summary { flex: 1; }
 .score-display { font-size: 3rem; font-weight: 700; color: var(--secondary-green); }
 .chart-wrapper { flex: 1; max-width: 400px; height: 220px; }
 .print-button { width: 100%; background: var(--secondary-green); color: #fff; border: none; border-radius: 6px; padding: 12px; font-size: 1rem; cursor: pointer; margin-top: 15px; }
@@ -227,8 +229,10 @@ body {
 .level-select { width: 100%; padding: 9px 10px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 0.95rem; }
 .submit-button { width: 100%; margin-top: 20px; background: var(--primary-blue); color: #fff; border: none; padding: 13px; border-radius: 6px; font-size: 1rem; cursor: pointer; }
 .save-status { display: none; background: #e8f5e9; color: var(--secondary-green); text-align: center; padding: 10px; border-radius: 4px; margin-bottom: 15px; border: 1px solid #c8e6c9; font-weight: 600; }
-.report-grid { display: flex; gap: 1px; margin-bottom: 2px; background: #fff; padding: 1px; border-radius: 0 0 6px 6px; box-shadow: 0 4px 1px rgba(0,0,0,0.05); }
-.report-summary { flex: 5; }
+#reportSection { margin-top: 5px; display: none; }
+.report-header { background: var(--primary-blue); color: #fff; padding: 1px 1px; border-radius: 1% 6px 0 0; font-size: 1.0rem; }
+.report-grid { display: flex; gap: 1px; margin-bottom: 2px; background: #fff; padding: 1px; border-radius: 0 0 6px 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.report-summary { flex: 1; }
 .score-display { font-size: 3rem; font-weight: 700; color: var(--secondary-green); }
 .chart-wrapper { flex: 1; max-width: 400px; height: 220px; }
 .print-button { width: 100%; background: var(--secondary-green); color: #fff; border: none; border-radius: 6px; padding: 12px; font-size: 1rem; cursor: pointer; margin-top: 15px; }
@@ -362,7 +366,7 @@ body {
   }
 
   #reportSection {
-    width: 150% !important;
+    width: 90% !important;
     max-width: 100% !important;
   }
 
@@ -563,15 +567,15 @@ header {
 .report-header { 
     background: var(--primary-blue); 
     color: #fff; 
-    padding: 10px 15px; 
-    border-radius: 1px 1px 0 0; 
+    padding: 12px 15px; 
+    border-radius: 6px 6px 0 0; 
 }
 .score-display { 
     color: var(--secondary-green) !important; /* Overriding Bootstrap primary color */
 }
 .chart-wrapper { 
     /* Ensuring the chart space is available for the canvas element */
-    height: 150px; /* Increased height for better chart visibility */
+    height: 250px; /* Increased height for better chart visibility */
 }
 
 /* Print Buttons (Custom green color) */
