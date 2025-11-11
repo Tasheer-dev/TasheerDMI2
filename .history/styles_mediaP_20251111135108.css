@@ -33,20 +33,5 @@
     .score-table th:nth-child(2) { width: 44%; } 
     .score-table th:nth-child(3) { width: 10%; text-align: center; }
     
-    /* Print Mirror for Textarea */
-    #finalReportComments { display: none !important; }
-    #finalReportCommentsPrint {
-      display: block !important;
-      white-space: pre-wrap !important;
-      word-break: break-word;
-      border: 1px solid #ccc;
-      border-radius: 60px;
-      padding: 10px 120px;
-      font: inherit; 
-      background: #fff;
-      margin-top: 20px;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-}
+
 /* END OF styles_mediaP.css */
