@@ -90,7 +90,7 @@
     }
     
     /* Ensure colors print correctly */
-
+    .table { print-color-adjust: exact !important; }
 }
 /* /assets/css/styles.css */
 
