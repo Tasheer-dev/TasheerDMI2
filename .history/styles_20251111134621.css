@@ -99,6 +99,87 @@ body {
 
 
 
+/* Customizing Bootstrap buttons based on original .mini-link-btn variants */
+.btn-info { /* Used for Randomize */
+    --bs-btn-bg: #e1f5fe;
+    --bs-btn-border-color: #e1f5fe;
+    --bs-btn-color: #01579b;
+    --bs-btn-hover-bg: #cce9ff;
+    --bs-btn-hover-border-color: #cce9ff;
+}
+.btn-danger { /* Used for Reset */
+    --bs-btn-bg: #ffebee;
+    --bs-btn-border-color: #ffebee;
+    --bs-btn-color: #c62828;
+    --bs-btn-hover-bg: #ffcdd2;
+    --bs-btn-hover-border-color: #ffcdd2;
+}
+.btn-warning { /* Used for Logout */
+    --bs-btn-bg: #fffde7;
+    --bs-btn-border-color: #fffde7;
+    --bs-btn-color: #f9a825;
+    --bs-btn-hover-bg: #fff9c4;
+    --bs-btn-hover-border-color: #fff9c4;
+}
+
+/* --- Assessment Form (Dynamically generated questions) --- */
+.area-header { 
+    background: var(--primary-blue); 
+    color: #fff; 
+    padding: 10px 15px; 
+    border-radius: 6px; 
+    margin-top: 15px; 
+    margin-bottom: 10px; 
+    font-size: 1.05rem; 
+}
+.question-block { 
+    background: #fff; 
+    border: 1px solid var(--q-border); 
+    border-left: 5px solid var(--secondary-green); /* Accent color border */
+    padding: 15px; 
+    border-radius: 6px; 
+    margin-bottom: 15px; 
+}
+.question-block h3 { 
+    color: var(--primary-blue); 
+    font-size: 1rem; 
+}
+/* .level-select now uses Bootstrap's .form-select */
+
+/* Submit Button (Custom primary color) */
+.btn-primary {
+    --bs-btn-bg: var(--primary-blue);
+    --bs-btn-border-color: var(--primary-blue);
+    --bs-btn-hover-bg: #003a7a;
+    --bs-btn-hover-border-color: #003a7a;
+}
+
+/* Save Status */
+.save-status { 
+    /* This alert is styled by Bootstrap .alert-success, retaining custom background/color variables */
+    background: #e8f5e9; 
+    color: var(--secondary-green); 
+    border: 1px solid #c8e6c9; 
+}
+
+/* --- Report Section --- */
+.report-header { 
+    background: var(--primary-blue); 
+    color: #fff; 
+    padding: 10px 15px; 
+    border-radius: 1px 1px 0 0; 
+}
+.score-display { 
+    color: var(--secondary-green) !important; /* Overriding Bootstrap primary color */
+}
+.chart-wrapper { 
+    /* Ensuring the chart space is available for the canvas element */
+    height: 150px; /* Increased height for better chart visibility */
+}
+
+
+
+
 
 
 
