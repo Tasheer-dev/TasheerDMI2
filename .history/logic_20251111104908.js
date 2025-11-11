@@ -484,11 +484,20 @@ function getNextLevelRecommendation(q, selectedValue) {
 }
 
 
-
+/**
+ * finalizeAssessment()
+ * Validates all questions are answered, then:
+ * - Calculates final maturity percent
+ * - Hides input UI and shows final report
+ * - Builds final charts and recommendations
+ */
 function backToAssessment() {
-  document.querySelector(".assessment-layout").style.display = "block";
-  document.querySelector(".assessment-form-wrapper").style.display = "block";
-  document.getElementById("reportSection").style.display = "none";
+
+  // Hide the report section
+    document.getElementById('reportSection').style.display = 'none';
+
+    // Show the main assessment layout (form + sidebar) again
+    document.querySelector('.assessment-layout').style.display = 'flex'; // Use
 }
 
 /**
@@ -505,24 +514,23 @@ function finalizeAssessment() {
   // STEP 1: Copy comments to the print mirror
     copyCommentsToPrintMirror();
     
+    // 2. CRITICAL STEP: Prepare comments for print/PDF...
+    copyCommentsToPrintMirror();
     
+    // 3. Toggle UI: Hide the form, show the report section
+    // Hide the main assessment layout (form + sidebar)
+    document.querySelector('.assessment-layout').style.display = 'none'; 
+    
+    // Show the report section
+    document.getElementById('reportSection').style.display = 'block';
     // ... [Your existing logic to show the report section] ...
     document.getElementById('reportSection').style.display = 'block';
-    // Scroll page to top smoothly after showing report
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-// Also move keyboard focus to the report header for accessibility
-const headerTitle = document.getElementById("reportHeaderTitle");
-if (headerTitle) headerTitle.focus();
-
-
 
   // Check for missing answers
   const unanswered = deptData.questions.filter(q => !saved[q.id]).length;
   if (unanswered > 0) {
     alert(`⚠️ You still have ${unanswered} unanswered questions.`);
     return;
-
   }
 // Auto-expand Final Report Comments textarea
 const commentsBoxAuto = document.getElementById("finalReportComments");

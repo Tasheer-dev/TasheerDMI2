@@ -66,7 +66,7 @@
         </div>
         
         <div id="reportSection" style="display:none;" class="mt-5">
-            <div class="header h4 " id="reportHeaderTitle" >DMI Final Assessment Report</div>
+            <div class="header h4 " id="reportHeaderTitle">DMI Final Assessment Report</div>
             <button class="btn btn-secondary mb-4" onclick="backToAssessment()">← Back to Assessment</button>
             
             <div class="row report-grid g-4">
@@ -89,6 +89,19 @@
                     </div>
                 </div>
             </div>
+<!-- <div class="row report-grid g-4">
+                <div class="score-display display-3 fw-bold text-success mb-2" id="maturityScoreDisplay">0.00%</div>
+                </div>
+        </div>
+    </div>
+    
+    <div class="col-md-7">
+        <div class="chart-wrapper card p-3 h-100 shadow-sm">
+            <canvas id="areaBarChart"></canvas>
+        </div>
+    </div>
+</div> -->
+
 
             <h5 class="mt-5 mb-3">Final Report Comments</h5>
             <div id="finalReportCommentsPrint" aria-hidden="true" class="d-none d-print-block"></div>
@@ -127,6 +140,7 @@
       <script src="assets/js/maturitybands.js"></script>
     <script src="assets/js/users.js"></script>
     <script src="assets/js/logic.js"></script>
+
     <script>
         window.hideLoader = function() {
             const el = document.getElementById('pageLoader');

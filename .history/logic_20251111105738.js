@@ -508,20 +508,13 @@ function finalizeAssessment() {
     
     // ... [Your existing logic to show the report section] ...
     document.getElementById('reportSection').style.display = 'block';
-    // Scroll page to top smoothly after showing report
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-// Also move keyboard focus to the report header for accessibility
-const headerTitle = document.getElementById("reportHeaderTitle");
-if (headerTitle) headerTitle.focus();
-
-
 
   // Check for missing answers
   const unanswered = deptData.questions.filter(q => !saved[q.id]).length;
   if (unanswered > 0) {
     alert(`⚠️ You still have ${unanswered} unanswered questions.`);
     return;
+
 
   }
 // Auto-expand Final Report Comments textarea
