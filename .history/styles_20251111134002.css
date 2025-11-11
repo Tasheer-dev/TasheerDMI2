@@ -64,28 +64,6 @@ body {
 .score-value { text-align: center; font-weight: 600; color: var(--secondary-green); }
 
 
-/*To make the LIve DMI score move with me  */
-
-.live-score-card {
-  position: sticky;
-  top: 70px;      /* keeps card visible while scrolling */
-  z-index: 80;
-}
-
-.live-score-card .card-body {
-  padding: 1rem 1rem;
-}
-
-.live-score-card h4 {
-  font-size: 1.1rem;   /* smaller heading */
-  font-weight: 00;
-}
-
-.live-score-chart-container {
-  max-width: 300px;    /* reduce chart size */
-  margin: 0 auto;
-}
-
 
 
 /* Overriding Bootstrap text sizing for dramatic score display */

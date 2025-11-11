@@ -64,28 +64,6 @@ body {
 .score-value { text-align: center; font-weight: 600; color: var(--secondary-green); }
 
 
-/*To make the LIve DMI score move with me  */
-
-.live-score-card {
-  position: sticky;
-  top: 70px;      /* keeps card visible while scrolling */
-  z-index: 80;
-}
-
-.live-score-card .card-body {
-  padding: 1rem 1rem;
-}
-
-.live-score-card h4 {
-  font-size: 1.1rem;   /* smaller heading */
-  font-weight: 00;
-}
-
-.live-score-chart-container {
-  max-width: 300px;    /* reduce chart size */
-  margin: 0 auto;
-}
-
 
 
 /* Overriding Bootstrap text sizing for dramatic score display */
@@ -118,20 +96,10 @@ body {
 
 
 
+
 /* /assets/css/styles.css */
 /* --- Modernized CSS for Bootstrap 5 Integration --- */
 
-/* Custom Container Styling (Enhancing Bootstrap's .container) */
-.container {
-  max-width: 1200px;
-  /* Adjust margin for better fit with py-4 in HTML */
-  margin: 20px auto 40px; 
-  background: var(--container-bg);
-  /* Padding is handled by Bootstrap's py-4/px-4 but keeping for consistency */
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-}
 
 /* --- Header & Logo --- */
 /* Most header flex properties handled by Bootstrap in HTML */

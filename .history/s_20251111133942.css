@@ -279,6 +279,26 @@
 }
 
 
+.live-score-card {
+  position: sticky;
+  top: 70px;      /* keeps card visible while scrolling */
+  z-index: 80;
+}
+
+.live-score-card .card-body {
+  padding: 1rem 1rem;
+}
+
+.live-score-card h4 {
+  font-size: 1.1rem;   /* smaller heading */
+  font-weight: 00;
+}
+
+.live-score-chart-container {
+  max-width: 300px;    /* reduce chart size */
+  margin: 0 auto;
+}
+
 
 
 /* --- Responsive Layout (Handling non-Bootstrap classes) --- */
@@ -331,6 +351,29 @@
   .header { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
 
+  #pageLoader {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg,#f5f7fa,#e8edf3);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 9999; transition: opacity .45s ease;
+    }
+    #pageLoader.fade-out { opacity: 0; pointer-events: none; }
+    #pageLoader img { width: 120px; animation: logoPulse 1.2s ease-in-out infinite alternate; }
+    .loaderSpinner {
+      margin-top: 24px; width: 64px; height: 64px; border-radius: 50%;
+      border: 6px solid #d9dee7; border-top-color: #005baa; animation: spin 1s linear infinite;
+    }
+    .loaderText {
+      margin-top: 14px; font-weight: 600; font-size: 16px;
+      background: linear-gradient(90deg,#004080,#0070e0,#004080);
+      background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shimmer 2s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg) } }
+    @keyframes logoPulse { from { opacity:.6 } to { opacity:1 } }
+    @keyframes shimmer { to { background-position: 200% center } }
+
+
 
 
 
@@ -339,6 +382,30 @@
   .report-grid { flex-direction: column; }
   .header { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
+
+  #pageLoader {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg,#f5f7fa,#e8edf3);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 9999; transition: opacity .45s ease;
+    }
+    #pageLoader.fade-out { opacity: 0; pointer-events: none; }
+    #pageLoader img { width: 120px; animation: logoPulse 1.2s ease-in-out infinite alternate; }
+    .loaderSpinner {
+      margin-top: 24px; width: 64px; height: 64px; border-radius: 50%;
+      border: 6px solid #d9dee7; border-top-color: #005baa; animation: spin 1s linear infinite;
+    }
+    .loaderText {
+      margin-top: 14px; font-weight: 600; font-size: 16px;
+      background: linear-gradient(90deg,#004080,#0070e0,#004080);
+      background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shimmer 2s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg) } }
+    @keyframes logoPulse { from { opacity:.6 } to { opacity:1 } }
+    @keyframes shimmer { to { background-position: 200% center } }
+
+
 
 
 

@@ -63,9 +63,6 @@ body {
 .score-table th { background: var(--primary-blue); color: #fff; }
 .score-value { text-align: center; font-weight: 600; color: var(--secondary-green); }
 
-
-/*To make the LIve DMI score move with me  */
-
 .live-score-card {
   position: sticky;
   top: 70px;      /* keeps card visible while scrolling */
@@ -85,6 +82,7 @@ body {
   max-width: 300px;    /* reduce chart size */
   margin: 0 auto;
 }
+
 
 
 
