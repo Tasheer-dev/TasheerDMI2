@@ -1,3 +1,14 @@
+function initAdminPage() {
+  if (typeof requireLogin === 'function' && !requireLogin()) return;
+  // Admin dashboard bootstrap — safe no-op for now
+}
+
+function openEvidenceFolder() {
+  const url = (window.EVIDENCE_SHARED_FOLDER || '').trim();
+  if (url) window.open(url, '_blank');
+  else alert('Evidence folder URL is not configured.');
+}
+
 /* ============================================================================
    logic.js — Frontend Digital Maturity Assessment Logic (Fully Documented)
 
@@ -140,8 +151,7 @@ function initAssessmentPage() {
 
   // Create script tag to load the quiz file dynamically
   const script = document.createElement("script");
-  script.src = `./assets/quizzes/quiz_${deptCode}.js`;
-  script.src = `./quiz_${deptCode}.js`;
+script.src = `./quiz_${deptCode}.js`;
   script.onload = () => {
     // Retrieve department's quiz data structure
     const deptData = DMI_QUESTION_SETS[deptCode];
@@ -152,7 +162,7 @@ function initAssessmentPage() {
 
     // Update UI header text
     document.getElementById("assessmentTitle").textContent = deptData.title;
-    document.getElementById("assessmentSubTitle").textContent = displayName + " — Please answer all questions.";
+    document.getElementById("assessmentSubTitle").textContent = displayName + " Report.";
 
     // Build the full assessment form
     buildAssessmentForm(deptCode, deptData);
@@ -165,7 +175,9 @@ function initAssessmentPage() {
 
     // Hide final report section by default (it is only shown after finalization)
     document.getElementById("reportSection").style.display = "none";
-  };
+  
+  if (typeof window.hideLoader === 'function') window.hideLoader();
+};
 
   script.onerror = () => {
     alert(`⚠️ Could not load department quiz file: quiz_${deptCode}.js`);
@@ -467,6 +479,12 @@ function finalizeAssessment() {
   const deptCode = sessionStorage.getItem("dmi_deptCode");
   const deptData = DMI_QUESTION_SETS[deptCode];
   const saved = JSON.parse(localStorage.getItem(getStorageKeyFor(deptCode)) || "{}");
+  // STEP 1: Copy comments to the print mirror
+    copyCommentsToPrintMirror();
+    
+    
+    // ... [Your existing logic to show the report section] ...
+    document.getElementById('reportSection').style.display = 'block';
 
   // Check for missing answers
   const unanswered = deptData.questions.filter(q => !saved[q.id]).length;
@@ -474,6 +492,14 @@ function finalizeAssessment() {
     alert(`⚠️ You still have ${unanswered} unanswered questions.`);
     return;
   }
+// Auto-expand Final Report Comments textarea
+const commentsBoxAuto = document.getElementById("finalReportComments");
+if (commentsBoxAuto) {
+  commentsBoxAuto.addEventListener("input", () => {
+    commentsBoxAuto.style.height = "auto";
+    commentsBoxAuto.style.height = commentsBoxAuto.scrollHeight + "px";
+  });
+}
 
   // Score calculations
   const totalPoints = Object.values(saved).reduce((sum, v) => sum + Number(v), 0);
@@ -533,26 +559,232 @@ function finalizeAssessment() {
 
 
 
-function initAdminPage() {
-  if (!requireLogin()) return;
-  // TODO: build admin dashboard from localStorage data
+// ----- Final Report Comments: auto-grow + print mirroring -----
+(function () {
+  const commentsEl = document.getElementById('finalReportComments');
+  const commentsPrintEl = document.getElementById('finalReportCommentsPrint');
+
+  if (!commentsEl || !commentsPrintEl) return;
+
+  // Auto-grow as user types (no scrollbar on screen)
+  const autogrow = () => {
+    commentsEl.style.height = 'auto';
+    commentsEl.style.height = commentsEl.scrollHeight + 'px';
+  };
+  // Initial grow (in case content is prefilled)
+  autogrow();
+  commentsEl.addEventListener('input', autogrow);
+
+  // Keep print mirror in sync
+  const syncMirror = () => {
+    commentsPrintEl.textContent = commentsEl.value || '';
+  };
+  // Sync whenever user types
+  commentsEl.addEventListener('input', syncMirror);
+  // Initial sync
+  syncMirror();
+
+  // Ensure the latest text is used right before printing
+  if (window.matchMedia) {
+    const mediaQueryList = window.matchMedia('print');
+    // Modern browsers may call this before print
+    mediaQueryList.addEventListener?.('change', e => { if (e.matches) syncMirror(); });
+    mediaQueryList.addListener?.(mql => { if (mql.matches) syncMirror(); }); // older
+  }
+  window.addEventListener('beforeprint', syncMirror);
+})();
+
+
+
+
+async function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  const report = document.getElementById("reportSection");
+
+  if (!report) {
+    alert("Report section not found!");
+    return;
+  }
+
+  // Hide UI buttons during capture
+  const buttons = report.querySelectorAll("button, .btn, .nav, .navbar");
+  buttons.forEach(btn => (btn.style.display = "none"));
+
+  // Capture the entire report at high resolution
+  const canvas = await html2canvas(report, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    windowWidth: report.scrollWidth,
+    windowHeight: report.scrollHeight
+  });
+
+  // Restore buttons after capture
+  buttons.forEach(btn => (btn.style.display = ""));
+
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF("l", "mm", "a4");
+
+  // A4 landscape dimensions in mm
+  const pdfWidth = 297;
+  const pdfHeight = 210;
+
+  // Convert pixel dimensions to mm (1 px ≈ 0.264583 mm)
+  const imgWidth = pdfWidth;
+  const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  // Add pages for full height
+  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  heightLeft -= pdfHeight;
+
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+  }
+
+  pdf.save("DMI_Report_Full.pdf");
 }
 
-function openEvidenceFolder() {
-  const url = (window.EVIDENCE_SHARED_FOLDER || '').trim();
-  if (url) window.open(url, "_blank");
-  else alert("Evidence folder URL is not configured.");
+
+
+
+  // Export as PDF function (simple single-page version)
+
+
+async function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  const report = document.getElementById("reportSection");
+
+  if (!report) {
+    alert("Report section not found!");
+    return;
+  }
+
+  // Temporarily hide buttons
+  const buttons = report.querySelectorAll("button");
+  buttons.forEach(btn => (btn.style.display = "none"));
+
+  // Use html2canvas to capture the report section
+  const canvas = await html2canvas(report, {
+    scale: 2,                // High resolution
+    useCORS: true,           // Allow logo and chart capture
+    backgroundColor: "#ffffff"
+  });
+
+  // Show buttons again
+  buttons.forEach(btn => (btn.style.display = ""));
+
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF("l", "mm", "a4");
+
+  // Calculate image dimensions to fit landscape A4
+  const pdfWidth = 297;
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+  pdf.save("DMI_Report.pdf");
 }
 
-// Update text fields
-document.getElementById("maturityScoreDisplay").textContent = percent + "%";
-document.getElementById("totalScoreText").textContent = totalPoints;
-document.getElementById("maxScoreText").textContent = deptData.maxScore;
 
-// Header & classification
-const header = document.getElementById("reportHeaderTitle");
-if (header) header.textContent = `${deptData.title} — Final Assessment Report`;
-const bands = (deptData.maturityBands || window.COMMON_MATURITY_BANDS || []);
-const band = bands.find(b => percent >= b.range[0] && percent <= b.range[1]);
-const levelEl = document.getElementById("maturityLevelText");
-if (levelEl) levelEl.innerHTML = band ? `<strong>${band.name}</strong><br><small>${band.description}</small>` : "—";
+
+
+
+// Inside logic.js or related file
+
+/**
+ * Copies the text from the editable textarea to the print-only mirror div.
+ * This ensures full text and line breaks are captured in the PDF/print output.
+ */
+function copyCommentsToPrintMirror() {
+    const commentsTextarea = document.getElementById('finalReportComments');
+    const commentsPrintDiv = document.getElementById('finalReportCommentsPrint');
+    
+    if (commentsTextarea && commentsPrintDiv) {
+        // Copy the value (which is plain text)
+        commentsPrintDiv.textContent = commentsTextarea.value;
+    }
+}
+
+
+
+// Inside logic.js or related file
+
+// Ensure the window.jsPDF is available from the script tag
+const { jsPDF } = window.jspdf;
+
+function generatePDF() {
+    // 1. Prepare data before capture (Crucial for multi-page export)
+    copyCommentsToPrintMirror(); 
+    // This function must also run right before PDF generation!
+
+    const element = document.getElementById('reportSection');
+    
+    // Use the maximum width of the report section for better capture
+    const captureWidth = element.offsetWidth;
+    const captureHeight = element.offsetHeight;
+
+    // Use a high-quality capture setting
+    html2canvas(element, { 
+        scale: 2, // Use a higher scale for better resolution
+        width: captureWidth,
+        height: captureHeight,
+        scrollY: -window.scrollY // Capture elements from the top of the page
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+        const pdf = new jsPDF('l', 'mm', 'a4'); // 'l' for Landscape, 'mm' unit, 'a4'
+        
+        // Define A4 dimensions in mm (Landscape: 297mm x 210mm)
+        const pdfWidth = 297;
+        const pdfHeight = 210;
+        
+        // Calculate the ratio of the captured image to the PDF width
+        const imgWidth = pdfWidth;
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+        
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        // Add the first page
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+
+        // Loop to add remaining pages
+        while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pdfHeight;
+        }
+
+        pdf.save('DMI_Assessment_Report.pdf');
+    });
+}
+
+
+
+
+/**
+ * Copies the text from the editable textarea to the print-only mirror div.
+ * This must be called immediately before window.print() or PDF generation.
+ */
+function copyCommentsToPrintMirror() {
+    const commentsTextarea = document.getElementById('finalReportComments');
+    const commentsPrintDiv = document.getElementById('finalReportCommentsPrint');
+    
+    if (commentsTextarea && commentsPrintDiv) {
+        // Use textContent to preserve line breaks and spacing within the div
+        commentsPrintDiv.textContent = commentsTextarea.value;
+    }
+}
+
+// NOTE: Ensure your existing generatePDF() also calls this function at the very start.
+function generatePDF() {
+    copyCommentsToPrintMirror(); // <-- MUST be the first line
+    
+    // ... rest of your html2canvas/jsPDF logic ...
+}
