@@ -116,7 +116,33 @@ function handleLogin() {
   }
 }
 
-    /* -----------------------------------------------------------------------------
+
+/* ============================================================================
+   ASSESSMENT PAGE INITIALIZATION
+   ============================================================================ */
+
+/**
+ * initAssessmentPage()
+ * Runs automatically when the department page (index.html) loads.
+ * 1. Verifies user role
+ * 2. Dynamically loads quiz file: assets/quizzes/quiz_{deptCode}.js
+ * 3. Builds UI form and restores saved answers
+ * 4. Updates live progress chart
+ */
+function initAssessmentPage() {
+  if (!requireLogin()) return; // Stop if not logged in
+
+  const role = sessionStorage.getItem("dmi_role");
+  const deptCode = sessionStorage.getItem("dmi_deptCode");
+  const displayName = sessionStorage.getItem("dmi_displayName");
+
+  // Prevent admin from accessing department UI
+  if (role === "admin") {
+    window.location.href = "admin.html";
+    return;
+  }
+  
+  /* -----------------------------------------------------------------------------
    Function: saveReportComments()
    Purpose: Saves the current content of the textarea to Local Storage on input change.
 ----------------------------------------------------------------------------- */
@@ -139,37 +165,6 @@ function loadReportComments() {
         commentsTextarea.value = savedComments;
     }
 }
-
-/* ============================================================================
-   ASSESSMENT PAGE INITIALIZATION
-   ============================================================================ */
-
-/**
- * initAssessmentPage()
- * Runs automatically when the department page (index.html) loads.
- * 1. Verifies user role
- * 2. Dynamically loads quiz file: assets/quizzes/quiz_{deptCode}.js
- * 3. Builds UI form and restores saved answers
- * 4. Updates live progress chart
- */
-function initAssessmentPage() {
-  if (!requireLogin()) return; // Stop if not logged in
-
-
-
-  const role = sessionStorage.getItem("dmi_role");
-  const deptCode = sessionStorage.getItem("dmi_deptCode");
-  const displayName = sessionStorage.getItem("dmi_displayName");
-
-  // Prevent admin from accessing department UI
-  if (role === "admin") {
-    window.location.href = "admin.html";
-    return;
-  }
-
-// 2. CRITICAL STEP: Load previously saved comments from persistence layer
-    loadReportComments();
-
 
   // Prevent any unexpected role from using the tool
   if (role !== "department") {

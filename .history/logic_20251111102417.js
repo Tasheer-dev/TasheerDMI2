@@ -171,6 +171,13 @@ function initAssessmentPage() {
     loadReportComments();
 
 
+    // 3. Attach event listener to comments box for autosave on every change
+    const commentsTextarea = document.getElementById('finalReportComments');
+    if (commentsTextarea) {
+        // Event fires whenever the user types, pastes, or clears the box
+        commentsTextarea.addEventListener('input', saveReportComments);
+    }
+
   // Prevent any unexpected role from using the tool
   if (role !== "department") {
     sessionStorage.clear();

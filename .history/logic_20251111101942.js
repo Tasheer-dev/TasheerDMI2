@@ -116,29 +116,6 @@ function handleLogin() {
   }
 }
 
-    /* -----------------------------------------------------------------------------
-   Function: saveReportComments()
-   Purpose: Saves the current content of the textarea to Local Storage on input change.
------------------------------------------------------------------------------ */
-function saveReportComments() {
-    const commentsTextarea = document.getElementById('finalReportComments');
-    if (commentsTextarea) {
-        localStorage.setItem('DMI_REPORT_COMMENTS', commentsTextarea.value);
-    }
-}
-
-  /* -----------------------------------------------------------------------------
-   Function: loadReportComments()
-   Purpose: Retrieves comments from Local Storage and populates the textarea.
------------------------------------------------------------------------------ */
-function loadReportComments() {
-    const commentsTextarea = document.getElementById('finalReportComments');
-    const savedComments = localStorage.getItem('DMI_REPORT_COMMENTS');
-
-    if (commentsTextarea && savedComments) {
-        commentsTextarea.value = savedComments;
-    }
-}
 
 /* ============================================================================
    ASSESSMENT PAGE INITIALIZATION
@@ -155,8 +132,6 @@ function loadReportComments() {
 function initAssessmentPage() {
   if (!requireLogin()) return; // Stop if not logged in
 
-
-
   const role = sessionStorage.getItem("dmi_role");
   const deptCode = sessionStorage.getItem("dmi_deptCode");
   const displayName = sessionStorage.getItem("dmi_displayName");
@@ -166,10 +141,6 @@ function initAssessmentPage() {
     window.location.href = "admin.html";
     return;
   }
-
-// 2. CRITICAL STEP: Load previously saved comments from persistence layer
-    loadReportComments();
-
 
   // Prevent any unexpected role from using the tool
   if (role !== "department") {
@@ -846,3 +817,27 @@ function saveReportComments() {
     }
 }
 
+/**
+ * Entry point: Called by <body onload>. Initializes all data structures and UI components.
+ */
+function initAssessmentPage() {
+    // 1. [TO DO] Load configuration data, render questions, setup charts, etc.
+    
+    // 2. CRITICAL STEP: Load previously saved comments from persistence layer
+    loadReportComments(); 
+
+    // Once loading is logically complete, hide the page overlay.
+    // hideLoader(); // Assuming this is defined elsewhere
+
+    // 3. Attach event listener to comments box for autosave on every change
+    const commentsTextarea = document.getElementById('finalReportComments');
+    if (commentsTextarea) {
+        // Event fires whenever the user types, pastes, or clears the box
+        commentsTextarea.addEventListener('input', saveReportComments);
+    }
+    
+    // FIX: Removes the unwanted static prompt... (existing logic)
+    // ...
+}
+
+// ... rest of your logic.js file ...

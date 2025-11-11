@@ -170,7 +170,6 @@ function initAssessmentPage() {
 // 2. CRITICAL STEP: Load previously saved comments from persistence layer
     loadReportComments();
 
-
   // Prevent any unexpected role from using the tool
   if (role !== "department") {
     sessionStorage.clear();

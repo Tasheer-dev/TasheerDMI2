@@ -171,6 +171,7 @@ function initAssessmentPage() {
     loadReportComments();
 
 
+
   // Prevent any unexpected role from using the tool
   if (role !== "department") {
     sessionStorage.clear();

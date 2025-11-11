@@ -155,8 +155,6 @@ function loadReportComments() {
 function initAssessmentPage() {
   if (!requireLogin()) return; // Stop if not logged in
 
-
-
   const role = sessionStorage.getItem("dmi_role");
   const deptCode = sessionStorage.getItem("dmi_deptCode");
   const displayName = sessionStorage.getItem("dmi_displayName");
@@ -167,9 +165,10 @@ function initAssessmentPage() {
     return;
   }
 
-// 2. CRITICAL STEP: Load previously saved comments from persistence layer
-    loadReportComments();
-
+/**
+ * Entry point: Called by <body onload>. Initializes all data structures and UI components.
+ */
+function initAssessmentPage() {
 
   // Prevent any unexpected role from using the tool
   if (role !== "department") {
