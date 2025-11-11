@@ -283,6 +283,7 @@ body {
 
 @media (max-width: 1000px) {
   .assessment-layout { flex-direction: column; }
+  .live-score-sidebar { width: 100%; position: static; order: -1; margin-bottom: 15px; }
   .report-grid { flex-direction: column; }
   .header { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
@@ -579,6 +580,7 @@ header {
 /* --- Print/PDF Styles: Hiding Buttons & Layout Adjustments --- */
 @media print {
     /* HIDE ALL BUTTONS AND INTERACTIVE/SIDEBAR ELEMENTS */
+    .live-score-sidebar, 
     .submit-button, 
     .mini-link-btn, 
     .admin-topbar, 

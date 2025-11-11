@@ -22,6 +22,7 @@
     <div class="container py-4">
         <header class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
             <div>
+                /*1. Make Title Blue and Smaller */
                 <h1 id="assessmentTitle" class="mb-1" style="font-size: 1.3rem; color: #004d9c; font-weight: 600;">Digital Maturity Assessment</h1>
                 <p id="assessmentSubTitle" class="lead text-muted mb-0"></p>
             </div>
@@ -44,6 +45,7 @@
                             <span class="score-percentage-center position-absolute top-50 start-50 translate-middle fs-3 fw-bold" id="liveScorePercentage">0%</span>
                         </div>
                         <div class="score-status text-center text-muted mb-3" id="liveScoreStatus">0 / 0 Questions Answered</div>
+                        
                         <div class="d-grid gap-2">
                             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="openEvidenceFolder()">📂 Upload Evidence</button>
                             <button type="button" class="btn btn-sm btn-info" onclick="randomizeSelections()">🎲 Random Answers</button>
@@ -60,7 +62,6 @@
                     </form>
                 <button type="button" class="btn btn-primary btn-lg w-100 mt-4" onclick="finalizeAssessment()">
                     Finalize Assessment & Generate Detailed Report
-                    
                 </button>
             </div>
         </div>

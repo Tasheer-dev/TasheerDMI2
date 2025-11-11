@@ -32,24 +32,48 @@ body {
   margin-bottom: 25px;
   padding-bottom: 15px;
 }
-/*1. Make Title Blue and Smaller */
-
+/* Modified Header Title  1. Make Title Blue and Smaller
+*/
 .header h1 { 
     margin: 0; 
     font-size: 1.3rem; /* Smaller size - was 1.7rem */
     color: var(--primary-blue); /* Already blue, but ensuring it */
     font-weight: 600;
 }
-
-
-
 .subtitle { margin-top: 5px; color: #666; }
 .logo-container img { max-height: 55px; }
 .assessment-layout { display: flex; gap: 25px; }
 .assessment-form-wrapper { flex: 1; min-width: 60%; }
 
 
-.live-score-card { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 15px; text-align: center; }
+/* 2. Make Live DMI Score Sidebar Smaller and Sticky (Movable while scrolling)
+*/
+.live-score-sidebar { 
+    width: 240px; /* Smaller - was 280px */
+    position: sticky; 
+    top: 20px; 
+    align-self: flex-start;
+    max-height: calc(100vh - 40px); /* Prevents it from being too tall */
+
+  
+    background: #fff; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+    padding: 12px; /* Smaller padding - was 15px */
+    text-align: center; 
+}
+
+/* 2. also 
+*/
+.live-score-chart-container { 
+    position: relative; 
+    width: 150px; /* Smaller - was 180px */
+    height: 150px; /* Smaller - was 180px */
+    margin: 0 auto; 
+}
+
+
+
 .live-score-card h4 { margin: 0 0 10px; color: var(--primary-blue); }
 .live-score-chart-container { position: relative; width: 180px; height: 180px; margin: 0 auto; }
 .score-percentage-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.4rem; font-weight: 700; color: var(--primary-blue); }
@@ -129,9 +153,15 @@ body {
 .row-charts { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
 .mini-chart-card { background: #fff; border-radius: 6px; padding: 10px; width: 220px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
 
+@media print {
+  .live-score-sidebar, .submit-button, .mini-link-btn, .admin-topbar, .header img { display: none !important; }
+  .container { box-shadow: none; margin: 0; width: 100%; }
+  #reportSection { display: block !important; }
+}
 
 @media (max-width: 1000px) {
   .assessment-layout { flex-direction: column; }
+  .live-score-sidebar { width: 100%; position: static; order: -1; margin-bottom: 15px; }
   .report-grid { flex-direction: column; }
   .header { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
@@ -192,10 +222,12 @@ body {
   margin-bottom: 25px;
   padding-bottom: 15px;
 }
+.header h1 { margin: 0; font-size: 1.7rem; color: var(--primary-blue); }
 .subtitle { margin-top: 5px; color: #666; }
 .logo-container img { max-height: 55px; }
 .assessment-layout { display: flex; gap: 25px; }
 .assessment-form-wrapper { flex: 1; min-width: 60%; }
+.live-score-sidebar { width: 280px; position: sticky; top: 20px; align-self: flex-start; }
 .live-score-card { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 15px; text-align: center; }
 .live-score-card h4 { margin: 0 0 10px; color: var(--primary-blue); }
 .live-score-chart-container { position: relative; width: 180px; height: 180px; margin: 0 auto; }
@@ -277,12 +309,14 @@ body {
 .mini-chart-card { background: #fff; border-radius: 6px; padding: 10px; width: 220px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
 
 @media print {
+  .live-score-sidebar, .submit-button, .mini-link-btn, .admin-topbar, .header img { display: none !important; }
   .container { box-shadow: none; margin: 0; width: 100%; }
   #reportSection { display: block !important; }
 }
 
 @media (max-width: 1000px) {
   .assessment-layout { flex-direction: column; }
+  .live-score-sidebar { width: 100%; position: static; order: -1; margin-bottom: 15px; }
   .report-grid { flex-direction: column; }
   .header { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
@@ -445,27 +479,15 @@ header {
     max-height: 55px; 
 }
 
-/* --- Live Score Sidebar (Custom Chart & Score Center) --- */
 
-/* Overriding Bootstrap .card for sticky sidebar on large screens */
-.live-score-card { 
-    padding: 15px; 
-    text-align: center;
-}
 
-/* Retaining custom sizing for the chart container */
-.live-score-chart-container { 
-    position: relative; 
-    width: 180px; 
-    height: 180px; 
-    margin: 0 auto; 
-}
 
 /* Overriding Bootstrap text sizing for dramatic score display */
 .score-percentage-center { 
-    font-size: 2.4rem !important; 
+    font-size: 2rem !important; /* Smaller - was 2.4rem */
     font-weight: 700 !important; 
     color: var(--primary-blue) !important; 
+    
 }
 
 /* Small Buttons (mini-link-btn): Using custom styles for specific colors/gaps */
@@ -579,6 +601,7 @@ header {
 /* --- Print/PDF Styles: Hiding Buttons & Layout Adjustments --- */
 @media print {
     /* HIDE ALL BUTTONS AND INTERACTIVE/SIDEBAR ELEMENTS */
+    .live-score-sidebar, 
     .submit-button, 
     .mini-link-btn, 
     .admin-topbar, 
@@ -654,6 +677,7 @@ header {
 @media (max-width: 1000px) {
     /* This overrides the flex properties for the main layout on smaller screens */
     .assessment-layout { flex-direction: column !important; } 
+    .live-score-sidebar { width: 100% !important; position: static !important; order: -1; margin-bottom: 15px; }
     /* Report grid is now handled by Bootstrap's col-lg-X, but keeping the original fallback for consistency */
     .report-grid { flex-direction: column !important; }
     .header { flex-direction: column !important; align-items: flex-start !important; gap: 10px; }
@@ -662,6 +686,7 @@ header {
 /* CSS from previous response (Ensure this is in your styles.css) */
 @media print {
   /* HIDE ALL BUTTONS AND INTERACTIVE/SIDEBAR ELEMENTS */
+  .live-score-sidebar,
   .submit-button,
   .mini-link-btn,
   .admin-topbar,

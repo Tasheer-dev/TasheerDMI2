@@ -1,0 +1,202 @@
+/* --- styles.css: Tasheer DMI Tool Custom Styling --- */
+
+:root {
+  /* Tasheer Brand Colors (CSS variables for centralized theme management) */
+  --primary-blue: #004d9c;   /* Main brand color for headers, emphasis, buttons */
+  --secondary-green: #388e3c; /* Success/Score Color for positive indicators */
+  --accent-gold: #ffc107;     /* Warning/Highlight Color */
+  
+  /* Layout & Utility Variables */
+  --background-light: #f4f7f6; /* Body background color */
+  --container-bg: #ffffff;      /* Main card/container background color */
+  --q-border: #e0e0e0;          /* Border color for question blocks */
+  --shadow: 0 8px 25px rgba(0,0,0,0.08); /* Standard box shadow for main container */
+  --text-dark: #333;           /* Default text color */
+}
+
+/* Base body styling */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--background-light);
+  color: var(--text-dark);
+}
+
+/* Main content container styling */
+.container {
+  max-width: 1200px;
+  margin: 20px auto 40px; 
+  background: var(--container-bg);
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+/* --- Header & Logo Styling --- */
+header {
+    /* Overrides Bootstrap border to use 3px solid primary blue for branding */
+    border-bottom: 3px solid var(--primary-blue) !important; 
+    margin-bottom: 25px !important;
+}
+
+/* --- Bootstrap Button Customization (Applying Brand Colors via CSS variables) --- */
+
+.btn-primary { /* Submit and PDF Download Buttons */
+    --bs-btn-bg: var(--primary-blue);
+    --bs-btn-border-color: var(--primary-blue);
+    --bs-btn-hover-bg: #003a7a;
+    --bs-btn-hover-border-color: #003a7a;
+}
+
+.btn-success { /* Print Button */
+    --bs-btn-bg: var(--secondary-green);
+    --bs-btn-border-color: var(--secondary-green);
+    --bs-btn-hover-bg: #2e7d32;
+    --bs-btn-hover-border-color: #2e7d32;
+}
+
+/* Custom color overrides for utility sidebar buttons (e.g., Randomize, Logout) */
+.mini-link-btn { padding: 7px 10px; font-weight: 500; }
+.btn-info { --bs-btn-bg: #e1f5fe; --bs-btn-color: #01579b; }
+.btn-danger { --bs-btn-bg: #ffebee; --bs-btn-color: #c62828; }
+.btn-warning { --bs-btn-bg: #fffde7; --bs-btn-color: #f9a825; }
+
+
+/* --- Live Score Sidebar & Chart Styling --- */
+
+/* Ensures the sidebar stays fixed/sticky on wide screens as the user scrolls the form */
+@media (min-width: 992px) {
+    .live-score-sidebar { 
+        position: sticky; 
+        top: 20px; 
+        align-self: flex-start; 
+    }
+}
+
+/* Defines fixed dimensions for the doughnut chart canvas */
+.live-score-chart-container { 
+    position: relative; 
+    width: 180px; 
+    height: 180px; 
+    margin: 0 auto; 
+}
+
+/* Styling for the score percentage displayed in the center of the doughnut chart */
+.score-percentage-center { 
+    font-size: 2.4rem !important; 
+    font-weight: 700 !important; 
+    color: var(--primary-blue) !important; 
+}
+
+
+/* --- Dynamic Form Elements Styling (Questions) --- */
+
+/* Header for each assessment area/dimension */
+.area-header { 
+    background: var(--primary-blue); 
+    color: #fff; 
+    padding: 10px 15px; 
+    border-radius: 6px; 
+    margin-top: 15px; 
+    margin-bottom: 10px; 
+    font-size: 1.05rem; 
+}
+
+/* Individual question block styling: Uses a green left border for clear visual separation */
+.question-block { 
+    background: #fff; 
+    border: 1px solid var(--q-border); 
+    border-left: 5px solid var(--secondary-green); 
+    padding: 15px; 
+    border-radius: 6px; 
+    margin-bottom: 15px; 
+}
+
+
+/* --- Report Section Styling --- */
+
+/* Final percentage score display color (Uses secondary green for success/score) */
+.score-display { 
+    color: var(--secondary-green) !important; 
+}
+
+/* Table header styling (Ensures primary blue background in the report table) */
+.score-table th { 
+    background: var(--primary-blue) !important; 
+    color: #fff !important; 
+}
+
+
+/* =========================================================================
+   --- Print Media Queries (@media print) ---
+   Crucial section for ensuring clean, consistent PDF/Print output.
+   ========================================================================= */
+
+@media print {
+    /* 1. HIDE ALL INTERACTIVE/NON-REPORT ELEMENTS */
+    .live-score-sidebar, 
+    .submit-button, 
+    .mini-link-btn, 
+    .header img,
+    .btn,             
+    .print-button,
+    .print-button-group 
+    { 
+        display: none !important; /* Forces elements to be hidden */
+    }
+
+    /* 2. ENSURE CONTAINER IS FULL-WIDTH AND CLEAN */
+    .container { 
+        box-shadow: none !important; /* Removes shadows in print */
+        margin: 0 !important; 
+        width: 100% !important; 
+        padding: 0 !important; 
+    }
+    #reportSection { 
+        display: block !important; /* Ensure the report section is visible */
+    }
+
+    /* 3. FIX REPORT GRID LAYOUT: Ensures Score Card and Chart stay side-by-side */
+    .report-grid { 
+        display: flex !important; 
+        flex-direction: row !important; /* Forces horizontal layout */
+        gap: 20px !important;
+        width: 100% !important;
+    }
+    
+    .col-md-5, 
+    .col-md-7 {
+        /* Prevents columns from stacking and ensures they share space equally */
+        flex: 1 0 auto !important; 
+        max-width: 50% !important; 
+        break-inside: avoid; /* Prevents component from splitting across pages */
+    }
+    
+    /* 4. FIX COMMENT TEXTAREA CAPTURE: Hides editable area, shows static mirror */
+    #finalReportComments { 
+        display: none !important; /* Hides the original editable text area */
+    }
+    #finalReportCommentsPrint {
+      display: block !important; /* Shows the print-only mirror div */
+      white-space: pre-wrap !important; /* CRITICAL: Preserves user-entered line breaks/formatting */
+      word-break: break-word; /* Ensures long words wrap correctly */
+      border: 1px solid #ccc;
+      padding: 10px 12px;
+      margin-top: 8px;
+      page-break-inside: avoid; /* Suggests keeping the entire comment block on one page if possible */
+    }
+
+    /* 5. General Print/PDF Settings */
+    @page { size: A4 landscape; margin: 1cm; } /* Defines paper size and margins for the print job */
+    /* Forces browser to print colors/backgrounds correctly */
+    body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background: white !important; }
+}
+
+/* --- Responsive Fallback (Handles screens smaller than 1000px) --- */
+@media (max-width: 1000px) {
+    /* Forces two-column layouts to stack vertically (e.g., sidebar and form) */
+    .assessment-layout { flex-direction: column !important; } 
+    /* Ensures sidebar appears above the form content and is not sticky */
+    .live-score-sidebar { width: 100% !important; position: static !important; order: -1; margin-bottom: 15px; }
+    /* Forces the score card and chart to stack vertically in the report */
+    .report-grid { flex-direction: column !important; }
+}
