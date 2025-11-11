@@ -44,8 +44,8 @@ body {
 
 .live-score-card {
   position: sticky;
-  top: 70px;      /* keeps card visible while scrolling */
-  z-index: 80;
+  top: 20px;      /* keeps card visible while scrolling */
+  z-index: 70;
 }
 
 .live-score-card .card-body {
@@ -54,11 +54,11 @@ body {
 
 .live-score-card h4 {
   font-size: 1.1rem;   /* smaller heading */
-  font-weight: 00;
+  font-weight: 600;
 }
 
 .live-score-chart-container {
-  max-width: 300px;    /* reduce chart size */
+  max-width: 500px;    /* reduce chart size */
   margin: 0 auto;
 }
 
