@@ -63,7 +63,10 @@ body {
 }
 
 
-
+.subtitle { margin-top: 5px; color: #666; }
+.logo-container img { max-height: 55px; }
+.assessment-layout { display: flex; gap: 25px; }
+.assessment-form-wrapper { flex: 1; min-width: 60%; }
 
 
 .live-score-card { background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 15px; text-align: center; }
