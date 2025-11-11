@@ -180,7 +180,7 @@ function initAssessmentPage() {
 
   // Create script tag to load the quiz file dynamically
   const script = document.createElement("script");
-  script.src = `./assets/quizzes/quiz_${deptCode}.js`;
+  script.src = `./assets/quizzes/quiz ${deptCode}.js`;
 
   script.onload = () => {
     // Retrieve department's quiz data structure
