@@ -1,0 +1,29 @@
+/* CSS from previous response (Ensure this is in your styles.css) */
+@media print {
+  /* HIDE ALL BUTTONS AND INTERACTIVE/SIDEBAR ELEMENTS */
+  .submit-button,
+  .mini-link-btn,
+  .admin-topbar,
+  .header img,
+  .btn, /* Hides all Bootstrap buttons */
+  .print-button /* Hides custom print/download buttons */
+  {
+      display: none !important;
+  }
+
+  /* Print Mirror for Textarea */
+  #finalReportComments { 
+      display: none !important; /* Hide the editable textarea */
+  }
+  #finalReportCommentsPrint {
+    display: block !important; /* SHOW the print mirror element */
+    white-space: pre-wrap !important; /* Ensure line breaks are preserved */
+    word-break: break-word;
+    /* ... other print styles ... */
+  }
+}
+
+
+
+
+2/* Additional styles for better print layout */

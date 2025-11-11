@@ -1,0 +1,60 @@
+/* CSS from previous response (Ensure this is in your styles.css) */
+@media print {
+  /* HIDE ALL BUTTONS AND INTERACTIVE/SIDEBAR ELEMENTS */
+  .submit-button,
+  .mini-link-btn,
+  .admin-topbar,
+  .header img,
+  .btn, /* Hides all Bootstrap buttons */
+  .print-button /* Hides custom print/download buttons */
+  {
+      display: none !important;
+  }
+
+  /* Print Mirror for Textarea */
+  #finalReportComments { 
+      display: none !important; /* Hide the editable textarea */
+  }
+  #finalReportCommentsPrint {
+    display: block !important; /* SHOW the print mirror element */
+    white-space: pre-wrap !important; /* Ensure line breaks are preserved */
+    word-break: break-word;
+    /* ... other print styles ... */
+  }
+}
+
+
+
+
+/* Additional styles for better print layout */
+
+@media print {
+    /* Ensure the Report Grid uses flex/block display to maintain layout */
+    .report-grid { 
+        display: flex !important; /* Forces side-by-side layout */
+        flex-direction: row !important; /* Ensures it's a row, not a column */
+        gap: 20px !important; /* Re-establish gap */
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Ensure the component columns fill their allocated space */
+    .report-summary, 
+    .chart-wrapper {
+        flex: 1 0 50% !important; /* Forces columns to share space equally or adjust based on content */
+        max-width: 50% !important; /* Ensure they don't exceed half the page */
+        break-inside: avoid; /* Important for page breaks */
+        page-break-inside: avoid;
+    }
+
+    /* Ensure the chart itself is fully visible */
+    canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}
+
+
+me
+
+/* END OF styles_mediaP.css */
