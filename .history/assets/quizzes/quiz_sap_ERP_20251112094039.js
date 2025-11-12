@@ -1,6 +1,6 @@
 // quizzes/quiz_erp.js
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
-DMI_QUESTION_SETS["sap_ERP"] = {
+DMI_QUESTION_SETS["sap_E"] = {
   title: "ERP (SAP) Department Digital Maturity Assessment (DMI)",
   shortcode: "ERP",
   totalQuestions: 20,
