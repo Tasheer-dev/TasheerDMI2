@@ -11,7 +11,7 @@ window.TASHER_USERS = [
   { username: "business_excellence", password: "ta@2025", role: "department", deptCode: "business_excellence", displayName: "Business Excellence Department" },
 
   // 4️⃣ Corporate IT
-  { username: "corporate-IT", password: "ta@2025", role: "department", deptCode: "corporate_it", displayName: "Corporate IT" },
+  { username: "corporate_it", password: "ta@2025", role: "department", deptCode: "corporate_it", displayName: "Corporate IT" },
 
   // 5️⃣ Cybersecurity Department
   { username: "cybersecurity", password: "ta@2025", role: "department", deptCode: "cybersecurity", displayName: "Cybersecurity Department" },

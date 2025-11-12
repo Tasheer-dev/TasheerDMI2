@@ -192,9 +192,6 @@ function initAssessmentPage() {
 
   // Append script to load quiz
   document.body.appendChild(script);
-
-setTimeout(loadReportComments, 500);
-
 }
 
 
@@ -203,8 +200,6 @@ setTimeout(loadReportComments, 500);
  */
 function getStorageKeyFor(deptCode) {
   return "tasheer_dmi_" + deptCode;
-
-  
 }
 
 
@@ -491,8 +486,6 @@ function finalizeAssessment() {
     
     // ... [Your existing logic to show the report section] ...
     document.getElementById('reportSection').style.display = 'block';
-    loadReportComments();
-
     // Scroll page to top smoothly after showing report
     window.scrollTo({ top: 0, behavior: "smooth" });
 

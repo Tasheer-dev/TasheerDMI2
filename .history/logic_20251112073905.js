@@ -117,6 +117,7 @@ function handleLogin() {
 }
 
 
+
 /* ============================================================================
    ASSESSMENT PAGE INITIALIZATION
    ============================================================================ */
@@ -192,9 +193,6 @@ function initAssessmentPage() {
 
   // Append script to load quiz
   document.body.appendChild(script);
-
-setTimeout(loadReportComments, 500);
-
 }
 
 
@@ -203,8 +201,6 @@ setTimeout(loadReportComments, 500);
  */
 function getStorageKeyFor(deptCode) {
   return "tasheer_dmi_" + deptCode;
-
-  
 }
 
 
@@ -491,8 +487,6 @@ function finalizeAssessment() {
     
     // ... [Your existing logic to show the report section] ...
     document.getElementById('reportSection').style.display = 'block';
-    loadReportComments();
-
     // Scroll page to top smoothly after showing report
     window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -565,14 +559,11 @@ if (commentsBoxAuto) {
   // Save comments to localStorage (or load if already present)
   const commentsKey = getStorageKeyFor(deptCode) + "_comments";
   const savedComments = localStorage.getItem(commentsKey) || "";
+  const commentsBox = document.getElementById("finalReportComments");
+  commentsBox.value = savedComments;
 
-
-const commentsBox = document.getElementById("finalReportComments");
-loadReportComments(); // Load any previous comments for this dept
-commentsBox.addEventListener("input", saveReportComments);
-
-
-  
+  // Add event listener to save comments on input
+commentsBox.addEventListener('input', saveReportComments);
 }
 
 
@@ -811,45 +802,65 @@ function generatePDF() {
 
 
 
-/* -----------------------------------------------------------------------------
-   Function: loadReportComments()
-   Purpose: Retrieves comments from Local Storage and populates the textarea.
------------------------------------------------------------------------------ */
-function loadReportComments() {
-    const commentsTextarea = document.getElementById('finalReportComments');
-    const savedComments = localStorage.getItem('DMI_REPORT_COMMENTS');
 
-    if (commentsTextarea && savedComments) {
-        commentsTextarea.value = savedComments;
-    }
-}
+
+// Resize charts responsively when report opens
+window.dispatchEvent(new Event("resize"));
+
+
+
+
+
 /* ----------------------------------------------------------------------------- 
-   Save and Load Final Report Comments per Department (Timing-Safe Version)
+   Save and Load Final Report Comments per Department
+----------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
+   Function: saveReportComments()
+   Purpose: Saves the current content of the textarea to Local Storage on input change.
 ----------------------------------------------------------------------------- */
 function saveReportComments() {
   const deptCode = sessionStorage.getItem("dmi_deptCode");
   const commentsTextarea = document.getElementById("finalReportComments");
-  if (!commentsTextarea || !deptCode) return;
-
-  const key = getStorageKeyFor(deptCode) + "_comments";
-  localStorage.setItem(key, commentsTextarea.value);
+  if (commentsTextarea && deptCode) {
+    const key = getStorageKeyFor(deptCode) + "_comments";
+    localStorage.setItem(key, commentsTextarea.value);
+  }
 }
+
+
+/* -----------------------------------------------------------------------------
+   Function: loadReportComments()
+   Purpose: Retrieves comments from Local Storage and populates the textarea.
+----------------------------------------------------------------------------- */
+
 
 function loadReportComments() {
   const deptCode = sessionStorage.getItem("dmi_deptCode");
-  if (!deptCode) return;
+  const commentsTextarea = document.getElementById("finalReportComments");
+  if (commentsTextarea && deptCode) {
+    const key = getStorageKeyFor(deptCode) + "_comments";
+    const savedComments = localStorage.getItem(key);finalizeAssessment()
+    if (savedComments) commentsTextarea.value = savedComments;
+  }
+}
 
-  // Wait until the textarea exists in the DOM
-  const interval = setInterval(() => {
-    const commentsTextarea = document.getElementById("finalReportComments");
-    if (commentsTextarea) {
-      const key = getStorageKeyFor(deptCode) + "_comments";
-      const savedComments = localStorage.getItem(key);
-      if (savedComments) commentsTextarea.value = savedComments;
 
-      // attach live saving
-      commentsTextarea.addEventListener("input", saveReportComments);
-      clearInterval(interval);
-    }
-  }, 300); // checks every 0.3s until textarea is loaded
+
+
+
+function exportAllCommentsToCSV() {
+  const keys = Object.keys(localStorage).filter(k => k.endsWith("_comments"));
+  let csv = "Department,Comments\n";
+  keys.forEach(k => {
+    const dept = k.replace("tasheer_dmi_", "").replace("_comments", "").toUpperCase();
+    const comments = (localStorage.getItem(k) || "").replace(/\n/g, " ");
+    csv += `"${dept}","${comments}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "DMI_FinalReportComments.csv";
+  link.click();
 }

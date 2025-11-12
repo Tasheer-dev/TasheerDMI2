@@ -491,8 +491,7 @@ function finalizeAssessment() {
     
     // ... [Your existing logic to show the report section] ...
     document.getElementById('reportSection').style.display = 'block';
-    loadReportComments();
-
+    
     // Scroll page to top smoothly after showing report
     window.scrollTo({ top: 0, behavior: "smooth" });
 

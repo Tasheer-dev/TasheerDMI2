@@ -192,9 +192,6 @@ function initAssessmentPage() {
 
   // Append script to load quiz
   document.body.appendChild(script);
-
-setTimeout(loadReportComments, 500);
-
 }
 
 
@@ -203,8 +200,6 @@ setTimeout(loadReportComments, 500);
  */
 function getStorageKeyFor(deptCode) {
   return "tasheer_dmi_" + deptCode;
-
-  
 }
 
 
@@ -491,8 +486,6 @@ function finalizeAssessment() {
     
     // ... [Your existing logic to show the report section] ...
     document.getElementById('reportSection').style.display = 'block';
-    loadReportComments();
-
     // Scroll page to top smoothly after showing report
     window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -565,11 +558,6 @@ if (commentsBoxAuto) {
   // Save comments to localStorage (or load if already present)
   const commentsKey = getStorageKeyFor(deptCode) + "_comments";
   const savedComments = localStorage.getItem(commentsKey) || "";
-
-
-const commentsBox = document.getElementById("finalReportComments");
-loadReportComments(); // Load any previous comments for this dept
-commentsBox.addEventListener("input", saveReportComments);
 
 
   
@@ -824,7 +812,7 @@ function loadReportComments() {
     }
 }
 /* ----------------------------------------------------------------------------- 
-   Save and Load Final Report Comments per Department (Timing-Safe Version)
+   Save and Load Final Report Comments per Department (Fixed)
 ----------------------------------------------------------------------------- */
 function saveReportComments() {
   const deptCode = sessionStorage.getItem("dmi_deptCode");
@@ -833,23 +821,18 @@ function saveReportComments() {
 
   const key = getStorageKeyFor(deptCode) + "_comments";
   localStorage.setItem(key, commentsTextarea.value);
+  console.log("💾 Saved comment for", deptCode, "=>", commentsTextarea.value);
 }
 
 function loadReportComments() {
   const deptCode = sessionStorage.getItem("dmi_deptCode");
-  if (!deptCode) return;
+  const commentsTextarea = document.getElementById("finalReportComments");
+  if (!commentsTextarea || !deptCode) return;
 
-  // Wait until the textarea exists in the DOM
-  const interval = setInterval(() => {
-    const commentsTextarea = document.getElementById("finalReportComments");
-    if (commentsTextarea) {
-      const key = getStorageKeyFor(deptCode) + "_comments";
-      const savedComments = localStorage.getItem(key);
-      if (savedComments) commentsTextarea.value = savedComments;
-
-      // attach live saving
-      commentsTextarea.addEventListener("input", saveReportComments);
-      clearInterval(interval);
-    }
-  }, 300); // checks every 0.3s until textarea is loaded
+  const key = getStorageKeyFor(deptCode) + "_comments";
+  const saved = localStorage.getItem(key);
+  if (saved) {
+    commentsTextarea.value = saved;
+    console.log("📥 Loaded saved comment for", deptCode);
+  }
 }
