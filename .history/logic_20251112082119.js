@@ -817,16 +817,13 @@ function generatePDF() {
 ----------------------------------------------------------------------------- */
 function saveReportComments() {
   const deptCode = sessionStorage.getItem("dmi_deptCode");
-  const textarea = document.getElementById("finalReportComments");
-  if (!textarea || !deptCode) return;
+  const commentsTextarea = document.getElementById("finalReportComments");
+  if (!commentsTextarea || !deptCode) return;
 
   const key = getStorageKeyFor(deptCode) + "_comments";
-  localStorage.setItem(key, textarea.value);
-
-  // Keep height synced as user types
-  textarea.style.height = "auto";
-  textarea.style.height = textarea.scrollHeight + "px";
+  localStorage.setItem(key, commentsTextarea.value);
 }
+
 
 
 

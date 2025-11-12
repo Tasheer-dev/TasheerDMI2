@@ -817,46 +817,28 @@ function generatePDF() {
 ----------------------------------------------------------------------------- */
 function saveReportComments() {
   const deptCode = sessionStorage.getItem("dmi_deptCode");
-  const textarea = document.getElementById("finalReportComments");
-  if (!textarea || !deptCode) return;
+  const commentsTextarea = document.getElementById("finalReportComments");
+  if (!commentsTextarea || !deptCode) return;
 
   const key = getStorageKeyFor(deptCode) + "_comments";
-  localStorage.setItem(key, textarea.value);
-
-  // Keep height synced as user types
-  textarea.style.height = "auto";
-  textarea.style.height = textarea.scrollHeight + "px";
+  localStorage.setItem(key, commentsTextarea.value);
 }
 
-
-
-/* -----------------------------------------------------------------------------
-   Load Final Report Comments (auto-grow + department specific)
------------------------------------------------------------------------------ */
 function loadReportComments() {
   const deptCode = sessionStorage.getItem("dmi_deptCode");
   if (!deptCode) return;
 
-  const key = getStorageKeyFor(deptCode) + "_comments";
-
-  // Wait until textarea exists in the DOM
+  // Wait until the textarea exists in the DOM
   const interval = setInterval(() => {
-    const textarea = document.getElementById("finalReportComments");
-    if (textarea) {
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        textarea.value = saved;
-      }
+    const commentsTextarea = document.getElementById("finalReportComments");
+    if (commentsTextarea) {
+      const key = getStorageKeyFor(deptCode) + "_comments";
+      const savedComments = localStorage.getItem(key);
+      if (savedComments) commentsTextarea.value = savedComments;
 
-      // --- Auto-grow to fit content ---
-      textarea.style.height = "auto";
-      textarea.style.height = textarea.scrollHeight + "px";
-
-      // --- Save automatically on typing ---
-      textarea.removeEventListener("input", saveReportComments);
-      textarea.addEventListener("input", saveReportComments);
-
+      // attach live saving
+      commentsTextarea.addEventListener("input", saveReportComments);
       clearInterval(interval);
     }
-  }, 300);
+  }, 300); // checks every 0.3s until textarea is loaded
 }
