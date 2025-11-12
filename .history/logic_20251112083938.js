@@ -882,13 +882,75 @@ function exportAllCommentsToCSV() {
 
 
 /* =============================================================================
-   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Polished & Branded Version
+   EXPORT ALL DEPARTMENT REPORTS TO CSV
    ============================================================================= */
+function exportAllReportsToCSV() {
+  const rows = [];
+  rows.push([
+    "Department",
+    "Question ID",
+    "Question Title",
+    "Selected Level",
+    "Selected Text",
+    "Next Recommendation",
+    "Total % Score",
+    "Final Report Comments"
+  ].join(","));
+
+  // Loop through every department key saved in localStorage
+  Object.keys(localStorage).forEach(key => {
+    if (!key.startsWith("tasheer_dmi_") || key.endsWith("_comments")) return;
+
+    const deptCode = key.replace("tasheer_dmi_", "");
+    const saved = JSON.parse(localStorage.getItem(key) || "{}");
+    const deptData = window.DMI_QUESTION_SETS[deptCode];
+
+    if (!deptData) return; // skip if quiz not loaded in this session
+
+    // Compute total % score
+    const total = Object.values(saved).reduce((sum, v) => sum + Number(v), 0);
+    const percent = Math.round((total / deptData.maxScore) * 100);
+
+    // Retrieve saved comments
+    const commentsKey = key + "_comments";
+    const comments = (localStorage.getItem(commentsKey) || "").replace(/\n/g, " ").replace(/,/g, ";");
+
+    // For each question answered
+    deptData.questions.forEach(q => {
+      const val = saved[q.id];
+      const choice = q.choices.find(c => String(c.value) === String(val));
+      const text = choice ? choice.text.replace(/,/g, ";") : "";
+      const nextRec = getNextLevelRecommendation(q, val).replace(/,/g, ";");
+      rows.push([
+        deptCode.toUpperCase(),
+        q.id,
+        `"${q.title}"`,
+        val || "",
+        `"${text}"`,
+        `"${nextRec}"`,
+        percent,
+        `"${comments}"`
+      ].join(","));
+    });
+  });
+
+  // Build and download CSV
+  const csvContent = rows.join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "Tasheer_DMI_All_Departments.csv";
+  link.click();
+}
+
+
+
 /* =============================================================================
-   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Styled and Professional
+   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx)
    ============================================================================= */
 function exportAllReportsToExcel() {
-  const wb = XLSX.utils.book_new();
+  const workbook = XLSX.utils.book_new();
+  const allSheets = [];
 
   Object.keys(localStorage).forEach(key => {
     if (!key.startsWith("tasheer_dmi_") || key.endsWith("_comments")) return;
@@ -898,16 +960,16 @@ function exportAllReportsToExcel() {
     const deptData = window.DMI_QUESTION_SETS[deptCode];
     if (!deptData) return;
 
-    // Compute overall score
+    // Compute total %
     const total = Object.values(saved).reduce((sum, v) => sum + Number(v), 0);
     const percent = Math.round((total / deptData.maxScore) * 100);
     const commentsKey = key + "_comments";
-    const comments = (localStorage.getItem(commentsKey) || "").replace(/\r?\n/g, " ");
+    const comments = localStorage.getItem(commentsKey) || "";
 
-    // Data for sheet
+    // Prepare rows for this sheet
     const rows = [
       ["Department", deptCode.toUpperCase()],
-      ["Overall Maturity %", percent + "%"],
+      ["Overall Maturity %", percent],
       ["Final Report Comments", comments],
       [],
       ["QID", "Question Title", "Selected Level", "Selected Text", "Next Recommendation"]
@@ -921,71 +983,10 @@ function exportAllReportsToExcel() {
       rows.push([q.id, q.title, val || "", text, nextRec]);
     });
 
-    const ws = XLSX.utils.aoa_to_sheet(rows);
-
-    // ===== Formatting Section =====
-    const range = XLSX.utils.decode_range(ws["!ref"]);
-
-    // Set column widths
-    ws["!cols"] = [
-      { wch: 6 },  // QID
-      { wch: 50 }, // Question Title
-      { wch: 10 }, // Level
-      { wch: 60 }, // Selected Text
-      { wch: 60 }  // Recommendation
-    ];
-
-    // Basic styling through XLSX cell objects
-    for (let R = range.s.r; R <= range.e.r; ++R) {
-      for (let C = range.s.c; C <= range.e.c; ++C) {
-        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
-        const cell = ws[cellRef];
-        if (!cell) continue;
-
-        // Header row (row 5)
-        if (R === 4) {
-          cell.s = {
-            fill: { fgColor: { rgb: "004D9C" } },
-            font: { color: { rgb: "FFFFFF" }, bold: true },
-            alignment: { horizontal: "center", vertical: "center", wrapText: true }
-          };
-        }
-        // Title rows (first 3)
-        else if (R < 3) {
-          cell.s = {
-            font: { bold: true, color: { rgb: "004D9C" } },
-            alignment: { horizontal: "left", vertical: "center" }
-          };
-        }
-        // Data rows
-        else if (R > 4) {
-          cell.s = {
-            alignment: { vertical: "top", wrapText: true },
-            fill: (R % 2 === 0) ? { fgColor: { rgb: "F2F6FB" } } : {},
-            font: { color: { rgb: "000000" } }
-          };
-        }
-      }
-    }
-
-    XLSX.utils.book_append_sheet(wb, ws, deptCode.toUpperCase().substring(0, 31));
+    const sheet = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(workbook, sheet, deptCode.toUpperCase());
   });
 
-  // ===== Save file properly with MIME type =====
-  const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array", cellStyles: true });
-  const blob = new Blob([wbout], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-
-  const link = document.createElement("a");
-  const date = new Date().toISOString().split("T")[0];
-  link.href = URL.createObjectURL(blob);
-  link.download = `Tasheer_DMI_Reports_${date}.xlsx`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  // Export the Excel file
+  XLSX.writeFile(workbook, "Tasheer_DMI_All_Departments.xlsx");
 }
-
-
-   
-/* -----------------------------------------------------------------------------
-   End of logic.js
------------------------------------------------------------------------------ */

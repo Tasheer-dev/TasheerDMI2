@@ -882,9 +882,6 @@ function exportAllCommentsToCSV() {
 
 
 /* =============================================================================
-   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Polished & Branded Version
-   ============================================================================= */
-/* =============================================================================
    EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Styled and Professional
    ============================================================================= */
 function exportAllReportsToExcel() {
@@ -983,9 +980,3 @@ function exportAllReportsToExcel() {
   link.click();
   document.body.removeChild(link);
 }
-
-
-   
-/* -----------------------------------------------------------------------------
-   End of logic.js
------------------------------------------------------------------------------ */

@@ -882,10 +882,7 @@ function exportAllCommentsToCSV() {
 
 
 /* =============================================================================
-   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Polished & Branded Version
-   ============================================================================= */
-/* =============================================================================
-   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Styled and Professional
+   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Safe Version
    ============================================================================= */
 function exportAllReportsToExcel() {
   const wb = XLSX.utils.book_new();
@@ -898,13 +895,13 @@ function exportAllReportsToExcel() {
     const deptData = window.DMI_QUESTION_SETS[deptCode];
     if (!deptData) return;
 
-    // Compute overall score
+    // Compute overall percentage
     const total = Object.values(saved).reduce((sum, v) => sum + Number(v), 0);
     const percent = Math.round((total / deptData.maxScore) * 100);
     const commentsKey = key + "_comments";
     const comments = (localStorage.getItem(commentsKey) || "").replace(/\r?\n/g, " ");
 
-    // Data for sheet
+    // Build data table
     const rows = [
       ["Department", deptCode.toUpperCase()],
       ["Overall Maturity %", percent + "%"],
@@ -921,71 +918,17 @@ function exportAllReportsToExcel() {
       rows.push([q.id, q.title, val || "", text, nextRec]);
     });
 
-    const ws = XLSX.utils.aoa_to_sheet(rows);
-
-    // ===== Formatting Section =====
-    const range = XLSX.utils.decode_range(ws["!ref"]);
-
-    // Set column widths
-    ws["!cols"] = [
-      { wch: 6 },  // QID
-      { wch: 50 }, // Question Title
-      { wch: 10 }, // Level
-      { wch: 60 }, // Selected Text
-      { wch: 60 }  // Recommendation
-    ];
-
-    // Basic styling through XLSX cell objects
-    for (let R = range.s.r; R <= range.e.r; ++R) {
-      for (let C = range.s.c; C <= range.e.c; ++C) {
-        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
-        const cell = ws[cellRef];
-        if (!cell) continue;
-
-        // Header row (row 5)
-        if (R === 4) {
-          cell.s = {
-            fill: { fgColor: { rgb: "004D9C" } },
-            font: { color: { rgb: "FFFFFF" }, bold: true },
-            alignment: { horizontal: "center", vertical: "center", wrapText: true }
-          };
-        }
-        // Title rows (first 3)
-        else if (R < 3) {
-          cell.s = {
-            font: { bold: true, color: { rgb: "004D9C" } },
-            alignment: { horizontal: "left", vertical: "center" }
-          };
-        }
-        // Data rows
-        else if (R > 4) {
-          cell.s = {
-            alignment: { vertical: "top", wrapText: true },
-            fill: (R % 2 === 0) ? { fgColor: { rgb: "F2F6FB" } } : {},
-            font: { color: { rgb: "000000" } }
-          };
-        }
-      }
-    }
-
-    XLSX.utils.book_append_sheet(wb, ws, deptCode.toUpperCase().substring(0, 31));
+    const sheet = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, sheet, deptCode.toUpperCase().substring(0, 31)); // Excel limit 31 chars
   });
 
-  // ===== Save file properly with MIME type =====
-  const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array", cellStyles: true });
+  // Generate and download Excel file safely
+  const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
   const blob = new Blob([wbout], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-
   const link = document.createElement("a");
-  const date = new Date().toISOString().split("T")[0];
   link.href = URL.createObjectURL(blob);
-  link.download = `Tasheer_DMI_Reports_${date}.xlsx`;
+  link.download = "Tasheer_DMI_All_Departments.xlsx";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
-
-
-   
-/* -----------------------------------------------------------------------------
-   End of logic.js
------------------------------------------------------------------------------ */

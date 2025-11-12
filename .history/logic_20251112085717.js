@@ -885,11 +885,23 @@ function exportAllCommentsToCSV() {
    EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Polished & Branded Version
    ============================================================================= */
 /* =============================================================================
-   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Styled and Professional
+   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx)
+   With Tasheer Logo + Styled Header + Centered Columns
    ============================================================================= */
-function exportAllReportsToExcel() {
+async function exportAllReportsToExcel() {
   const wb = XLSX.utils.book_new();
+  const logoUrl = "assets/img/company-logo.png"; // adjust path if needed
 
+  // Convert image to base64 for embedding
+  const logoBase64 = await fetch(logoUrl)
+    .then(res => res.blob())
+    .then(blob => new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(",")[1]);
+      reader.readAsDataURL(blob);
+    }));
+
+  // Collect all department sheets
   Object.keys(localStorage).forEach(key => {
     if (!key.startsWith("tasheer_dmi_") || key.endsWith("_comments")) return;
 
@@ -898,13 +910,11 @@ function exportAllReportsToExcel() {
     const deptData = window.DMI_QUESTION_SETS[deptCode];
     if (!deptData) return;
 
-    // Compute overall score
     const total = Object.values(saved).reduce((sum, v) => sum + Number(v), 0);
     const percent = Math.round((total / deptData.maxScore) * 100);
     const commentsKey = key + "_comments";
     const comments = (localStorage.getItem(commentsKey) || "").replace(/\r?\n/g, " ");
 
-    // Data for sheet
     const rows = [
       ["Department", deptCode.toUpperCase()],
       ["Overall Maturity %", percent + "%"],
@@ -923,47 +933,56 @@ function exportAllReportsToExcel() {
 
     const ws = XLSX.utils.aoa_to_sheet(rows);
 
-    // ===== Formatting Section =====
-    const range = XLSX.utils.decode_range(ws["!ref"]);
-
-    // Set column widths
+    // --- Column widths ---
     ws["!cols"] = [
-      { wch: 6 },  // QID
-      { wch: 50 }, // Question Title
-      { wch: 10 }, // Level
-      { wch: 60 }, // Selected Text
-      { wch: 60 }  // Recommendation
+      { wch: 6 },
+      { wch: 45 },
+      { wch: 14 },
+      { wch: 55 },
+      { wch: 55 }
     ];
 
-    // Basic styling through XLSX cell objects
+    // --- Style info ---
+    const range = XLSX.utils.decode_range(ws["!ref"]);
     for (let R = range.s.r; R <= range.e.r; ++R) {
       for (let C = range.s.c; C <= range.e.c; ++C) {
-        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
-        const cell = ws[cellRef];
+        const ref = XLSX.utils.encode_cell({ r: R, c: C });
+        const cell = ws[ref];
         if (!cell) continue;
 
-        // Header row (row 5)
-        if (R === 4) {
+        // --- Top info (rows 0–2) ---
+        if (R <= 2) {
           cell.s = {
-            fill: { fgColor: { rgb: "004D9C" } },
-            font: { color: { rgb: "FFFFFF" }, bold: true },
+            font: { bold: true, color: { rgb: "004D9C" } },
+            alignment: { horizontal: "left", vertical: "top", wrapText: true }
+          };
+          if (R === 2 && C === 1) {
+            cell.s.alignment.wrapText = true;
+          }
+        }
+
+        // --- Header row (row 4) full light blue ---
+        else if (R === 4) {
+          cell.s = {
+            fill: { fgColor: { rgb: "C6E0FF" } }, // Light blue header
+            font: { bold: true, color: { rgb: "003366" } },
             alignment: { horizontal: "center", vertical: "center", wrapText: true }
           };
         }
-        // Title rows (first 3)
-        else if (R < 3) {
-          cell.s = {
-            font: { bold: true, color: { rgb: "004D9C" } },
-            alignment: { horizontal: "left", vertical: "center" }
-          };
-        }
-        // Data rows
+
+        // --- Data rows ---
         else if (R > 4) {
-          cell.s = {
+          const baseStyle = {
             alignment: { vertical: "top", wrapText: true },
-            fill: (R % 2 === 0) ? { fgColor: { rgb: "F2F6FB" } } : {},
             font: { color: { rgb: "000000" } }
           };
+          // Alternate row fill
+          if (R % 2 === 0) baseStyle.fill = { fgColor: { rgb: "F8FBFF" } };
+
+          // Center Selected Level (3rd column)
+          if (C === 2) baseStyle.alignment.horizontal = "center";
+
+          cell.s = baseStyle;
         }
       }
     }
@@ -971,21 +990,49 @@ function exportAllReportsToExcel() {
     XLSX.utils.book_append_sheet(wb, ws, deptCode.toUpperCase().substring(0, 31));
   });
 
-  // ===== Save file properly with MIME type =====
+  // --- Convert workbook to binary ---
   const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array", cellStyles: true });
-  const blob = new Blob([wbout], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 
-  const link = document.createElement("a");
+  // --- Add Tasheer logo with XLSX-Populate ---
+  const fileBlob = new Blob([wbout], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  });
+  const arrayBuffer = await fileBlob.arrayBuffer();
+
+  const workbook = await XlsxPopulate.fromDataAsync(arrayBuffer);
+
+  // Add logo and finalize formatting
+  workbook.sheets().forEach(sheet => {
+    const logo = sheet.addImage({
+      base64: logoBase64,
+      name: "TasheerLogo.png",
+      type: "image/png",
+      position: {
+        type: "twoCellAnchor",
+        from: { col: 0.2, row: 0.2 },
+        to: { col: 3.5, row: 3.0 }
+      }
+    });
+    // Add a little more spacing above data
+    sheet.row(5).height(25);
+  });
+
+  const finalBlob = await workbook.outputAsync();
+  const url = URL.createObjectURL(
+    new Blob([finalBlob], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    })
+  );
+
+  const a = document.createElement("a");
   const date = new Date().toISOString().split("T")[0];
-  link.href = URL.createObjectURL(blob);
-  link.download = `Tasheer_DMI_Reports_${date}.xlsx`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  a.href = url;
+  a.download = `Tasheer_DMI_Styled_Report_${date}.xlsx`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
-
-   
 /* -----------------------------------------------------------------------------
    End of logic.js
 ----------------------------------------------------------------------------- */

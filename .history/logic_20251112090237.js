@@ -884,8 +884,18 @@ function exportAllCommentsToCSV() {
 /* =============================================================================
    EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Polished & Branded Version
    ============================================================================= */
+
+   /* =============================================================================
+   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx)
+   With Tasheer Logo + Styled Header + Centered Columns + Footer
+   ============================================================================= */
+
+   /* =============================================================================
+   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx)
+   With Tasheer Logo + Styled Header + Centered Columns
+   ============================================================================= */
 /* =============================================================================
-   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Styled and Professional
+   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Polished & Branded Version
    ============================================================================= */
 function exportAllReportsToExcel() {
   const wb = XLSX.utils.book_new();
@@ -898,13 +908,11 @@ function exportAllReportsToExcel() {
     const deptData = window.DMI_QUESTION_SETS[deptCode];
     if (!deptData) return;
 
-    // Compute overall score
     const total = Object.values(saved).reduce((sum, v) => sum + Number(v), 0);
     const percent = Math.round((total / deptData.maxScore) * 100);
     const commentsKey = key + "_comments";
     const comments = (localStorage.getItem(commentsKey) || "").replace(/\r?\n/g, " ");
 
-    // Data for sheet
     const rows = [
       ["Department", deptCode.toUpperCase()],
       ["Overall Maturity %", percent + "%"],
@@ -923,45 +931,51 @@ function exportAllReportsToExcel() {
 
     const ws = XLSX.utils.aoa_to_sheet(rows);
 
-    // ===== Formatting Section =====
-    const range = XLSX.utils.decode_range(ws["!ref"]);
-
-    // Set column widths
+    // Set column widths for better readability
     ws["!cols"] = [
-      { wch: 6 },  // QID
-      { wch: 50 }, // Question Title
-      { wch: 10 }, // Level
-      { wch: 60 }, // Selected Text
-      { wch: 60 }  // Recommendation
+      { wch: 6 },
+      { wch: 45 },
+      { wch: 12 },
+      { wch: 55 },
+      { wch: 55 }
     ];
 
-    // Basic styling through XLSX cell objects
+    // Styling (supported by xlsx-style)
+    const range = XLSX.utils.decode_range(ws["!ref"]);
     for (let R = range.s.r; R <= range.e.r; ++R) {
       for (let C = range.s.c; C <= range.e.c; ++C) {
         const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
         const cell = ws[cellRef];
         if (!cell) continue;
 
-        // Header row (row 5)
-        if (R === 4) {
+        // --- Header area (rows 0–2) ---
+        if (R <= 2) {
           cell.s = {
-            fill: { fgColor: { rgb: "004D9C" } },
-            font: { color: { rgb: "FFFFFF" }, bold: true },
+            font: { bold: true, color: { rgb: "004D9C" } },
+            alignment: { horizontal: "left", vertical: "center", wrapText: true }
+          };
+          if (R === 2 && C === 1) { // Final Report Comments cell
+            cell.s = {
+              font: { color: { rgb: "000000" } },
+              alignment: { horizontal: "left", vertical: "top", wrapText: true }
+            };
+          }
+        }
+
+        // --- Table header row (row 4) ---
+        else if (R === 4) {
+          cell.s = {
+            fill: { fgColor: { rgb: "C6E0FF" } }, // Light blue header
+            font: { bold: true, color: { rgb: "003366" } },
             alignment: { horizontal: "center", vertical: "center", wrapText: true }
           };
         }
-        // Title rows (first 3)
-        else if (R < 3) {
-          cell.s = {
-            font: { bold: true, color: { rgb: "004D9C" } },
-            alignment: { horizontal: "left", vertical: "center" }
-          };
-        }
-        // Data rows
+
+        // --- Data rows ---
         else if (R > 4) {
           cell.s = {
             alignment: { vertical: "top", wrapText: true },
-            fill: (R % 2 === 0) ? { fgColor: { rgb: "F2F6FB" } } : {},
+            fill: (R % 2 === 0) ? { fgColor: { rgb: "F8FBFF" } } : {},
             font: { color: { rgb: "000000" } }
           };
         }
@@ -971,14 +985,19 @@ function exportAllReportsToExcel() {
     XLSX.utils.book_append_sheet(wb, ws, deptCode.toUpperCase().substring(0, 31));
   });
 
-  // ===== Save file properly with MIME type =====
-  const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array", cellStyles: true });
-  const blob = new Blob([wbout], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-
+  // Export workbook properly
+  const wbout = XLSX.write(wb, {
+    bookType: "xlsx",
+    type: "array",
+    cellStyles: true
+  });
+  const blob = new Blob([wbout], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  });
   const link = document.createElement("a");
   const date = new Date().toISOString().split("T")[0];
   link.href = URL.createObjectURL(blob);
-  link.download = `Tasheer_DMI_Reports_${date}.xlsx`;
+  link.download = `Tasheer_DMI_Styled_Report_${date}.xlsx`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

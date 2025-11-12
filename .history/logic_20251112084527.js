@@ -882,8 +882,60 @@ function exportAllCommentsToCSV() {
 
 
 /* =============================================================================
-   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Polished & Branded Version
+   EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Safe Version
    ============================================================================= */
+function exportAllReportsToExcel() {
+  const wb = XLSX.utils.book_new();
+
+  Object.keys(localStorage).forEach(key => {
+    if (!key.startsWith("tasheer_dmi_") || key.endsWith("_comments")) return;
+
+    const deptCode = key.replace("tasheer_dmi_", "");
+    const saved = JSON.parse(localStorage.getItem(key) || "{}");
+    const deptData = window.DMI_QUESTION_SETS[deptCode];
+    if (!deptData) return;
+
+    // Compute overall percentage
+    const total = Object.values(saved).reduce((sum, v) => sum + Number(v), 0);
+    const percent = Math.round((total / deptData.maxScore) * 100);
+    const commentsKey = key + "_comments";
+    const comments = (localStorage.getItem(commentsKey) || "").replace(/\r?\n/g, " ");
+
+    // Build data table
+    const rows = [
+      ["Department", deptCode.toUpperCase()],
+      ["Overall Maturity %", percent + "%"],
+      ["Final Report Comments", comments],
+      [],
+      ["QID", "Question Title", "Selected Level", "Selected Text", "Next Recommendation"]
+    ];
+
+    deptData.questions.forEach(q => {
+      const val = saved[q.id];
+      const choice = q.choices.find(c => String(c.value) === String(val));
+      const text = choice ? choice.text : "";
+      const nextRec = getNextLevelRecommendation(q, val);
+      rows.push([q.id, q.title, val || "", text, nextRec]);
+    });
+
+    const sheet = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, sheet, deptCode.toUpperCase().substring(0, 31)); // Excel limit 31 chars
+  });
+
+  // Generate and download Excel file safely
+  const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const blob = new Blob([wbout], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+
+const date = new Date().toISOString().split("T")[0];
+link.download = `Tasheer_DMI_All_Departments_${date}.xlsx`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+
 /* =============================================================================
    EXPORT ALL DEPARTMENT REPORTS TO EXCEL (.xlsx) — Styled and Professional
    ============================================================================= */
@@ -983,9 +1035,3 @@ function exportAllReportsToExcel() {
   link.click();
   document.body.removeChild(link);
 }
-
-
-   
-/* -----------------------------------------------------------------------------
-   End of logic.js
------------------------------------------------------------------------------ */
