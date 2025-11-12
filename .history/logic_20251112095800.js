@@ -574,6 +574,9 @@ commentsBox.addEventListener("input", saveReportComments);
 
   // Determine maturity band
 const band = getMaturityBand(percent, deptData);
+document.getElementById("maturityBandDisplay").textContent = band.name;
+document.getElementById("maturityBandDesc").textContent = band.description;
+const band = getMaturityBand(percent, deptData);
 let bandColor = "#004D9C"; // default blue
 if (percent <= 25) bandColor = "#d32f2f";      // red
 else if (percent <= 50) bandColor = "#f57c00"; // orange
@@ -585,7 +588,6 @@ const bandEl = document.getElementById("maturityBandDisplay");
 bandEl.textContent = band.name;
 bandEl.style.color = bandColor;
 document.getElementById("maturityBandDesc").textContent = band.description;
-
 
 
 }

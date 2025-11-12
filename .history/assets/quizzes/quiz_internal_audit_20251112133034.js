@@ -13,7 +13,8 @@ DMI_QUESTION_SETS["internal_audit"] = {
     { name: "5) CAPA & Integration", questions: ["Q9", "Q10"] },
     { name: "6) Reporting & Management Dashboards", questions: ["Q11", "Q12"] },
     { name: "7) Training & Knowledge Management", questions: ["Q13", "Q14"] },
-    { name: "8) Digitalization Enhancement", questions: ["Q15", "Q16", "Q17", "Q18"] },
+
+        { name: "8) Digitalization Enhancement", questions: ["Q15", "Q16", "Q17", "Q18"] }
 
   ],
   questions: [

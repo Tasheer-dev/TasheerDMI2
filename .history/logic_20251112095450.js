@@ -572,22 +572,7 @@ loadReportComments(); // Load any previous comments for this dept
 commentsBox.addEventListener("input", saveReportComments);
 
 
-  // Determine maturity band
-const band = getMaturityBand(percent, deptData);
-let bandColor = "#004D9C"; // default blue
-if (percent <= 25) bandColor = "#d32f2f";      // red
-else if (percent <= 50) bandColor = "#f57c00"; // orange
-else if (percent <= 75) bandColor = "#1976d2"; // blue
-else if (percent <= 90) bandColor = "#388e3c"; // green
-else bandColor = "#2e7d32";                    // dark green
-
-const bandEl = document.getElementById("maturityBandDisplay");
-bandEl.textContent = band.name;
-bandEl.style.color = bandColor;
-document.getElementById("maturityBandDesc").textContent = band.description;
-
-
-
+  
 }
 
 
@@ -1000,9 +985,6 @@ function exportAllReportsToExcel() {
 }
 
 
-/* -----------------------------------------------------------------------------
-   he maturity band (like “Managed (Level 3)” or “Advanced (Level 4)”) to the final report
------------------------------------------------------------------------------ */
 
 
 

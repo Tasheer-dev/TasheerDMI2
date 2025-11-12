@@ -3,8 +3,8 @@ window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["internal_audit"] = {
   title: "Internal Audit Department Digital Maturity Assessment (DMI)",
   shortcode: "AUDIT",
-  totalQuestions: 18,
-  maxScore: 18 * 5,
+  totalQuestions: 14,
+  maxScore: 14 * 5,
   sections: [
     { name: "1) Service Catalogue & Offering Definition", questions: ["Q1", "Q2"] },
     { name: "2) Audit Planning & Scheduling", questions: ["Q3", "Q4"] },
@@ -12,9 +12,7 @@ DMI_QUESTION_SETS["internal_audit"] = {
     { name: "4) Policy & Methodology Management", questions: ["Q7", "Q8"] },
     { name: "5) CAPA & Integration", questions: ["Q9", "Q10"] },
     { name: "6) Reporting & Management Dashboards", questions: ["Q11", "Q12"] },
-    { name: "7) Training & Knowledge Management", questions: ["Q13", "Q14"] },
-    { name: "8) Digitalization Enhancement", questions: ["Q15", "Q16", "Q17", "Q18"] },
-
+    { name: "7) Training & Knowledge Management", questions: ["Q13", "Q14"] }
   ],
   questions: [
     {
@@ -170,7 +168,7 @@ DMI_QUESTION_SETS["internal_audit"] = {
         { value: 4, text: "4. Digital knowledge portal with metadata, ownership, and usage tracking." },
         { value: 5, text: "5. Intelligent repository with automated versioning, search, and continuous content improvement." }
       ]
-    },
+    }
 
 
       // New Digitalization Enhancement Questions

@@ -3,8 +3,8 @@ window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["internal_audit"] = {
   title: "Internal Audit Department Digital Maturity Assessment (DMI)",
   shortcode: "AUDIT",
-  totalQuestions: 18,
-  maxScore: 18 * 5,
+  totalQuestions: 14,
+  maxScore: 14 * 5,
   sections: [
     { name: "1) Service Catalogue & Offering Definition", questions: ["Q1", "Q2"] },
     { name: "2) Audit Planning & Scheduling", questions: ["Q3", "Q4"] },
@@ -12,9 +12,7 @@ DMI_QUESTION_SETS["internal_audit"] = {
     { name: "4) Policy & Methodology Management", questions: ["Q7", "Q8"] },
     { name: "5) CAPA & Integration", questions: ["Q9", "Q10"] },
     { name: "6) Reporting & Management Dashboards", questions: ["Q11", "Q12"] },
-    { name: "7) Training & Knowledge Management", questions: ["Q13", "Q14"] },
-    { name: "8) Digitalization Enhancement", questions: ["Q15", "Q16", "Q17", "Q18"] },
-
+    { name: "7) Training & Knowledge Management", questions: ["Q13", "Q14"] }
   ],
   questions: [
     {
@@ -170,7 +168,7 @@ DMI_QUESTION_SETS["internal_audit"] = {
         { value: 4, text: "4. Digital knowledge portal with metadata, ownership, and usage tracking." },
         { value: 5, text: "5. Intelligent repository with automated versioning, search, and continuous content improvement." }
       ]
-    },
+    }
 
 
       // New Digitalization Enhancement Questions
@@ -228,4 +226,12 @@ DMI_QUESTION_SETS["internal_audit"] = {
     { name: "91–100% (Optimized)", range: [91, 100], description: "Internal Audit is fully automated, data-driven, and predictive. AI and analytics identify control weaknesses, emerging risks, and process inefficiencies proactively. Continuous auditing, full system integration, and enterprise-wide assurance mechanisms are embedded." }
   ]
 };
-  
+  ],
+  maturityBands: [
+    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Internal Audit processes are manual and paper-based. No digital systems or centralized documentation. Reporting is reactive and fragmented." },
+    { name: "26–50% (Basic)", range: [26, 50], description: "Some audit plans, findings, and policies are documented digitally. Limited use of Excel or SharePoint tools. Manual coordination dominates." },
+    { name: "51–75% (Managed)", range: [51, 75], description: "Audit processes are standardized and supported by an Audit Management System (AMS). Findings and CAPAs are tracked systematically. KPIs and dashboards exist but may not be integrated across functions." },
+    { name: "76–90% (Advanced)", range: [76, 90], description: "Audit operations are digitally integrated across systems. Real-time dashboards, automated reporting, workflow-driven issue management, and digital sign-offs are in place. Data-driven audit planning supports governance." },
+    { name: "91–100% (Optimized)", range: [91, 100], description: "Internal Audit is fully automated, data-driven, and predictive. AI and analytics identify control weaknesses, emerging risks, and process inefficiencies proactively. Continuous auditing, full system integration, and enterprise-wide assurance mechanisms are embedded." }
+  ]
+};
