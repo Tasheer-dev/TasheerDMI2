@@ -12,8 +12,8 @@
     :root {
       --primary-blue: #004d9c;
       --sidebar-bg: #f8fafc;
-      /* NEW WIDTH: Increased from 300px to 350px */
-      --sidebar-width: 350px; 
+      /* NEW WIDTH */
+      --sidebar-width: 300px; 
     }
 
     body {
@@ -117,7 +117,7 @@
       color: #475569;
       font-size: 0.92rem;
       font-weight: 500;
-      display: flex; /* Added for badge alignment */
+      display: flex;
       align-items: center;
       gap: 8px;
       transition: all 0.2s;
@@ -125,14 +125,6 @@
 
     .admin-sidebar .nav-link.sub-link {
         padding-left: 30px; /* Indent sub-group links */
-    }
-    
-    .admin-sidebar .nav-link span:first-of-type {
-        /* Ensures the text content (name + icon) doesn't stretch too far */
-        flex-grow: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .admin-sidebar .nav-link i {
@@ -365,7 +357,7 @@
 <script src="assets/quizzes/quiz_procurement.js"></script>
 <script src="assets/quizzes/quiz_internal_audit.js"></script>
 <script src="assets/quizzes/quiz_data_analytics.js"></script>
-<script src="assets/quizzes/quiz_corporate_it.js"></script>
+<script src="assets/quizzes/quiz_corporate_IT.js"></script>
 <script src="assets/quizzes/quiz_infra_ops.js"></script>
 <script src="assets/quizzes/quiz_it_operations.js"></script>
 <script src="assets/quizzes/quiz_human_capital.js"></script>
@@ -407,7 +399,7 @@
               name: "Tech Strategy & EA Group", // Name for the header
               isSubGroup: true,
               groupDepartments: [
-                { code: "tech_strategy", name: "Tech Strategy & EA", icon: "bi-layers" }, 
+                { code: "tech_strategy", name: "Tech Strategy & Enterprise Architecture", icon: "bi-layers" }, 
                 { code: "sap_ERP", name: "SAP ERP", icon: "bi-diagram-3-fill" }, 
                 { code: "tech_ITSM", name: "Tech & ITSM", icon: "bi-tools" }, 
               ]
@@ -430,7 +422,7 @@
           ]
         },
         
-        // --- STANDALONE DEPARTMENTS ---
+        // --- STANDALONE DEPARTMENTS (SAP ERP and Tech ITSM removed) ---
         { code: "branches_ops", name: "Branches Operations", icon: "bi-shop" },
         { code: "finance", name: "Finance", icon: "bi-bank" },
         { code: "pmo", name: "PMO", icon: "bi-diagram-3" },
@@ -472,42 +464,6 @@
           }
       } 
     }
-
-    // Helper to get a single department's score (returns "X%" or "N/A")
-    function computeDepartmentAverage(deptCode) {
-        const sets = window.DMI_QUESTION_SETS || {};
-        const data = sets[deptCode];
-        if (!data) return "N/A";
-
-        const key = typeof getStorageKeyFor === "function"
-          ? getStorageKeyFor(deptCode)
-          : "tasheer_dmi_" + deptCode;
-
-        let saved = {};
-        try {
-            saved = JSON.parse(localStorage.getItem(key) || "{}");
-        } catch (e) {
-            console.error(`Error parsing data for ${deptCode}:`, e);
-            return "N/A";
-        }
-
-        let points = 0;
-        let answered = 0;
-        data.questions.forEach(q => {
-          const val = saved[q.id];
-          if (val) {
-            points += Number(val);
-            answered++;
-          }
-        });
-
-        if (answered === 0) return "N/A";
-
-        const maxScore = data.maxScore || (data.questions.length * 5);
-        const pct = maxScore ? (points / maxScore) * 100 : 0;
-        return Math.round(pct) + "%";
-    }
-
 
     // Function to compute the average maturity for a list of department codes
     function computeDivisionAverage(deptCodes) {
@@ -593,11 +549,6 @@
                       // --- Handle Sub-Grouping ---
                       const subGroup = deptOrGroup;
                       const subContainerId = `sub-container-${subGroup.code}`;
-                      
-                      // Calculate sub-group average
-                      const subGroupCodes = subGroup.groupDepartments.map(d => d.code);
-                      const subGroupAverage = computeDivisionAverage(subGroupCodes);
-
 
                       // Create Sub-Group Header
                       const subHeader = document.createElement("div");
@@ -605,10 +556,7 @@
                       subHeader.dataset.code = subGroup.code;
                       subHeader.innerHTML = `
                         <span>${subGroup.name}</span>
-                        <span class="d-flex align-items-center gap-2">
-                            <span class="division-average" title="Average Maturity">${subGroupAverage}</span>
-                            <i class="bi bi-chevron-down division-toggle expanded" style="font-size: 0.9rem;"></i>
-                        </span>
+                        <i class="bi bi-chevron-down division-toggle expanded" style="font-size: 0.9rem;"></i>
                       `;
                       deptContainer.appendChild(subHeader);
 
@@ -618,19 +566,12 @@
                       deptContainer.appendChild(subDeptContainer);
                       
                       subGroup.groupDepartments.forEach(dept => {
-                          const deptAverage = computeDepartmentAverage(dept.code); // Calculate score
                           const a = document.createElement("a");
                           a.href = "javascript:void(0)";
-                          a.className = "nav-link sub-link d-flex justify-content-between align-items-center"; // Add flex classes
+                          a.className = "nav-link sub-link"; // Add sub-link class for indentation
                           a.dataset.code = dept.code;
                           a.dataset.parentCode = group.code;
-                          a.innerHTML = `
-                              <span class="d-flex align-items-center gap-2">
-                                  <i class="bi ${dept.icon}"></i>
-                                  <span>${dept.name}</span>
-                              </span>
-                              <span class="badge rounded-pill bg-light text-primary small">${deptAverage}</span>
-                          `;
+                          a.innerHTML = `<i class="bi ${dept.icon}"></i><span>${dept.name}</span>`;
                           a.addEventListener("click", () => selectDepartment(dept.code));
                           subDeptContainer.appendChild(a);
                           departmentsSeen++;
@@ -652,19 +593,12 @@
 
                   } else {
                       // --- Handle regular department link in a division ---
-                      const deptAverage = computeDepartmentAverage(deptOrGroup.code); // Calculate score
                       const a = document.createElement("a");
                       a.href = "javascript:void(0)";
-                      a.className = "nav-link d-flex justify-content-between align-items-center"; // Add flex classes
+                      a.className = "nav-link";
                       a.dataset.code = deptOrGroup.code;
                       a.dataset.parentCode = group.code;
-                      a.innerHTML = `
-                          <span class="d-flex align-items-center gap-2">
-                              <i class="bi ${deptOrGroup.icon}"></i>
-                              <span>${deptOrGroup.name}</span>
-                          </span>
-                          <span class="badge rounded-pill bg-light text-primary small">${deptAverage}</span>
-                      `;
+                      a.innerHTML = `<i class="bi ${deptOrGroup.icon}"></i><span>${deptOrGroup.name}</span>`;
                       a.addEventListener("click", () => selectDepartment(deptOrGroup.code));
                       deptContainer.appendChild(a);
                       departmentsSeen++;
@@ -698,18 +632,11 @@
                   list.appendChild(separator);
               }
               
-              const deptAverage = computeDepartmentAverage(item.code); // Calculate score
               const a = document.createElement("a");
               a.href = "javascript:void(0)";
-              a.className = "nav-link d-flex justify-content-between align-items-center"; // Add flex classes
+              a.className = "nav-link";
               a.dataset.code = item.code;
-              a.innerHTML = `
-                  <span class="d-flex align-items-center gap-2">
-                      <i class="bi ${item.icon}"></i>
-                      <span>${item.name}</span>
-                  </span>
-                  <span class="badge rounded-pill bg-light text-primary small">${deptAverage}</span>
-              `;
+              a.innerHTML = `<i class="bi ${item.icon}"></i><span>${item.name}</span>`;
               a.addEventListener("click", () => selectDepartment(item.code));
               list.appendChild(a);
               departmentsSeen++;
@@ -768,7 +695,7 @@
         // Set Overall Maturity
         setOverallMaturity(averagePct);
         
-        // Set Questions Completed
+        // Set Departments Completed
         setQuestionsCompleted(completedCount, deptCount); 
         const cupLabelEl = document.getElementById("cupLabel");
         if(cupLabelEl) cupLabelEl.textContent = "Departments with data / Total departments";
@@ -779,7 +706,6 @@
             // Use a generic structure to get the band
             band = getMaturityBand(averagePct, { maxScore: 100 }); 
         }
-        // This calculates the level and updates the battery icon:
         setMaturityBand(getBandLevelFromName(band.name), band.name, band.description);
         
         // Set Status
@@ -803,18 +729,16 @@
         svg.innerHTML = "";
 
         const width = svg.clientWidth || 800;
+        const height = svg.clientHeight || 450;
         const marginY = 20;
-        const marginX = 250; // Increased from 180 for more label space
-        const fixedBarHeight = 20; // Fixed small height for the bar
-        const gap = 15; // Gap between bars
-        const barCount = departments.length || 1;
-        const requiredHeight = (barCount * (fixedBarHeight + gap)) + (2 * marginY);
-        
-        // Set dynamic SVG height based on content
-        svg.setAttribute("height", requiredHeight); 
-
+        const marginX = 140; // Increased margin for longer department names
+        const usableHeight = height - (2 * marginY);
         const usableWidth = width - marginX - 20;
         const maxBarWidth = usableWidth;
+
+        const barCount = departments.length || 1;
+        const barHeight = (usableHeight / barCount) - 10; 
+        const gap = 10;
         const startY = marginY;
 
         departments.forEach((dept, i) => {
@@ -855,7 +779,7 @@
             const barActualWidth = (percent / 100) * maxBarWidth;
 
             const x = marginX;
-            const y = startY + i * (fixedBarHeight + gap);
+            const y = startY + i * (barHeight + gap);
 
             const ns = "http://www.w3.org/2000/svg";
 
@@ -864,7 +788,7 @@
             bgRect.setAttribute("x", x);
             bgRect.setAttribute("y", y);
             bgRect.setAttribute("width", maxBarWidth);
-            bgRect.setAttribute("height", fixedBarHeight);
+            bgRect.setAttribute("height", barHeight);
             bgRect.setAttribute("rx", 6);
             bgRect.setAttribute("fill", "#e5e7eb");
             svg.appendChild(bgRect);
@@ -874,7 +798,7 @@
             rect.setAttribute("x", x);
             rect.setAttribute("y", y);
             rect.setAttribute("width", barActualWidth);
-            rect.setAttribute("height", fixedBarHeight);
+            rect.setAttribute("height", barHeight);
             rect.setAttribute("rx", 6);
             rect.setAttribute("fill", "#004d9c"); // Primary Blue
             svg.appendChild(rect);
@@ -882,7 +806,7 @@
             // Percentage text
             const pctText = document.createElementNS(ns, "text");
             pctText.setAttribute("x", x + barActualWidth + 5); 
-            pctText.setAttribute("y", y + fixedBarHeight / 2 + 4);
+            pctText.setAttribute("y", y + barHeight / 2 + 5);
             pctText.setAttribute("text-anchor", "start");
             pctText.setAttribute("font-size", "14");
             pctText.setAttribute("font-weight", "600");
@@ -893,7 +817,7 @@
                 // Add "No Data" label if no data
                 const noDataText = document.createElementNS(ns, "text");
                 noDataText.setAttribute("x", x + maxBarWidth / 2); 
-                noDataText.setAttribute("y", y + fixedBarHeight / 2 + 4);
+                noDataText.setAttribute("y", y + barHeight / 2 + 5);
                 noDataText.setAttribute("text-anchor", "middle");
                 noDataText.setAttribute("font-size", "12");
                 noDataText.setAttribute("fill", "#6b7280");
@@ -904,7 +828,7 @@
             // Department label (on the left)
             const label = document.createElementNS(ns, "text");
             label.setAttribute("x", marginX - 10);
-            label.setAttribute("y", y + fixedBarHeight / 2 + 4);
+            label.setAttribute("y", y + barHeight / 2 + 5);
             label.setAttribute("text-anchor", "end");
             label.setAttribute("font-size", "12");
             label.textContent = dept.name;
@@ -1104,22 +1028,18 @@
       svg.innerHTML = "";
 
       const width = svg.clientWidth || 800;
+      const height = svg.clientHeight || 450;
       const marginY = 20;
-      const marginX = 250; // Increased from 180 for more label space
-      const fixedBarHeight = 20; // Fixed small height for the bar
-      const gap = 15; // Gap between bars
+      const marginX = 140; 
+      const usableHeight = height - (2 * marginY);
+      const usableWidth = width - marginX - 20;
+      const maxBarWidth = usableWidth;
 
       const sections = deptData.sections || [];
       const barCount = sections.length || 1;
-      const requiredHeight = (barCount * (fixedBarHeight + gap)) + (2 * marginY);
-        
-      // Set dynamic SVG height based on content
-      svg.setAttribute("height", requiredHeight); 
-
-      const usableWidth = width - marginX - 20;
-      const maxBarWidth = usableWidth;
+      const barHeight = (usableHeight / barCount) - 10; 
+      const gap = 10;
       const startY = marginY;
-
 
       sections.forEach((sec, i) => {
         const qIds = sec.questions || [];
@@ -1133,7 +1053,7 @@
         const barActualWidth = (percent / 100) * maxBarWidth;
 
         const x = marginX;
-        const y = startY + i * (fixedBarHeight + gap);
+        const y = startY + i * (barHeight + gap);
 
         const ns = "http://www.w3.org/2000/svg";
 
@@ -1142,7 +1062,7 @@
         bgRect.setAttribute("x", x);
         bgRect.setAttribute("y", y);
         bgRect.setAttribute("width", maxBarWidth);
-        bgRect.setAttribute("height", fixedBarHeight);
+        bgRect.setAttribute("height", barHeight);
         bgRect.setAttribute("rx", 6);
         bgRect.setAttribute("fill", "#e5e7eb");
         svg.appendChild(bgRect);
@@ -1152,7 +1072,7 @@
         rect.setAttribute("x", x);
         rect.setAttribute("y", y);
         rect.setAttribute("width", barActualWidth);
-        rect.setAttribute("height", fixedBarHeight);
+        rect.setAttribute("height", barHeight);
         rect.setAttribute("rx", 6);
         rect.setAttribute("fill", "#3b82f6");
         svg.appendChild(rect);
@@ -1160,7 +1080,7 @@
         // Percentage text
         const pctText = document.createElementNS(ns, "text");
         pctText.setAttribute("x", x + barActualWidth + 5); 
-        pctText.setAttribute("y", y + fixedBarHeight / 2 + 4);
+        pctText.setAttribute("y", y + barHeight / 2 + 5);
         pctText.setAttribute("text-anchor", "start");
         pctText.setAttribute("font-size", "14");
         pctText.setAttribute("font-weight", "600");
@@ -1170,7 +1090,7 @@
         // Section label (on the left)
         const label = document.createElementNS(ns, "text");
         label.setAttribute("x", marginX - 10);
-        label.setAttribute("y", y + fixedBarHeight / 2 + 4);
+        label.setAttribute("y", y + barHeight / 2 + 5);
         label.setAttribute("text-anchor", "end");
         label.setAttribute("font-size", "12");
         label.textContent = sec.name;

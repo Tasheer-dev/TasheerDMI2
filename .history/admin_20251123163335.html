@@ -12,8 +12,8 @@
     :root {
       --primary-blue: #004d9c;
       --sidebar-bg: #f8fafc;
-      /* NEW WIDTH: Increased from 300px to 350px */
-      --sidebar-width: 350px; 
+      /* NEW WIDTH */
+      --sidebar-width: 300px; 
     }
 
     body {
@@ -407,7 +407,7 @@
               name: "Tech Strategy & EA Group", // Name for the header
               isSubGroup: true,
               groupDepartments: [
-                { code: "tech_strategy", name: "Tech Strategy & EA", icon: "bi-layers" }, 
+                { code: "tech_strategy", name: "Tech Strategy & Enterprise Architecture", icon: "bi-layers" }, 
                 { code: "sap_ERP", name: "SAP ERP", icon: "bi-diagram-3-fill" }, 
                 { code: "tech_ITSM", name: "Tech & ITSM", icon: "bi-tools" }, 
               ]
@@ -768,7 +768,7 @@
         // Set Overall Maturity
         setOverallMaturity(averagePct);
         
-        // Set Questions Completed
+        // Set Departments Completed
         setQuestionsCompleted(completedCount, deptCount); 
         const cupLabelEl = document.getElementById("cupLabel");
         if(cupLabelEl) cupLabelEl.textContent = "Departments with data / Total departments";
@@ -779,7 +779,6 @@
             // Use a generic structure to get the band
             band = getMaturityBand(averagePct, { maxScore: 100 }); 
         }
-        // This calculates the level and updates the battery icon:
         setMaturityBand(getBandLevelFromName(band.name), band.name, band.description);
         
         // Set Status
@@ -804,7 +803,7 @@
 
         const width = svg.clientWidth || 800;
         const marginY = 20;
-        const marginX = 250; // Increased from 180 for more label space
+        const marginX = 180; // Increased margin for longer department names
         const fixedBarHeight = 20; // Fixed small height for the bar
         const gap = 15; // Gap between bars
         const barCount = departments.length || 1;
@@ -1105,7 +1104,7 @@
 
       const width = svg.clientWidth || 800;
       const marginY = 20;
-      const marginX = 250; // Increased from 180 for more label space
+      const marginX = 180; // Increased margin for longer section names
       const fixedBarHeight = 20; // Fixed small height for the bar
       const gap = 15; // Gap between bars
 

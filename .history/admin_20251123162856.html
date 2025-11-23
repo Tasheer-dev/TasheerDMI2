@@ -12,8 +12,8 @@
     :root {
       --primary-blue: #004d9c;
       --sidebar-bg: #f8fafc;
-      /* NEW WIDTH: Increased from 300px to 350px */
-      --sidebar-width: 350px; 
+      /* NEW WIDTH */
+      --sidebar-width: 300px; 
     }
 
     body {
@@ -407,7 +407,7 @@
               name: "Tech Strategy & EA Group", // Name for the header
               isSubGroup: true,
               groupDepartments: [
-                { code: "tech_strategy", name: "Tech Strategy & EA", icon: "bi-layers" }, 
+                { code: "tech_strategy", name: "Tech Strategy & Enterprise Architecture", icon: "bi-layers" }, 
                 { code: "sap_ERP", name: "SAP ERP", icon: "bi-diagram-3-fill" }, 
                 { code: "tech_ITSM", name: "Tech & ITSM", icon: "bi-tools" }, 
               ]
@@ -768,7 +768,7 @@
         // Set Overall Maturity
         setOverallMaturity(averagePct);
         
-        // Set Questions Completed
+        // Set Departments Completed
         setQuestionsCompleted(completedCount, deptCount); 
         const cupLabelEl = document.getElementById("cupLabel");
         if(cupLabelEl) cupLabelEl.textContent = "Departments with data / Total departments";
@@ -779,7 +779,6 @@
             // Use a generic structure to get the band
             band = getMaturityBand(averagePct, { maxScore: 100 }); 
         }
-        // This calculates the level and updates the battery icon:
         setMaturityBand(getBandLevelFromName(band.name), band.name, band.description);
         
         // Set Status
@@ -803,18 +802,16 @@
         svg.innerHTML = "";
 
         const width = svg.clientWidth || 800;
+        const height = svg.clientHeight || 450;
         const marginY = 20;
-        const marginX = 250; // Increased from 180 for more label space
-        const fixedBarHeight = 20; // Fixed small height for the bar
-        const gap = 15; // Gap between bars
-        const barCount = departments.length || 1;
-        const requiredHeight = (barCount * (fixedBarHeight + gap)) + (2 * marginY);
-        
-        // Set dynamic SVG height based on content
-        svg.setAttribute("height", requiredHeight); 
-
+        const marginX = 140; // Increased margin for longer department names
+        const usableHeight = height - (2 * marginY);
         const usableWidth = width - marginX - 20;
         const maxBarWidth = usableWidth;
+
+        const barCount = departments.length || 1;
+        const barHeight = (usableHeight / barCount) - 10; 
+        const gap = 10;
         const startY = marginY;
 
         departments.forEach((dept, i) => {
@@ -855,7 +852,7 @@
             const barActualWidth = (percent / 100) * maxBarWidth;
 
             const x = marginX;
-            const y = startY + i * (fixedBarHeight + gap);
+            const y = startY + i * (barHeight + gap);
 
             const ns = "http://www.w3.org/2000/svg";
 
@@ -864,7 +861,7 @@
             bgRect.setAttribute("x", x);
             bgRect.setAttribute("y", y);
             bgRect.setAttribute("width", maxBarWidth);
-            bgRect.setAttribute("height", fixedBarHeight);
+            bgRect.setAttribute("height", barHeight);
             bgRect.setAttribute("rx", 6);
             bgRect.setAttribute("fill", "#e5e7eb");
             svg.appendChild(bgRect);
@@ -874,7 +871,7 @@
             rect.setAttribute("x", x);
             rect.setAttribute("y", y);
             rect.setAttribute("width", barActualWidth);
-            rect.setAttribute("height", fixedBarHeight);
+            rect.setAttribute("height", barHeight);
             rect.setAttribute("rx", 6);
             rect.setAttribute("fill", "#004d9c"); // Primary Blue
             svg.appendChild(rect);
@@ -882,7 +879,7 @@
             // Percentage text
             const pctText = document.createElementNS(ns, "text");
             pctText.setAttribute("x", x + barActualWidth + 5); 
-            pctText.setAttribute("y", y + fixedBarHeight / 2 + 4);
+            pctText.setAttribute("y", y + barHeight / 2 + 5);
             pctText.setAttribute("text-anchor", "start");
             pctText.setAttribute("font-size", "14");
             pctText.setAttribute("font-weight", "600");
@@ -893,7 +890,7 @@
                 // Add "No Data" label if no data
                 const noDataText = document.createElementNS(ns, "text");
                 noDataText.setAttribute("x", x + maxBarWidth / 2); 
-                noDataText.setAttribute("y", y + fixedBarHeight / 2 + 4);
+                noDataText.setAttribute("y", y + barHeight / 2 + 5);
                 noDataText.setAttribute("text-anchor", "middle");
                 noDataText.setAttribute("font-size", "12");
                 noDataText.setAttribute("fill", "#6b7280");
@@ -904,7 +901,7 @@
             // Department label (on the left)
             const label = document.createElementNS(ns, "text");
             label.setAttribute("x", marginX - 10);
-            label.setAttribute("y", y + fixedBarHeight / 2 + 4);
+            label.setAttribute("y", y + barHeight / 2 + 5);
             label.setAttribute("text-anchor", "end");
             label.setAttribute("font-size", "12");
             label.textContent = dept.name;
@@ -1104,22 +1101,18 @@
       svg.innerHTML = "";
 
       const width = svg.clientWidth || 800;
+      const height = svg.clientHeight || 450;
       const marginY = 20;
-      const marginX = 250; // Increased from 180 for more label space
-      const fixedBarHeight = 20; // Fixed small height for the bar
-      const gap = 15; // Gap between bars
+      const marginX = 140; 
+      const usableHeight = height - (2 * marginY);
+      const usableWidth = width - marginX - 20;
+      const maxBarWidth = usableWidth;
 
       const sections = deptData.sections || [];
       const barCount = sections.length || 1;
-      const requiredHeight = (barCount * (fixedBarHeight + gap)) + (2 * marginY);
-        
-      // Set dynamic SVG height based on content
-      svg.setAttribute("height", requiredHeight); 
-
-      const usableWidth = width - marginX - 20;
-      const maxBarWidth = usableWidth;
+      const barHeight = (usableHeight / barCount) - 10; 
+      const gap = 10;
       const startY = marginY;
-
 
       sections.forEach((sec, i) => {
         const qIds = sec.questions || [];
@@ -1133,7 +1126,7 @@
         const barActualWidth = (percent / 100) * maxBarWidth;
 
         const x = marginX;
-        const y = startY + i * (fixedBarHeight + gap);
+        const y = startY + i * (barHeight + gap);
 
         const ns = "http://www.w3.org/2000/svg";
 
@@ -1142,7 +1135,7 @@
         bgRect.setAttribute("x", x);
         bgRect.setAttribute("y", y);
         bgRect.setAttribute("width", maxBarWidth);
-        bgRect.setAttribute("height", fixedBarHeight);
+        bgRect.setAttribute("height", barHeight);
         bgRect.setAttribute("rx", 6);
         bgRect.setAttribute("fill", "#e5e7eb");
         svg.appendChild(bgRect);
@@ -1152,7 +1145,7 @@
         rect.setAttribute("x", x);
         rect.setAttribute("y", y);
         rect.setAttribute("width", barActualWidth);
-        rect.setAttribute("height", fixedBarHeight);
+        rect.setAttribute("height", barHeight);
         rect.setAttribute("rx", 6);
         rect.setAttribute("fill", "#3b82f6");
         svg.appendChild(rect);
@@ -1160,7 +1153,7 @@
         // Percentage text
         const pctText = document.createElementNS(ns, "text");
         pctText.setAttribute("x", x + barActualWidth + 5); 
-        pctText.setAttribute("y", y + fixedBarHeight / 2 + 4);
+        pctText.setAttribute("y", y + barHeight / 2 + 5);
         pctText.setAttribute("text-anchor", "start");
         pctText.setAttribute("font-size", "14");
         pctText.setAttribute("font-weight", "600");
@@ -1170,7 +1163,7 @@
         // Section label (on the left)
         const label = document.createElementNS(ns, "text");
         label.setAttribute("x", marginX - 10);
-        label.setAttribute("y", y + fixedBarHeight / 2 + 4);
+        label.setAttribute("y", y + barHeight / 2 + 5);
         label.setAttribute("text-anchor", "end");
         label.setAttribute("font-size", "12");
         label.textContent = sec.name;
