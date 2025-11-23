@@ -1020,3 +1020,52 @@ function getMaturityBand(percent, deptData) {
 /* -----------------------------------------------------------------------------
    End of logic.js
 ----------------------------------------------------------------------------- */
+
+
+function initAdminPage() {
+  if (typeof requireLogin === "function" && !requireLogin()) return;
+
+  const deptButtons = document.querySelectorAll("#adminDeptList .nav-link");
+
+  deptButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const deptCode = btn.dataset.code;
+
+      // Highlight active button
+      deptButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      // Load department dashboard
+      handleAdminDeptClick(deptCode);
+    });
+  });
+
+  // Auto-select FIRST department
+  if (deptButtons.length > 0) {
+    deptButtons[0].classList.add("active");
+    handleAdminDeptClick(deptButtons[0].dataset.code);
+  }
+}
+
+function initAdminPage() {
+  if (typeof requireLogin === 'function' && !requireLogin()) return;
+
+  const deptButtons = document.querySelectorAll("#adminDeptList .nav-link");
+
+  deptButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const deptCode = btn.dataset.code;
+
+      deptButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      handleAdminDeptClick(deptCode);
+    });
+  });
+
+  // Auto-load first department
+  if (deptButtons.length > 0) {
+    deptButtons[0].classList.add("active");
+    handleAdminDeptClick(deptButtons[0].dataset.code);
+  }
+}
