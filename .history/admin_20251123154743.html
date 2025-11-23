@@ -346,21 +346,32 @@
 
     // Department list – codes must match DMI_QUESTION_SETS keys
     const ADMIN_DEPARTMENT_GROUPS = [
-
-
-<!-- Product & Business Development -->
-            {
-          code: "Product_Business_Development",
-          name: "Product & Business Development",
+        {
+          code: "core_ops",
+          name: "Core Operations",
           departments: [
+            { code: "branches_ops", name: "Branches Operations", icon: "bi-shop" },
+            { code: "procurement", name: "Procurement", icon: "bi-cart-check" },
+
+            { code: "internal_audit", name: "Internal Auditing", icon: "bi-clipboard-data" },
+
+          ]
+        },
+        {
+          code: "corp_support",
+          name: "Corporate Support",
+          departments: [
+            { code: "finance", name: "Finance", icon: "bi-bank" },
+            { code: "pmo", name: "PMO", icon: "bi-diagram-3" },
             { code: "business_dev", name: "Business Development", icon: "bi-briefcase" },
             { code: "product_mgmt", name: "Product Management", icon: "bi-box-seam" },
             { code: "marketing", name: "MarkComm", icon: "bi-megaphone" },
+            { code: "business_excellence", name: "Business Excellence", icon: "bi-stars" },
+            { code: "human_capital", name: "HCD", icon: "bi-people" },
+            { code: "grc", name: "GRC", icon: "bi-shield-check" },
           ]
         },
-
-
-           {
+        {
           code: "it_services",
           name: "Digitalization & Technology",
           departments: [
@@ -369,65 +380,18 @@
             { code: "infra_ops", name: "Infrastructure & Ops", icon: "bi-hdd-stack" },
             { code: "solution_delivery", name: "Solution Delivery", icon: "bi-gear" },
             { code: "data_analytics", name: "Data Analytics", icon: "bi-bar-chart-line" },
-            { code: "sap_ERP", name: "SAP ERP", icon: "bi-diagram-3-fill" },
-            { code: "tech_ITSM", name: "Tech & ITSM", icon: "bi-tools" },
-            { code: "tech_strategy", name: "Enterprise Architecture", icon: "bi-layers" }
           ]
         },
-
-
-        {
-          code: "branches_ops",
-          name: "Branches Operations",
-          departments: [
-            { code: "branches_ops", name: "Branches Operations", icon: "bi-shop" },
-
-          ]
-        },
-
-        {
-          code: "internal_audit",
-          name: "internal audit",
-          departments: [
-
-            { code: "internal_audit", name: "Internal Auditing", icon: "bi-clipboard-data" },
-
-          ]
-        },
-
-
-        {
-          code: "Shared_Sev",
-          name: "Shared Services",
-          departments: [
-            { code: "human_capital", name: "HCD", icon: "bi-people" },
-            { code: "procurement", name: "Procurement", icon: "bi-cart-check" },
-
-          ]
-        },
-
-        {
-          code: "corp_support",
-          name: "Corporate Support",
-          departments: [
-            { code: "pmo", name: "PMO", icon: "bi-diagram-3" },
-            { code: "business_dev", name: "Business Development", icon: "bi-briefcase" },
-            { code: "product_mgmt", name: "Product Management", icon: "bi-box-seam" },
-            { code: "marketing", name: "MarkComm", icon: "bi-megaphone" },
-            { code: "business_excellence", name: "Business Excellence", icon: "bi-stars" },
-            { code: "grc", name: "GRC", icon: "bi-shield-check" },
-          ]
-        },
- 
         {
           code: "specialized",
           name: "Specialized Functions",
           departments: [
             { code: "legal_affairs", name: "Legal & Regulatory", icon: "bi-journal-text" },
             { code: "cybersecurity", name: "Cybersecurity", icon: "bi-shield-lock" },
-
+            { code: "sap_ERP", name: "SAP ERP", icon: "bi-diagram-3-fill" },
+            { code: "tech_ITSM", name: "Tech & ITSM", icon: "bi-tools" },
+            { code: "tech_strategy", name: "Enterprise Architecture", icon: "bi-layers" }
           ]
-          
         }
     ];
 

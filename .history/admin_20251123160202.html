@@ -348,18 +348,6 @@
     const ADMIN_DEPARTMENT_GROUPS = [
 
 
-<!-- Product & Business Development -->
-            {
-          code: "Product_Business_Development",
-          name: "Product & Business Development",
-          departments: [
-            { code: "business_dev", name: "Business Development", icon: "bi-briefcase" },
-            { code: "product_mgmt", name: "Product Management", icon: "bi-box-seam" },
-            { code: "marketing", name: "MarkComm", icon: "bi-megaphone" },
-          ]
-        },
-
-
            {
           code: "it_services",
           name: "Digitalization & Technology",
@@ -381,15 +369,18 @@
           name: "Branches Operations",
           departments: [
             { code: "branches_ops", name: "Branches Operations", icon: "bi-shop" },
+            { code: "procurement", name: "Procurement", icon: "bi-cart-check" },
+            { code: "internal_audit", name: "Internal Auditing", icon: "bi-clipboard-data" },
 
           ]
         },
 
         {
           code: "internal_audit",
-          name: "internal audit",
+          name: "internal_audit",
           departments: [
-
+            { code: "branches_ops", name: "Branches Operations", icon: "bi-shop" },
+            { code: "procurement", name: "Procurement", icon: "bi-cart-check" },
             { code: "internal_audit", name: "Internal Auditing", icon: "bi-clipboard-data" },
 
           ]
@@ -397,11 +388,12 @@
 
 
         {
-          code: "Shared_Sev",
-          name: "Shared Services",
+          code: "core_ops",
+          name: "Core Operations",
           departments: [
-            { code: "human_capital", name: "HCD", icon: "bi-people" },
+            { code: "branches_ops", name: "Branches Operations", icon: "bi-shop" },
             { code: "procurement", name: "Procurement", icon: "bi-cart-check" },
+            { code: "internal_audit", name: "Internal Auditing", icon: "bi-clipboard-data" },
 
           ]
         },
@@ -415,6 +407,7 @@
             { code: "product_mgmt", name: "Product Management", icon: "bi-box-seam" },
             { code: "marketing", name: "MarkComm", icon: "bi-megaphone" },
             { code: "business_excellence", name: "Business Excellence", icon: "bi-stars" },
+            { code: "human_capital", name: "HCD", icon: "bi-people" },
             { code: "grc", name: "GRC", icon: "bi-shield-check" },
           ]
         },
