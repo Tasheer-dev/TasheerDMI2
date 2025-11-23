@@ -183,6 +183,7 @@ sections: [
       ]
     }
   ],
+
   maturityBands: [
     { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Manual analytics, undocumented processes, reactive reporting." },
     { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation, partial automation, limited governance." },

@@ -147,7 +147,7 @@ DMI_QUESTION_SETS["finance"] = {
       ]
     }
   ],
-  maturityBands: [
+    maturityBands: [
     { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Manual analytics, undocumented processes, reactive reporting." },
     { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation, partial automation, limited governance." },
     { name: "51–75% (Managed)", range: [51, 75], description: "Majority of services documented; automation in pipelines; proactive monitoring." },

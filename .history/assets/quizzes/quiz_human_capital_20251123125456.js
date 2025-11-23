@@ -307,12 +307,13 @@ DMI_QUESTION_SETS["human_capital"] = {
         { value: 5, text: "5. Advanced identity, privacy monitoring, and automated compliance enforcement." }
       ]
     }
-  ],
-  maturityBands: [
-    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Manual, fragmented, reactive GRC processes. No system integration or central repository." },
-    { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation and spreadsheets. Limited digital tools with manual updates." },
-    { name: "51–75% (Managed)", range: [51, 75], description: "Defined workflows, documented processes, and digital tools in partial use." },
-    { name: "76–90% (Advanced)", range: [76, 90], description: "Integrated GRC platforms, automated dashboards, and cross-functional data flow." },
-    { name: "91–100% (Optimized)", range: [91, 100], description: "AI-driven predictive analytics, full automation, and continuous improvement culture." }
+
+  
+    maturityBands: [
+    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Manual, reactive operations; limited documentation or automation." },
+    { name: "26–50% (Basic)", range: [26, 50], description: "Some processes documented; basic automation and integration." },
+    { name: "51–75% (Managed)", range: [51, 75], description: "Majority of services documented; CI/CD partially automated; improving integrations." },
+    { name: "76–90% (Advanced)", range: [76, 90], description: "Fully documented processes; strong CI/CD automation; dashboards in place." },
+    { name: "91–100% (Optimized)", range: [91, 100], description: "Fully automated, end-to-end integrated, with continuous improvement tracked by metrics." }
   ]
 };

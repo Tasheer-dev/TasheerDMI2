@@ -192,11 +192,5 @@ DMI_QUESTION_SETS["business_excellence"] = {
       ]
     }
   ],
-  maturityBands: [
-    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Manual, fragmented, reactive GRC processes. No system integration or central repository." },
-    { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation and spreadsheets. Limited digital tools with manual updates." },
-    { name: "51–75% (Managed)", range: [51, 75], description: "Defined workflows, documented processes, and digital tools in partial use." },
-    { name: "76–90% (Advanced)", range: [76, 90], description: "Integrated GRC platforms, automated dashboards, and cross-functional data flow." },
-    { name: "91–100% (Optimized)", range: [91, 100], description: "AI-driven predictive analytics, full automation, and continuous improvement culture." }
-  ]
+  maturityBands: window.COMMON_MATURITY_BANDS
 };

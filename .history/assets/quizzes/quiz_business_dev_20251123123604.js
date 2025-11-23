@@ -193,10 +193,10 @@ DMI_QUESTION_SETS["business_dev"] = {
     }
   ],
   maturityBands: [
-    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Manual analytics, undocumented processes, reactive reporting." },
-    { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation, partial automation, limited governance." },
-    { name: "51–75% (Managed)", range: [51, 75], description: "Majority of services documented; automation in pipelines; proactive monitoring." },
-    { name: "76–90% (Advanced)", range: [76, 90], description: "Fully documented; strong automation; integrated workflows; compliance tracked." },
-    { name: "91–100% (Optimized)", range: [91, 100], description: "Predictive/self-healing pipelines, end-to-end automation, governed data ecosystem, continuous improvement with feedback loops." }
+    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Reactive operations; manual processes; limited visibility; siloed systems." },
+    { name: "26–50% (Developing)", range: [26, 50], description: "Basic digitization; partial integrations; early dashboards; some SOPs online." },
+    { name: "51–75% (Defined/Managed)", range: [51, 75], description: "Standardized processes with system support; regular reporting; growing automation." },
+    { name: "76–90% (Measured/Advanced)", range: [76, 90], description: "Integrated automation; real-time dashboards; strong compliance and analytics." },
+    { name: "91–100% (Optimized/Predictive)", range: [91, 100], description: "Predictive operations; AI-enabled decisions; continuous improvement embedded." }
   ]
 };
