@@ -61,13 +61,6 @@
       cursor: pointer; /* Makes it look clickable */
       user-select: none;
     }
-    
-    .division-header.active {
-        background: #e0ecff;
-        color: var(--primary-blue);
-        border-radius: 10px;
-        margin: 2px 8px;
-    }
 
     .division-average {
       font-size: 0.8rem;
@@ -87,7 +80,6 @@
     .division-toggle.expanded {
         transform: rotate(0deg);
     }
-
 
     .admin-sidebar .nav-link {
       padding: 10px 16px;
@@ -205,8 +197,8 @@
 
   <header class="admin-topbar">
     <div>
-      <div class="text-muted small">Dashboard View</div>
-      <h4 class="fw-semibold mb-0 text-primary" id="adminDeptTitle">Select a Department or Division</h4>
+      <div class="text-muted small">Department Dashboard</div>
+      <h4 class="fw-semibold mb-0 text-primary" id="adminDeptTitle">Select a Department</h4>
     </div>
     <div class="ms-auto d-flex align-items-center gap-2">
       <button id="openAssessmentBtn" class="btn btn-sm btn-outline-primary" type="button">
@@ -281,7 +273,7 @@
 
       <div class="col-lg-3 col-md-6">
         <div class="kpi-card text-center">
-          <div class="kpi-label">Progress</div>
+          <div class="kpi-label">Questions Completed</div>
           <svg id="cupGauge" width="150" height="170">
             <rect x="30" y="20" width="90" height="120" rx="20"
                   fill="none" stroke="#9ca3af" stroke-width="4" />
@@ -292,7 +284,7 @@
                   text-anchor="middle" font-size="24" font-weight="700"
                   fill="#111827">0/0</text>
           </svg>
-          <div class="kpi-sub" id="cupLabel">Answered / total questions</div>
+          <div class="kpi-sub">Answered / total</div>
         </div>
       </div>
       <div class="col-lg-3 col-md-6">
@@ -307,7 +299,7 @@
     <div class="row g-4">
       <div class="col-12">
         <div class="card card-section p-3">
-          <h6 class="fw-semibold mb-2" id="chartTitle">Area Breakdown (Sections Only)</h6>
+          <h6 class="fw-semibold mb-2">Area Breakdown (Sections Only)</h6>
           <svg id="sectionChart" width="100%" height="450"></svg>
         </div>
       </div>
@@ -342,12 +334,11 @@
   <script src="logic.js"></script>
 
   <script>
-    let currentAdminDeptCode = null; // null if a division is selected, or the department code
+    let currentAdminDeptCode = null;
 
     // Department list – codes must match DMI_QUESTION_SETS keys
     const ADMIN_DEPARTMENT_GROUPS = [
         {
-          code: "core_ops",
           name: "Core Operations",
           departments: [
             { code: "branches_ops", name: "Branches Operations", icon: "bi-shop" },
@@ -358,7 +349,6 @@
           ]
         },
         {
-          code: "corp_support",
           name: "Corporate Support",
           departments: [
             { code: "finance", name: "Finance", icon: "bi-bank" },
@@ -372,7 +362,6 @@
           ]
         },
         {
-          code: "it_services",
           name: "IT Services",
           departments: [
             { code: "it_operations", name: "IT Operations", icon: "bi-cpu" },
@@ -381,8 +370,7 @@
           ]
         },
         {
-          code: "specialized",
-          name: "Specialized Functions",
+          name: "Specialized Functions", // Group for the remaining 5 (excluded from grouping logic)
           departments: [
             { code: "legal_affairs", name: "Legal & Regulatory", icon: "bi-journal-text" },
             { code: "cybersecurity", name: "Cybersecurity", icon: "bi-shield-lock" },
@@ -405,16 +393,9 @@
       if (openBtn) openBtn.addEventListener("click", openAssessmentForCurrent);
 
       updateTasheerOverall();
-      
-      // Select the first division by default
-      if (ADMIN_DEPARTMENT_GROUPS.length > 0) {
-          selectDivision(ADMIN_DEPARTMENT_GROUPS[0]);
-      } else if (ADMIN_DEPARTMENTS.length > 0) {
-           selectDepartment(ADMIN_DEPARTMENTS[0].code);
-      }
     }
 
-    // Function to compute the average maturity for a list of department codes
+    // NEW FUNCTION TO COMPUTE DIVISION AVERAGE
     function computeDivisionAverage(deptCodes) {
       const sets = window.DMI_QUESTION_SETS || {};
       let totalPct = 0;
@@ -428,6 +409,7 @@
           ? getStorageKeyFor(code)
           : "tasheer_dmi_" + code;
 
+        // Use a try-catch for safe parsing if localStorage might contain non-JSON data
         let saved = {};
         try {
             saved = JSON.parse(localStorage.getItem(key) || "{}");
@@ -457,21 +439,22 @@
       return Math.round(totalPct / count) + "%";
     }
 
-    // UPDATED buildAdminSidebar for division selection and dropdown functionality
+    // UPDATED buildAdminSidebar for dropdown functionality
     function buildAdminSidebar() {
       const list = document.getElementById("adminDeptList");
       list.innerHTML = "";
 
+      let isFirstDepartment = true;
+
       ADMIN_DEPARTMENT_GROUPS.forEach(group => {
           const deptCodes = group.departments.map(d => d.code);
           const average = computeDivisionAverage(deptCodes);
-          const containerId = `dept-container-${group.code}`;
-          const headerId = `header-${group.code}`;
+          const containerId = `dept-container-${group.name.replace(/\s/g, '-')}`;
 
           // Create the division header with average score and toggle icon
           const groupHeader = document.createElement("div");
           groupHeader.className = "division-header";
-          groupHeader.id = headerId;
+          groupHeader.id = `header-${containerId}`;
           groupHeader.innerHTML = `
               <span>${group.name}</span>
               <span class="d-flex align-items-center gap-2">
@@ -486,12 +469,8 @@
           deptContainer.id = containerId;
           list.appendChild(deptContainer); // Start expanded
 
-          // Add click event listener to the whole header for both selection and toggle
-          groupHeader.addEventListener('click', (e) => {
-              // 1. Select the division
-              selectDivision(group);
-
-              // 2. Toggle visibility (Dropdown)
+          // Add toggle event listener
+          groupHeader.addEventListener('click', () => {
               const icon = groupHeader.querySelector('.division-toggle');
               if (deptContainer.style.display === 'none') {
                   deptContainer.style.display = ''; // Show
@@ -511,214 +490,24 @@
               a.className = "nav-link";
               a.dataset.code = dept.code;
               a.innerHTML = `<i class="bi ${dept.icon}"></i><span>${dept.name}</span>`;
-              a.addEventListener("click", () => selectDepartment(dept.code, group.code));
+              a.addEventListener("click", () => selectDepartment(dept.code));
               deptContainer.appendChild(a);
+
+              if (isFirstDepartment) {
+                  selectDepartment(dept.code);
+                  isFirstDepartment = false;
+              }
           });
       });
     }
 
-    // NEW FUNCTION: Selects a Division and displays its aggregated data
-    function selectDivision(group) {
-        currentAdminDeptCode = null; // Important: Clear department selection
-
-        // 1. Clear active state on all department links and update division header highlight
-        document.querySelectorAll("#adminDeptList .nav-link").forEach(link => {
-            link.classList.remove("active");
-        });
-        document.querySelectorAll(".division-header").forEach(header => {
-            header.classList.toggle("active", header.id === `header-${group.code}`);
-        });
-        
-        // 2. Calculate KPIs
-        
-        // a. Overall Maturity (Average)
-        const averagePctStr = computeDivisionAverage(group.departments.map(d => d.code));
-        const averagePct = parseInt(averagePctStr) || 0;
-
-        // b. Departments Completed (Cup KPI)
-        const departments = group.departments;
-        let deptCount = departments.length;
-        let completedCount = 0;
-
-        departments.forEach(dept => {
-            const key = typeof getStorageKeyFor === "function"
-              ? getStorageKeyFor(dept.code)
-              : "tasheer_dmi_" + dept.code;
-
-            let saved = {};
-            try {
-                saved = JSON.parse(localStorage.getItem(key) || "{}");
-            } catch (e) {
-                console.error(`Error parsing data for ${dept.code}:`, e);
-            }
-            
-            // Count as "completed" if it has any answers
-            if (Object.keys(saved).length > 0) {
-                completedCount++;
-            }
-        });
-        
-        // 3. Update Dashboard UI
-
-        const titleEl = document.getElementById("adminDeptTitle");
-        if (titleEl) titleEl.textContent = `${group.name} Division Overview`;
-        
-        // Set Overall Maturity
-        setOverallMaturity(averagePct);
-        
-        // Set Departments Completed
-        setQuestionsCompleted(completedCount, deptCount); 
-        const cupLabelEl = document.getElementById("cupLabel");
-        if(cupLabelEl) cupLabelEl.textContent = "Departments with data / Total departments";
-        
-        // Set Maturity Band
-        let band = { name: "Unclassified", description: "" };
-        if (typeof getMaturityBand === "function") {
-            // Use a generic structure to get the band
-            band = getMaturityBand(averagePct, { maxScore: 100 }); 
-        }
-        setMaturityBand(getBandLevelFromName(band.name), band.name, band.description);
-        
-        // Set Status
-        const statusEl = document.getElementById("adminDataStatus");
-        if (statusEl) {
-            if (completedCount === 0) statusEl.textContent = "No Data";
-            else if (completedCount < deptCount) statusEl.textContent = "Partial Coverage";
-            else statusEl.textContent = "Full Coverage";
-        }
-
-        // 4. Render Department Breakdown Chart
-        const chartTitleEl = document.getElementById("chartTitle");
-        if (chartTitleEl) chartTitleEl.textContent = `Department Maturity Breakdown in ${group.name}`;
-        renderDepartmentBreakdown(departments);
-    }
-    
-    // Renders a horizontal bar chart of department maturity scores
-    function renderDepartmentBreakdown(departments) {
-        const svg = document.getElementById("sectionChart");
-        if (!svg) return;
-        svg.innerHTML = "";
-
-        const width = svg.clientWidth || 800;
-        const height = svg.clientHeight || 450;
-        const marginY = 20;
-        const marginX = 140; // Increased margin for longer department names
-        const usableHeight = height - (2 * marginY);
-        const usableWidth = width - marginX - 20;
-        const maxBarWidth = usableWidth;
-
-        const barCount = departments.length || 1;
-        const barHeight = (usableHeight / barCount) - 10; 
-        const gap = 10;
-        const startY = marginY;
-
-        departments.forEach((dept, i) => {
-            const deptCode = dept.code;
-            const sets = window.DMI_QUESTION_SETS || {};
-            const deptData = sets[deptCode];
-            
-            // --- Calculate department score (Percent) ---
-            let percent = 0;
-            let answered = 0;
-            
-            if (deptData) {
-                const key = typeof getStorageKeyFor === "function"
-                ? getStorageKeyFor(deptCode)
-                : "tasheer_dmi_" + deptCode;
-                
-                let saved = {};
-                try {
-                    saved = JSON.parse(localStorage.getItem(key) || "{}");
-                } catch (e) {
-                    console.error(`Error parsing data for ${deptCode}:`, e);
-                }
-                
-                let totalPoints = 0;
-                deptData.questions.forEach(q => {
-                    const val = saved[q.id];
-                    if (val) {
-                        totalPoints += Number(val);
-                        answered++;
-                    }
-                });
-
-                const maxScore = deptData.maxScore || (deptData.questions.length * 5);
-                percent = maxScore ? Math.round((totalPoints / maxScore) * 100) : 0;
-            }
-            // --- End Calculation ---
-            
-            const barActualWidth = (percent / 100) * maxBarWidth;
-
-            const x = marginX;
-            const y = startY + i * (barHeight + gap);
-
-            const ns = "http://www.w3.org/2000/svg";
-
-            // Background bar (100%)
-            const bgRect = document.createElementNS(ns, "rect");
-            bgRect.setAttribute("x", x);
-            bgRect.setAttribute("y", y);
-            bgRect.setAttribute("width", maxBarWidth);
-            bgRect.setAttribute("height", barHeight);
-            bgRect.setAttribute("rx", 6);
-            bgRect.setAttribute("fill", "#e5e7eb");
-            svg.appendChild(bgRect);
-
-            // Value bar (horizontal)
-            const rect = document.createElementNS(ns, "rect");
-            rect.setAttribute("x", x);
-            rect.setAttribute("y", y);
-            rect.setAttribute("width", barActualWidth);
-            rect.setAttribute("height", barHeight);
-            rect.setAttribute("rx", 6);
-            rect.setAttribute("fill", "#004d9c"); // Primary Blue
-            svg.appendChild(rect);
-
-            // Percentage text
-            const pctText = document.createElementNS(ns, "text");
-            pctText.setAttribute("x", x + barActualWidth + 5); 
-            pctText.setAttribute("y", y + barHeight / 2 + 5);
-            pctText.setAttribute("text-anchor", "start");
-            pctText.setAttribute("font-size", "14");
-            pctText.setAttribute("font-weight", "600");
-            pctText.textContent = percent + "%";
-            svg.appendChild(pctText);
-            
-            if (answered === 0) {
-                // Add "No Data" label if no data
-                const noDataText = document.createElementNS(ns, "text");
-                noDataText.setAttribute("x", x + maxBarWidth / 2); 
-                noDataText.setAttribute("y", y + barHeight / 2 + 5);
-                noDataText.setAttribute("text-anchor", "middle");
-                noDataText.setAttribute("font-size", "12");
-                noDataText.setAttribute("fill", "#6b7280");
-                noDataText.textContent = "No Data";
-                svg.appendChild(noDataText);
-            }
-
-            // Department label (on the left)
-            const label = document.createElementNS(ns, "text");
-            label.setAttribute("x", marginX - 10);
-            label.setAttribute("y", y + barHeight / 2 + 5);
-            label.setAttribute("text-anchor", "end");
-            label.setAttribute("font-size", "12");
-            label.textContent = dept.name;
-            svg.appendChild(label);
-        });
-    }
-
-    // Original function: Selects a Department and displays its specific data
     function selectDepartment(deptCode) {
       currentAdminDeptCode = deptCode;
 
-      // 1. Update highlights
+      // highlight
       document.querySelectorAll("#adminDeptList .nav-link").forEach(link => {
         link.classList.toggle("active", link.dataset.code === deptCode);
       });
-      document.querySelectorAll(".division-header").forEach(header => {
-        header.classList.remove("active");
-      });
-
 
       const sets = window.DMI_QUESTION_SETS || {};
       const deptData = sets[deptCode];
@@ -756,16 +545,10 @@
 
       const titleEl = document.getElementById("adminDeptTitle");
       if (titleEl) titleEl.textContent = deptData.title || deptCode;
-      
-      const chartTitleEl = document.getElementById("chartTitle");
-      if (chartTitleEl) chartTitleEl.textContent = "Area Breakdown (Sections Only)";
 
       // Visual KPIs
       setOverallMaturity(percent);
       setQuestionsCompleted(answered, deptData.totalQuestions || deptData.questions.length);
-      const cupLabelEl = document.getElementById("cupLabel");
-      if(cupLabelEl) cupLabelEl.textContent = "Answered / total questions";
-
 
       let band = { name: "Unclassified", description: "" };
       if (typeof getMaturityBand === "function") {
@@ -788,20 +571,16 @@
       const meta = ADMIN_DEPARTMENTS.find(d => d.code === deptCode);
       const titleEl = document.getElementById("adminDeptTitle");
       if (titleEl) titleEl.textContent = (meta && meta.name) || deptCode;
-      const chartTitleEl = document.getElementById("chartTitle");
-      if (chartTitleEl) chartTitleEl.textContent = "Area Breakdown (Sections Only)";
 
       setOverallMaturity(0);
       setQuestionsCompleted(0, 0);
       setMaturityBand(1, "Unclassified", "");
       const statusEl = document.getElementById("adminDataStatus");
       if (statusEl) statusEl.textContent = "No Data";
-      const cupLabelEl = document.getElementById("cupLabel");
-      if(cupLabelEl) cupLabelEl.textContent = "Answered / total questions";
       clearSectionBreakdown();
     }
 
-    // ---- SVG KPI CONTROLLERS (Unchanged) ----
+    // ---- SVG KPI CONTROLLERS ----
     function setOverallMaturity(percent) {
       const arc = document.getElementById("overallGaugeArc");
       const txt = document.getElementById("overallGaugeText");
@@ -886,7 +665,7 @@
         return 0;
     }
 
-    // ---- SECTIONS BREAKDOWN (SVG) - MODIFIED FOR HORIZONTAL BARS (Department View) ----
+    // ---- SECTIONS BREAKDOWN (SVG) - MODIFIED FOR HORIZONTAL BARS ----
     function clearSectionBreakdown() {
       const svg = document.getElementById("sectionChart");
       if (svg) svg.innerHTML = "";
@@ -900,14 +679,14 @@
       const width = svg.clientWidth || 800;
       const height = svg.clientHeight || 450;
       const marginY = 20;
-      const marginX = 140; // Increased margin for section labels on the left
+      const marginX = 80; // Margin for labels on the left
       const usableHeight = height - (2 * marginY);
-      const usableWidth = width - marginX - 20;
+      const usableWidth = width - marginX - 20; // Room for percentage labels on the right
       const maxBarWidth = usableWidth;
 
       const sections = deptData.sections || [];
       const barCount = sections.length || 1;
-      const barHeight = (usableHeight / barCount) - 10; 
+      const barHeight = (usableHeight / barCount) - 10; // Height of each bar
       const gap = 10;
       const startY = marginY;
 
@@ -920,14 +699,14 @@
           if (val) total += Number(val);
         });
         const percent = Math.round((total / maxSecScore) * 100);
-        const barActualWidth = (percent / 100) * maxBarWidth;
+        const barWidth = (percent / 100) * maxBarWidth;
 
         const x = marginX;
         const y = startY + i * (barHeight + gap);
 
         const ns = "http://www.w3.org/2000/svg";
 
-        // Background bar (100%)
+        // Background bar (to show 100%)
         const bgRect = document.createElementNS(ns, "rect");
         bgRect.setAttribute("x", x);
         bgRect.setAttribute("y", y);
@@ -941,7 +720,7 @@
         const rect = document.createElementNS(ns, "rect");
         rect.setAttribute("x", x);
         rect.setAttribute("y", y);
-        rect.setAttribute("width", barActualWidth);
+        rect.setAttribute("width", barWidth);
         rect.setAttribute("height", barHeight);
         rect.setAttribute("rx", 6);
         rect.setAttribute("fill", "#3b82f6");
@@ -949,7 +728,7 @@
 
         // Percentage text
         const pctText = document.createElementNS(ns, "text");
-        pctText.setAttribute("x", x + barActualWidth + 5); 
+        pctText.setAttribute("x", x + barWidth + 5); // Position to the right of the bar
         pctText.setAttribute("y", y + barHeight / 2 + 5);
         pctText.setAttribute("text-anchor", "start");
         pctText.setAttribute("font-size", "14");
@@ -968,7 +747,7 @@
       });
     }
 
-    // ---- Tasheer overall company DMI (Unchanged) ----
+    // ---- Tasheer overall company DMI ----
     function computeTasheerOverallDMI() {
       const sets = window.DMI_QUESTION_SETS || {};
       let total = 0;
@@ -1019,12 +798,9 @@
       if (el) el.textContent = overall ? overall + "%" : "–";
     }
 
-    // ---- Open assessment page in new tab (Unchanged) ----
+    // ---- Open assessment page in new tab ----
     function openAssessmentForCurrent() {
-      if (!currentAdminDeptCode) {
-          alert("Please select a Department before opening the assessment.");
-          return;
-      }
+      if (!currentAdminDeptCode) return;
 
       const sets = window.DMI_QUESTION_SETS || {};
       const deptData = sets[currentAdminDeptCode];
