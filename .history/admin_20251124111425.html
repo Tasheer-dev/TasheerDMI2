@@ -9,10 +9,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
   <style>
+    #tasheerNeedle {
+  transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy effect */
+}
     :root {
       --primary-blue: #004d9c;
       --sidebar-bg: #f8fafc;
+      /* NEW WIDTH: Default set to 350px for consistency, will be controlled by JS/Slider */
       --sidebar-width: 350px; 
+      /* NEW: Transition for smooth width changes */
       transition: --sidebar-width 0.2s ease;
     }
 
@@ -21,22 +26,7 @@
       font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* --- CHART ANIMATIONS & STYLES --- */
-    
-    /* Smooth transition for the doughnut chart */
-    #dmiDoughnutFill {
-      transition: stroke-dashoffset 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    /* Hover effect for ladder bars */
-    .ladder-bar {
-      transition: opacity 0.2s;
-    }
-    .ladder-bar:hover {
-      opacity: 0.8;
-    }
-
-    /* --- SIDEBAR STYLES --- */
+    /* Sidebar */
     .admin-sidebar {
       width: var(--sidebar-width);
       position: fixed;
@@ -46,9 +36,10 @@
       overflow-y: auto;
       background: var(--sidebar-bg);
       border-right: 1px solid #e5e7eb;
+      /* Adjusted to accommodate the slider and new overall company button */
       padding-top: 130px; 
       z-index: 90;
-      transition: width 0.2s ease;
+      transition: width 0.2s ease; /* Match root transition */
     }
 
     .admin-sidebar-header {
@@ -63,24 +54,26 @@
       align-items: center;
       padding: 0 16px;
       z-index: 91;
-      transition: width 0.2s ease;
+      transition: width 0.2s ease; /* Match root transition */
     }
 
+    /* NEW SLIDER CONTAINER STYLE */
     .sidebar-controls {
         position: fixed;
-        top: 70px;
+        top: 70px; /* Below the main header */
         left: 0;
         width: var(--sidebar-width);
         padding: 5px 16px;
         background: var(--sidebar-bg);
         border-bottom: 1px solid #e5e7eb;
         z-index: 91;
-        transition: width 0.2s ease;
+        transition: width 0.2s ease; /* Match root transition */
     }
 
+    /* NEW COMPANY OVERALL LINK STYLE */
     .company-overall-link {
         position: fixed;
-        top: 105px;
+        top: 105px; /* Below the slider */
         left: 0;
         width: var(--sidebar-width);
         background: var(--sidebar-bg);
@@ -89,11 +82,12 @@
         transition: width 0.2s ease;
     }
     
+    /* DIVISION HEADER STYLES */
     .division-header {
-      text-transform: none;
+      text-transform: none; /* Changed from uppercase for better readability with larger font */
       font-weight: 700;
-      color: var(--primary-blue);
-      font-size: 1rem;
+      color: var(--primary-blue); /* Changed color to primary blue */
+      font-size: 1rem; /* Increased font size from 0.75rem */
       padding: 10px 16px 4px 16px;
       margin-top: 5px;
       display: flex;
@@ -110,6 +104,7 @@
         margin: 2px 8px;
     }
     
+    /* SUB-GROUP HEADER STYLES (Used for Tech Strategy & EA) */
     .sub-group-header {
         font-weight: 600;
         color: #1f2937;
@@ -147,6 +142,7 @@
         transform: rotate(0deg);
     }
 
+
     .admin-sidebar .nav-link {
       padding: 10px 16px;
       border-radius: 10px;
@@ -154,7 +150,7 @@
       color: #475569;
       font-size: 0.92rem;
       font-weight: 500;
-      display: flex;
+      display: flex; /* Added for badge alignment */
       align-items: center;
       gap: 8px;
       transition: all 0.2s;
@@ -172,10 +168,11 @@
     }
 
     .admin-sidebar .nav-link.sub-link {
-        padding-left: 30px;
+        padding-left: 30px; /* Indent sub-group links */
     }
     
     .admin-sidebar .nav-link span:first-of-type {
+        /* Ensures the text content (name + icon) doesn't stretch too far */
         flex-grow: 1;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -197,6 +194,7 @@
       font-weight: 600;
     }
     
+    /* Standalone department separator */
     .department-separator {
         border-top: 1px solid #e5e7eb;
         margin: 10px 16px;
@@ -206,7 +204,7 @@
     .admin-topbar {
       position: fixed;
       top: 0;
-      left: var(--sidebar-width);
+      left: var(--sidebar-width); /* Adjusted */
       right: 0;
       height: 70px;
       background: #ffffff;
@@ -215,15 +213,15 @@
       align-items: center;
       padding: 0 20px;
       z-index: 100;
-      transition: left 0.2s ease;
+      transition: left 0.2s ease; /* Match root transition */
     }
 
     /* Content */
     .admin-content {
-      margin-left: var(--sidebar-width);
+      margin-left: var(--sidebar-width); /* Adjusted */
       padding: 90px 24px 32px;
       min-height: 100vh;
-      transition: margin-left 0.2s ease;
+      transition: margin-left 0.2s ease; /* Match root transition */
     }
 
     .kpi-card {
@@ -232,7 +230,6 @@
       border: none;
       box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
       padding: 18px 20px;
-      height: 100%; /* Ensure cards align in height */
     }
 
     .kpi-label {
@@ -358,92 +355,100 @@
     <div class="row g-3 mb-4">
 
       <div class="col-lg-3 col-md-6">
-         <div class="kpi-card text-center">
-            <div class="kpi-label">Maturity Band</div>
 
-            <svg id="batteryGauge" width="200" height="90">
-                <rect id="batteryFrame"
-                      x="10" y="20"
-                      width="160" height="60"
-                      rx="8"
-                      stroke="#9ca3af"
-                      stroke-width="4"
-                      fill="none"></rect>
+ <div class="kpi-card text-center">
+    <div class="kpi-label">Maturity Band</div>
 
-                <rect x="170" y="40" width="15" height="20" rx="3" fill="#9ca3af"></rect>
+    <svg id="batteryGauge" width="200" height="90">
+        <rect id="batteryFrame"
+              x="10" y="20"
+              width="160" height="60"
+              rx="8"
+              stroke="#9ca3af"
+              stroke-width="4"
+              fill="none"></rect>
 
-                <g id="batteryBars"></g>
+        <rect x="170" y="40" width="15" height="20" rx="3" fill="#9ca3af"></rect>
 
-                <text id="batteryRecharge"
-                      x="90" y="60"
-                      text-anchor="middle"
-                      font-size="22"
-                      fill="#b91c1c"
-                      style="display: none;">⚡</text>
-            </svg>
+        <g id="batteryBars"></g>
 
-            <div id="bandLabel" class="fw-bold mt-2">–</div>
-            <div id="bandDesc" class="kpi-sub"></div>
-            <div class="mt-2">
-                <span class="badge bg-light text-dark" id="adminDataStatus">No Data</span>
-            </div>
-        </div>
-      </div>
+        <text id="batteryRecharge"
+              x="90" y="60"
+              text-anchor="middle"
+              font-size="22"
+              fill="#b91c1c"
+              style="display: none;">⚡</text>
+    </svg>
 
-      <div class="col-lg-3 col-md-6">
-        <div class="kpi-card text-center">
-          <div class="kpi-label">Overall Maturity</div>
-          <svg id="overallGauge" width="240" height="170" viewBox="0 0 240 120">
-            <path d="M20 110 A100 100 0 0 1 220 110"
-                  fill="none" stroke="#e5e7eb" stroke-width="20" />
-            <path id="overallGaugeArc"
-                  d="M20 110 A100 100 0 0 1 220 110"
-                  fill="none" stroke="#3b82f6" stroke-width="20"
-                  stroke-linecap="round"
-                  stroke-dasharray="314" stroke-dashoffset="314" />
-            <text id="overallGaugeText"
-                  x="120" y="85"
-                  text-anchor="middle"
-                  font-size="28" font-weight="700"
-                  fill="#111827">0%</text>
-          </svg>
-          <div class="kpi-sub">Percentage of max score</div>
-        </div>
-      </div>
+    <div id="bandLabel" class="fw-bold mt-2">–</div>
+    <div id="bandDesc" class="kpi-sub"></div>
+    <div class="mt-2">
+        <span class="badge bg-light text-dark" id="adminDataStatus">No Data</span>
+    </div>
+</div>
+
+
+    </div>
+<div class="col-lg-3 col-md-6">
+  <div class="kpi-card text-center" style="position: relative; overflow: hidden;">
+    <div class="kpi-label" style="margin-bottom: -10px; position: relative; z-index: 2;">Total Tasheer Overall DMI</div>
+    
+    <svg id="tasheerGauge" viewBox="0 0 200 110" style="width: 100%; height: auto; margin-top: 10px;">
+      <defs>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.2"/>
+        </filter>
+      </defs>
+
+      <path d="M 20 100 A 80 80 0 0 1 44.7 49.4" fill="none" stroke="#ef4444" stroke-width="25" />
+      
+      <path d="M 48.5 44.5 A 80 80 0 0 1 96 20.1" fill="none" stroke="#f97316" stroke-width="25" />
+      
+      <path d="M 104 20.1 A 80 80 0 0 1 151.5 44.5" fill="none" stroke="#eab308" stroke-width="25" />
+      
+      <path d="M 155.3 49.4 A 80 80 0 0 1 180 100" fill="none" stroke="#84cc16" stroke-width="25" />
+      
+      <path d="M 183 95 A 80 80 0 0 0 183 95" fill="none" stroke="#16a34a" stroke-width="0" /> 
+      <g id="tasheerNeedle" transform="rotate(-90, 100, 100)" style="transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);">
+        <path d="M 100 100 L 85 100 L 100 25 L 115 100 Z" fill="#1f2937" filter="url(#shadow)"/>
+        <circle cx="100" cy="100" r="8" fill="#1f2937" stroke="white" stroke-width="2"/>
+      </g>
+      
+      <text x="100" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="#6b7280" letter-spacing="1">OVERALL SCORE</text>
+    </svg>
+
+    <div id="adminTasheerOverall" class="kpi-value" style="margin-top: -20px; position: relative; z-index: 5;">0%</div>
+    <div class="kpi-sub">Average maturity across all departments</div>
+  </div>
+</div>
+
 
       <div class="col-lg-3 col-md-6">
         <div class="kpi-card text-center">
           <div class="kpi-label">Progress</div>
-          
-          <div class="d-flex justify-content-center align-items-end" style="height: 170px;">
-            <svg id="ladderGauge" width="120" height="160"></svg>
-          </div>
-          
-          <div class="kpi-sub mt-2" id="cupLabel">Answered / total questions</div>
+          <svg id="cupGauge" width="150" height="170">
+            <rect x="30" y="20" width="90" height="120" rx="20"
+                  fill="none" stroke="#9ca3af" stroke-width="4" />
+            <rect id="cupFill"
+                  x="30" y="140" width="90" height="0" rx="20"
+                  fill="#3b82f6" />
+            <text id="cupText" x="75" y="90"
+                  text-anchor="middle" font-size="24" font-weight="700"
+                  fill="#111827">0/0</text>
+          </svg>
+          <div class="kpi-sub" id="cupLabel">Answered / total questions</div>
         </div>
       </div>
-
       <div class="col-lg-3 col-md-6">
-        <div class="kpi-card text-center">
+        <div class="kpi-card">
           <div class="kpi-label">Total Tasheer Overall DMI</div>
-          
-          <div class="position-relative d-inline-block mt-2" style="width: 160px; height: 160px;">
-              <svg id="dmiDoughnut" width="160" height="160" viewBox="0 0 160 160" style="transform: rotate(-90deg);">
-                  <circle cx="80" cy="80" r="70" fill="none" stroke="#e5e7eb" stroke-width="15" />
-                  <circle id="dmiDoughnutFill" cx="80" cy="80" r="70" fill="none" stroke="#004d9c" stroke-width="15" 
-                          stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" />
-              </svg>
-              <div class="position-absolute top-50 start-50 translate-middle text-center">
-                  <div id="dmiDoughnutText" class="fw-bold text-dark" style="font-size: 2rem;">0%</div>
-                  <div class="text-muted small" style="font-size: 0.65rem;">Overall</div>
-              </div>
-          </div>
-
-          <div class="kpi-sub mt-2">Average maturity across all departments</div>
+          <div id="adminTasheerOverall" class="kpi-value">–</div>
+                    <svg id="overallGauge" width="240" height="130" viewBox="0 0 240 120">
+          <div class="kpi-sub">Average maturity across all departments</div>
         </div>
       </div>
 
-    </div> <div class="row g-4">
+    <div class="row g-4">
       <div class="col-12">
         <div class="card card-section p-3">
           <h6 class="fw-semibold mb-2" id="chartTitle">Area Breakdown (Sections Only)</h6>
@@ -456,26 +461,26 @@
   <script src="maturitybands.js"></script>
 
   <script src="assets/quizzes/quiz_finance.js"></script>
-  <script src="assets/quizzes/quiz_branches_ops.js"></script>
-  <script src="assets/quizzes/quiz_pmo.js"></script>
-  <script src="assets/quizzes/quiz_business_dev.js"></script>
-  <script src="assets/quizzes/quiz_product_mgmt.js"></script>
-  <script src="assets/quizzes/quiz_marketing.js"></script>
-  <script src="assets/quizzes/quiz_solution_delivery.js"></script>
-  <script src="assets/quizzes/quiz_procurement.js"></script>
-  <script src="assets/quizzes/quiz_internal_audit.js"></script>
-  <script src="assets/quizzes/quiz_data_analytics.js"></script>
-  <script src="assets/quizzes/quiz_corporate_it.js"></script>
-  <script src="assets/quizzes/quiz_infra_ops.js"></script>
-  <script src="assets/quizzes/quiz_it_operations.js"></script>
-  <script src="assets/quizzes/quiz_human_capital.js"></script>
-  <script src="assets/quizzes/quiz_grc.js"></script>
-  <script src="assets/quizzes/quiz_business_excellence.js"></script>
-  <script src="assets/quizzes/quiz_legal_affairs.js"></script>
-  <script src="assets/quizzes/quiz_cybersecurity.js"></script>
-  <script src="assets/quizzes/quiz_sap_ERP.js"></script>
-  <script src="assets/quizzes/quiz_tech_ITSM.js"></script>
-  <script src="assets/quizzes/quiz_tech_strategy.js"></script>
+<script src="assets/quizzes/quiz_branches_ops.js"></script>
+<script src="assets/quizzes/quiz_pmo.js"></script>
+<script src="assets/quizzes/quiz_business_dev.js"></script>
+<script src="assets/quizzes/quiz_product_mgmt.js"></script>
+<script src="assets/quizzes/quiz_marketing.js"></script>
+<script src="assets/quizzes/quiz_solution_delivery.js"></script>
+<script src="assets/quizzes/quiz_procurement.js"></script>
+<script src="assets/quizzes/quiz_internal_audit.js"></script>
+<script src="assets/quizzes/quiz_data_analytics.js"></script>
+<script src="assets/quizzes/quiz_corporate_it.js"></script>
+<script src="assets/quizzes/quiz_infra_ops.js"></script>
+<script src="assets/quizzes/quiz_it_operations.js"></script>
+<script src="assets/quizzes/quiz_human_capital.js"></script>
+<script src="assets/quizzes/quiz_grc.js"></script>
+<script src="assets/quizzes/quiz_business_excellence.js"></script>
+<script src="assets/quizzes/quiz_legal_affairs.js"></script>
+<script src="assets/quizzes/quiz_cybersecurity.js"></script>
+<script src="assets/quizzes/quiz_sap_ERP.js"></script>
+<script src="assets/quizzes/quiz_tech_ITSM.js"></script>
+<script src="assets/quizzes/quiz_tech_strategy.js"></script>
 
   <script src="users.js"></script>
   <script src="logic.js"></script>
@@ -590,6 +595,8 @@
       const openBtn = document.getElementById("openAssessmentBtn");
       if (openBtn) openBtn.addEventListener("click", openAssessmentForCurrent);
 
+      // updateTasheerOverall(); // Now handled inside selectCompanyOverall/selectDepartment/selectDivision
+      
       // Select the Company Overall view by default
       selectCompanyOverall(); 
     }
@@ -910,7 +917,7 @@
         
         // Update the badge in the new overall link
         document.getElementById('companyOverallBadge').textContent = totalPct ? totalPct + "%" : "N/A";
-        updateTasheerOverall(); // Also updates the Doughnut chart
+        updateTasheerOverall(); // Also updates the KPI card value
 
     }
 
@@ -1037,7 +1044,7 @@
         // a. Get all department codes, including nested ones
         const departmentsInGroup = group.departments.flatMap(d => d.isSubGroup ? d.groupDepartments : [d]);
         
-        // b. Overall Maturity, Departments Completed (Ladder KPI)
+        // b. Overall Maturity, Departments Completed (Cup KPI)
         const metrics = computeDivisionOrGroupMetrics(departmentsInGroup.map(d => d.code));
         const averagePct = parseInt(metrics.percentage) || 0;
         const completedCount = metrics.completedCount;
@@ -1051,7 +1058,7 @@
         // Set Overall Maturity
         setOverallMaturity(averagePct);
         
-        // Set Questions Completed (Ladder)
+        // Set Questions Completed
         setQuestionsCompleted(completedCount, deptCount); 
         const cupLabelEl = document.getElementById("cupLabel");
         if(cupLabelEl) cupLabelEl.textContent = "Departments with data / Total departments";
@@ -1078,7 +1085,7 @@
         renderDepartmentBreakdown(departmentsInGroup);
     }
     
-    // Renders a horizontal bar chart of department maturity scores
+    // Renders a horizontal bar chart of department maturity scores (Unchanged logic for individual department view)
     function renderDepartmentBreakdown(departments) {
         const svg = document.getElementById("sectionChart");
         if (!svg) return;
@@ -1092,6 +1099,7 @@
         const barCount = departments.length || 1;
         const requiredHeight = (barCount * (fixedBarHeight + gap)) + (2 * marginY);
         
+        // Set dynamic SVG height based on content
         svg.setAttribute("height", requiredHeight); 
 
         const usableWidth = width - marginX - 20;
@@ -1273,6 +1281,11 @@
       updateTasheerOverall();
     }
     
+    // ... (updateEmptyDashboard and all SVG KPI controllers remain the same) ...
+    // Note: The rest of the functions (updateEmptyDashboard, setOverallMaturity, setQuestionsCompleted, 
+    // setMaturityBand, getBandLevelFromName, clearSectionBreakdown, renderSectionBreakdown) remain unchanged 
+    // from the previous iteration unless they were already updated to support new features.
+
     function updateEmptyDashboard(deptCode) {
       currentAdminDeptCode = deptCode;
       isCompanyOverallSelected = false; 
@@ -1294,7 +1307,7 @@
       document.getElementById('companyOverallLink').classList.remove('active');
     }
 
-    // ---- SVG KPI CONTROLLERS ----
+    // ---- SVG KPI CONTROLLERS (Unchanged) ----
     function setOverallMaturity(percent) {
       const arc = document.getElementById("overallGaugeArc");
       const txt = document.getElementById("overallGaugeText");
@@ -1304,85 +1317,22 @@
       txt.textContent = percent + "%";
     }
 
-    // ---------------------------------------------------------
-    // NEW LADDER DIAGRAM LOGIC (Replaces old cup gauge)
-    // ---------------------------------------------------------
     function setQuestionsCompleted(answered, total) {
-      const svg = document.getElementById("ladderGauge");
-      if (!svg) return;
-      
-      svg.innerHTML = "";
-      
-      if (total <= 0) return;
+      const pct = total ? (answered / total) : 0;
+      const maxHeight = 120;
+      const fillHeight = maxHeight * pct;
+      const yPos = 140 - fillHeight;
 
-      const svgHeight = 160;
-      const svgWidth = 120;
-      const barWidth = 80;
-      const xPos = (svgWidth - barWidth) / 2; 
-      
-      // Cap visual steps to prevent lines from becoming too thin
-      const visualTotal = total > 20 ? 20 : total; 
-      const visualAnswered = total > 20 ? Math.round((answered / total) * 20) : answered;
+      const fill = document.getElementById("cupFill");
+      fill.setAttribute("height", fillHeight);
+      fill.setAttribute("y", yPos);
 
-      const gap = 4;
-      const barHeight = (svgHeight - ((visualTotal - 1) * gap)) / visualTotal;
-
-      const ns = "http://www.w3.org/2000/svg";
-
-      // Side Rails
-      const railLeft = document.createElementNS(ns, "rect");
-      railLeft.setAttribute("x", xPos - 5);
-      railLeft.setAttribute("y", 0);
-      railLeft.setAttribute("width", 2);
-      railLeft.setAttribute("height", svgHeight);
-      railLeft.setAttribute("fill", "#d1d5db");
-      svg.appendChild(railLeft);
-
-      const railRight = document.createElementNS(ns, "rect");
-      railRight.setAttribute("x", xPos + barWidth + 3);
-      railRight.setAttribute("y", 0);
-      railRight.setAttribute("width", 2);
-      railRight.setAttribute("height", svgHeight);
-      railRight.setAttribute("fill", "#d1d5db");
-      svg.appendChild(railRight);
-
-      // Draw Steps from Bottom to Top
-      for (let i = 0; i < visualTotal; i++) {
-        const isCompleted = i < visualAnswered;
-        
-        // i=0 is the bottom-most bar
-        const y = svgHeight - ((i + 1) * barHeight) - (i * gap);
-
-        const rect = document.createElementNS(ns, "rect");
-        rect.setAttribute("x", xPos);
-        rect.setAttribute("y", y);
-        rect.setAttribute("width", barWidth);
-        rect.setAttribute("height", barHeight);
-        rect.setAttribute("rx", 3);
-        rect.setAttribute("class", "ladder-bar");
-        rect.setAttribute("fill", isCompleted ? "#3b82f6" : "#e5e7eb");
-        
-        const title = document.createElementNS(ns, "title");
-        title.textContent = isCompleted ? "Completed" : "Pending";
-        rect.appendChild(title);
-
-        svg.appendChild(rect);
-      }
-      
-      // Text Overlay
-      const text = document.createElementNS(ns, "text");
-      text.setAttribute("x", svgWidth / 2);
-      text.setAttribute("y", svgHeight / 2 + 5);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("font-weight", "bold");
-      text.setAttribute("font-size", "24");
-      text.setAttribute("fill", "#1e293b");
-      text.setAttribute("style", "text-shadow: 0px 0px 4px rgba(255,255,255,0.8); pointer-events: none;");
-      text.textContent = `${answered}/${total}`;
-      svg.appendChild(text);
+      const txt = document.getElementById("cupText");
+      txt.textContent = `${answered}/${total}`;
     }
 
     function setMaturityBand(level, label, description) {
+
         const barsContainer = document.getElementById("batteryBars");
         const frame = document.getElementById("batteryFrame");
         const recharge = document.getElementById("batteryRecharge");
@@ -1427,6 +1377,7 @@
 
         document.getElementById("bandLabel").textContent = label || "Unclassified";
         document.getElementById("bandDesc").textContent = description || "";
+
     }
 
     function getBandLevelFromName(name) {
@@ -1532,49 +1483,22 @@
       return computeDivisionOrGroupMetrics(allDeptCodes);
     }
     
-    // ---- Tasheer overall company DMI ----
+    // ---- Tasheer overall company DMI (Unchanged logic, just calling the new helper) ----
     function computeTasheerOverallDMI() {
       const metrics = computeCompanyOverallMetrics();
+      // Returns the overall percentage number
       return parseInt(metrics.percentage) || 0; 
     }
 
-    // ---------------------------------------------------------
-    // NEW DOUGHNUT CHART LOGIC (Replaces old needle/text update)
-    // ---------------------------------------------------------
     function updateTasheerOverall() {
-      const overall = computeTasheerOverallDMI(); 
-      
-      // Update the Centered Text
-      const textEl = document.getElementById("dmiDoughnutText");
-      if (textEl) {
-          textEl.textContent = overall + "%";
-      }
-
-      // Update the Doughnut Stroke
-      const circle = document.getElementById("dmiDoughnutFill");
-      if (circle) {
-          // Radius = 70. Circumference = 2 * PI * 70 ≈ 440
-          const radius = 70;
-          const circumference = 2 * Math.PI * radius;
-          
-          // Calculate offset: 
-          // 0% progress = full offset (440)
-          // 100% progress = 0 offset
-          const offset = circumference - ((overall / 100) * circumference);
-          
-          circle.style.strokeDasharray = `${circumference}`;
-          circle.style.strokeDashoffset = offset;
-          
-          // Dynamic Color based on score
-          if (overall < 50) circle.setAttribute("stroke", "#ef4444"); // Red
-          else if (overall < 75) circle.setAttribute("stroke", "#f97316"); // Orange
-          else circle.setAttribute("stroke", "#004d9c"); // Blue
-      }
+      const overall = computeTasheerOverallDMI();
+      const el = document.getElementById("adminTasheerOverall");
+      if (el) el.textContent = overall ? overall + "%" : "–";
     }
 
     // ---- Open assessment page in new tab (Updated to check for overall view) ----
     function openAssessmentForCurrent() {
-      if (isCompanyOverallSelected) { 
+      if (isCompanyOverallSelected) { // Prevent opening assessment on company view
           alert("The Company Overall view is for analysis only. Please select a specific Department before opening the assessment.");
           return;
       }
@@ -1595,6 +1519,37 @@
       );
 
       window.open("index.html", "_blank");
+    }
+
+
+
+
+    // ---- Tasheer overall company DMI (Updated for Needle Gauge) ----
+    function computeTasheerOverallDMI() {
+      const metrics = computeCompanyOverallMetrics();
+      return parseInt(metrics.percentage) || 0; 
+    }
+
+    function updateTasheerOverall() {
+      const overall = computeTasheerOverallDMI();
+      
+      // 1. Update the Text Value
+      const el = document.getElementById("adminTasheerOverall");
+      if (el) el.textContent = overall + "%";
+
+      // 2. Rotate the Needle
+      // The gauge covers 180 degrees (from -90 to +90)
+      // 0% = -90deg, 100% = +90deg
+      const needle = document.getElementById("tasheerNeedle");
+      if (needle) {
+          // Calculation: (Percent / 100 * 180) - 90
+          const degrees = (overall / 100 * 180) - 90;
+          
+          // Clamp values to ensure it stays within gauge
+          const finalDeg = Math.max(-90, Math.min(90, degrees));
+          
+          needle.setAttribute("transform", `rotate(${finalDeg}, 100, 100)`);
+      }
     }
   </script>
 </body>
