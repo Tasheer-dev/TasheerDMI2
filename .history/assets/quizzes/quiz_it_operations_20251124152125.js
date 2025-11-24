@@ -1,6 +1,6 @@
 // Generated IT Operations Digital Maturity Assessment (8 Areas, 32 Questions)
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
-DMI_QUESTION_SETS["it_operations"] = {
+DMI_QUESTION_SETS["it_operations_new"] = {
   title: "Platforms & IT Solution Operations Digital Maturity Assessment (DMI)",
   shortcode: "PLATOPS_NEW",
   totalQuestions: 32,
@@ -256,13 +256,6 @@ DMI_QUESTION_SETS["it_operations"] = {
       {value:4,text:"4. Automated scaling & testing"},
       {value:5,text:"5. Full seasonal load simulation & automation"}
     ]}
-  ],
-
-  maturityBands: [
-    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Reactive, manual operations, limited documentation." },
-    { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation; limited automation; reactive monitoring." },
-    { name: "51–75% (Managed)", range: [51, 75], description: "Documented services, growing automation, proactive monitoring." },
-    { name: "76–90% (Advanced)", range: [76, 90], description: "Strong automation, documentation, and integrated workflows." },
-    { name: "91–100% (Optimized)", range: [91, 100], description: "Predictive, self-healing, fully optimized digital operations." }
   ]
 };
+

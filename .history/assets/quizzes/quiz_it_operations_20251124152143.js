@@ -1,6 +1,6 @@
 // Generated IT Operations Digital Maturity Assessment (8 Areas, 32 Questions)
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
-DMI_QUESTION_SETS["it_operations"] = {
+DMI_QUESTION_SETS["it_operations_new"] = {
   title: "Platforms & IT Solution Operations Digital Maturity Assessment (DMI)",
   shortcode: "PLATOPS_NEW",
   totalQuestions: 32,
@@ -256,6 +256,7 @@ DMI_QUESTION_SETS["it_operations"] = {
       {value:4,text:"4. Automated scaling & testing"},
       {value:5,text:"5. Full seasonal load simulation & automation"}
     ]}
+
   ],
 
   maturityBands: [
