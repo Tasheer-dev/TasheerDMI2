@@ -2,6 +2,13 @@
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["legal_affairs"] = {
   title: "legal Affairs (Legal & Regulatory) Department Digital Maturity Assessment (DMI)",
+  
+
+
+// Extended Legal Affairs Digital Maturity Assessment (Added Area 8 with 6 New Questions)
+window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
+DMI_QUESTION_SETS["legal_affairs_extended"] = {
+  title: "Legal Affairs (Legal & Regulatory) Department Digital Maturity Assessment (DMI) – Extended",
   shortcode: "LEGAL_EXT",
   totalQuestions: 20,
   maxScore: 20 * 5,
@@ -99,6 +106,25 @@ DMI_QUESTION_SETS["legal_affairs"] = {
         { value: 3, text: "3. Regular evaluation of new legal tools." },
         { value: 4, text: "4. Formal innovation roadmap and improvement tracking." },
         { value: 5, text: "5. Continuous legal innovation culture with measurable digital transformation impact." }
+      ]
+    }
+  ]
+};
+
+
+
+
+
+
+    {
+      id: "Q14", area: "Knowledge", title: "Knowledge Repository & Templates",
+      text: "Is there a centralized digital knowledge repository containing legal templates, regulatory guidelines, policy drafts, and contract samples with access controls and version management?",
+      choices: [
+        { value: 1, text: "1. Ad-hoc activity; documents scattered across systems." },
+        { value: 2, text: "2. Shared drive repository with basic structure." },
+        { value: 3, text: "3. Centralized repository with limited access control." },
+        { value: 4, text: "4. Fully digital knowledge base with version tracking and access logs." },
+        { value: 5, text: "5. Intelligent legal knowledge hub with AI search, metadata tagging, and update automation." }
       ]
     }
   ],

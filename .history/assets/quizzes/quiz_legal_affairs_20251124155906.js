@@ -2,6 +2,10 @@
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["legal_affairs"] = {
   title: "legal Affairs (Legal & Regulatory) Department Digital Maturity Assessment (DMI)",
+// Extended Legal Affairs Digital Maturity Assessment (Added Area 8 with 6 New Questions)
+window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
+DMI_QUESTION_SETS["legal_affairs_extended"] = {
+  title: "Legal Affairs (Legal & Regulatory) Department Digital Maturity Assessment (DMI) – Extended",
   shortcode: "LEGAL_EXT",
   totalQuestions: 20,
   maxScore: 20 * 5,
@@ -100,6 +104,8 @@ DMI_QUESTION_SETS["legal_affairs"] = {
         { value: 4, text: "4. Formal innovation roadmap and improvement tracking." },
         { value: 5, text: "5. Continuous legal innovation culture with measurable digital transformation impact." }
       ]
+    }
+  ]
     }
   ],
   maturityBands: [

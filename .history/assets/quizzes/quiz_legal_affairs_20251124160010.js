@@ -101,6 +101,7 @@ DMI_QUESTION_SETS["legal_affairs"] = {
         { value: 5, text: "5. Continuous legal innovation culture with measurable digital transformation impact." }
       ]
     }
+
   ],
   maturityBands: [
     { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Legal processes are manual and reactive. No digital systems for case, contract, or compliance tracking. Documentation is scattered and non-standardized." },

@@ -101,6 +101,25 @@ DMI_QUESTION_SETS["legal_affairs"] = {
         { value: 5, text: "5. Continuous legal innovation culture with measurable digital transformation impact." }
       ]
     }
+  ]
+};
+
+
+
+
+
+
+    {
+      id: "Q14", area: "Knowledge", title: "Knowledge Repository & Templates",
+      text: "Is there a centralized digital knowledge repository containing legal templates, regulatory guidelines, policy drafts, and contract samples with access controls and version management?",
+      choices: [
+        { value: 1, text: "1. Ad-hoc activity; documents scattered across systems." },
+        { value: 2, text: "2. Shared drive repository with basic structure." },
+        { value: 3, text: "3. Centralized repository with limited access control." },
+        { value: 4, text: "4. Fully digital knowledge base with version tracking and access logs." },
+        { value: 5, text: "5. Intelligent legal knowledge hub with AI search, metadata tagging, and update automation." }
+      ]
+    }
   ],
   maturityBands: [
     { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Legal processes are manual and reactive. No digital systems for case, contract, or compliance tracking. Documentation is scattered and non-standardized." },
