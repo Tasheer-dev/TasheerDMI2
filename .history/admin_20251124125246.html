@@ -505,7 +505,7 @@
             // NEW SUB-GROUPING STRUCTURE
             { 
               code: "tech_strategy_group",
-              name: "Tech Strategy & EA Unit", // Name for the header
+              name: "Tech Strategy & EA Group", // Name for the header
               isSubGroup: true,
               groupDepartments: [
                 { code: "tech_strategy", name: "Tech Strategy & EA", icon: "bi-layers" }, 
@@ -752,9 +752,7 @@
                       subHeader.innerHTML = `
                         <span>${subGroup.name}</span>
                         <span class="d-flex align-items-center gap-2">
-<span class="division-average" title="Average Maturity">
-  ${(subGroupAverage !== "N/A") ? subGroupAverage + "%" : "N/A"}
-</span>
+                            <span class="division-average" title="Average Maturity">${subGroupAverage}</span>
                             <i class="bi bi-chevron-down division-toggle expanded" style="font-size: 0.9rem;"></i>
                         </span>
                       `;
