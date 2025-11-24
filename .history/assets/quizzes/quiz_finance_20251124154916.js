@@ -249,7 +249,7 @@ DMI_QUESTION_SETS["finance"] = {
       {value:4,text:"4. Integrated workflows"},
       {value:5,text:"5. Fully unified digital partnership"}
     ]}
-      ],
+  ],
 
   maturityBands: [
     { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Reactive, manual operations, limited documentation." },
@@ -260,3 +260,4 @@ DMI_QUESTION_SETS["finance"] = {
   ]
 };
 
+};

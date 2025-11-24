@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tasheer Org Structure</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f9f9f9;
+        text-align: center;
+        padding: 40px;
+    }
+
+    .logo {
+        margin-bottom: 30px;
+    }
+
+    .org-row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 50px;
+        flex-wrap: wrap;
+    }
+
+    .dept {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+        width: 200px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .dept:hover {
+        transform: scale(1.05);
+    }
+
+    .dept-title {
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .sub-item {
+        background: #eaf4ff;
+        padding: 8px;
+        border-radius: 6px;
+        margin: 5px 0;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .sub-item:hover {
+        background: #d6ebff;
+    }
+
+    /* Colors */
+    .c-purple { background:#d8b4f0; }
+    .c-blue   { background:#53c5ff; }
+    .c-green  { background:#2eae63; }
+    .c-mint   { background:#aef1cd; }
+    .c-gray   { background:#bfbfbf; }
+    .c-light  { background:#cbe8ff; }
+    .c-violet { background:#8e8df3; }
+
+</style>
+</head>
+
+<body>
+
+<img class="logo" src="assets/img/company-logo.png" width="350">
+
+<!-- Top-Level Departments -->
+<div class="org-row">
+
+
+    <!-- Product & Business Development -->
+    <div class="dept" onclick="alert('Product & Business Development')">
+        <div class="dept-title c-green">Product & Business Development</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Business Development')">Business Development</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Product Management')">Product Management</div>
+                <div class="sub-item" onclick="event.stopPropagation(); alert('Product Management')">Product Management</div>
+
+    </div>
+
+    <!-- Digitization -->
+    <div class="dept" onclick="alert('Digitization & Technology')">
+        <div class="dept-title c-blue">Digitization & Technology</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Tech Strategy')">Tech Strategy & Enterprise Architecture</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Solution Development')">Solution Development & Delivery</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Platforms & IT Ops')">Platforms & IT Solution Operations</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Infrastructure')">Infrastructure & Operations</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Corporate IT')">Corporate IT</div>
+    </div>
+
+    <!-- Business Excellence -->
+    <div class="dept" onclick="alert('Business Excellence')">
+        <div class="dept-title c-green">Business Excellence</div>
+    </div>
+
+
+    <!-- Strategy -->
+    <div class="dept" onclick="alert('Strategy & Performance')">
+        <div class="dept-title c-purple">Strategy & Performance</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('PMO')">PMO</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('VSCs Setup')">VSCs Setup</div>
+    </div>
+
+    <!-- GRR -->
+    <div class="dept" onclick="alert('Governance Risk & Compliance')">
+        <div class="dept-title c-light">GRR</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Governance')">Governance</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Risk')">Risk</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Compliance')">Compliance</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Cybersecurity')">Cybersecurity</div>
+    </div>
+
+    <!-- Legal -->
+    <div class="dept" onclick="alert('Legal & Regulatory')">
+        <div class="dept-title c-gray">Legal & Regulatory</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Legal Affairs')">Legal Affairs</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Audit')">Audit</div>
+    </div>
+
+    <!-- Operations -->
+    <div class="dept" onclick="alert('Operations')">
+        <div class="dept-title c-mint">Operations</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('VSC Ops')">VSCs Operations</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Field Ops')">Field Operations</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Customer Care')">Customer Care</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Business Ops')">Business Operations</div>
+    </div>
+
+    <!-- Finance -->
+    <div class="dept" onclick="alert('Finance')">
+        <div class="dept-title c-blue">Finance</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Accounting')">Accounting & Treasury</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Budgeting')">Budgeting & Planning</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Financial Reporting')">Financial Reporting</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Financial Reporting')">Financial Reporting</div>
+    </div>
+
+    <!-- Shared Services -->
+    <div class="dept" onclick="alert('Shared Services')">
+        <div class="dept-title c-violet">Shared Services</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('HR')">Human Resources</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Procurement')">Procurement</div>
+        <div class="sub-item" onclick="event.stopPropagation(); alert('Admin')">Admin</div>
+    </div>
+
+</div>
+
+</body>
+</html>

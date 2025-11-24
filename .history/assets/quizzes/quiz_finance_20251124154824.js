@@ -3,6 +3,7 @@ window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["finance"] = {
   title: "Finance Department Digital Maturity Assessment (DMI)",
   shortcode: "FIN",
+
   totalQuestions: 32,
   maxScore: 32 * 5,
 
@@ -249,14 +250,5 @@ DMI_QUESTION_SETS["finance"] = {
       {value:4,text:"4. Integrated workflows"},
       {value:5,text:"5. Fully unified digital partnership"}
     ]}
-      ],
-
-  maturityBands: [
-    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Reactive, manual operations, limited documentation." },
-    { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation; limited automation; reactive monitoring." },
-    { name: "51–75% (Managed)", range: [51, 75], description: "Documented services, growing automation, proactive monitoring." },
-    { name: "76–90% (Advanced)", range: [76, 90], description: "Strong automation, documentation, and integrated workflows." },
-    { name: "91–100% (Optimized)", range: [91, 100], description: "Predictive, self-healing, fully optimized digital operations." }
   ]
 };
-
