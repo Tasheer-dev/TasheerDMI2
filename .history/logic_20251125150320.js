@@ -391,8 +391,6 @@ function randomizeSelections() {
  * Groups questions into logical areas (based on q.area or q.group) 
  * and calculates a % score for each area + final average.
  */
-
-// BY AREA
 function computeDynamicAreaScores(deptData, savedMap) {
   const areas = {};
   const order = [];
@@ -416,8 +414,6 @@ function computeDynamicAreaScores(deptData, savedMap) {
   const overall = Math.round(results.reduce((sum, r) => sum + r.percent, 0) / results.length);
   return { areas: results, overall };
 }
-
-// BY Section
 
 function computeDynamicAreaScores(deptData, savedMap) {
   const sections = deptData.sections.map(sec => {

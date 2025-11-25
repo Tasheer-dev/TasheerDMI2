@@ -417,7 +417,7 @@ function computeDynamicAreaScores(deptData, savedMap) {
   return { areas: results, overall };
 }
 
-// BY Section
+// BY AREA
 
 function computeDynamicAreaScores(deptData, savedMap) {
   const sections = deptData.sections.map(sec => {

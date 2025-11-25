@@ -392,7 +392,7 @@ function randomizeSelections() {
  * and calculates a % score for each area + final average.
  */
 
-// BY AREA
+
 function computeDynamicAreaScores(deptData, savedMap) {
   const areas = {};
   const order = [];
@@ -417,7 +417,7 @@ function computeDynamicAreaScores(deptData, savedMap) {
   return { areas: results, overall };
 }
 
-// BY Section
+// BY AREA
 
 function computeDynamicAreaScores(deptData, savedMap) {
   const sections = deptData.sections.map(sec => {
