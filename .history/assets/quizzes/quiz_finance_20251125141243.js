@@ -25,85 +25,85 @@ DMI_QUESTION_SETS["finance"] = {
       {value:4,text:"4. Fully governed roadmap"},
       {value:5,text:"5. Continually updated with KPIs"}
     ]},
-    { id:"Q2", title:"Leadership Support", text:"How strong is leadership support for digital finance initiatives?", choices:[
-      {value:1,text:"1. Minimal"},
-      {value:2,text:"2. Some support"},
-      {value:3,text:"3. Structured sponsorship"},
-      {value:4,text:"4. Strong support with funding"},
-      {value:5,text:"5. Fully proactive leadership"}
-    ]},
-    { id:"Q3", title:"Digital Governance", text:"How structured is governance for finance systems and digital initiatives?", choices:[
-      {value:1,text:"1. None"},
-      {value:2,text:"2. Partial governance"},
-      {value:3,text:"3. Standard committees"},
-      {value:4,text:"4. Integrated governance"},
-      {value:5,text:"5. Data-driven governance decisions"}
-    ]},
-    { id:"Q4", title:"Risk & Controls Integration", text:"How well are financial risks and controls digitized into workflows?", choices:[
-      {value:1,text:"1. Manual controls"},
-      {value:2,text:"2. Basic checks"},
-      {value:3,text:"3. Standard digital controls"},
-      {value:4,text:"4. Automated controls"},
-      {value:5,text:"5. Predictive control automation"}
-    ]},
+    // { id:"Q2", title:"Leadership Support", text:"How strong is leadership support for digital finance initiatives?", choices:[
+    //   {value:1,text:"1. Minimal"},
+    //   {value:2,text:"2. Some support"},
+    //   {value:3,text:"3. Structured sponsorship"},
+    //   {value:4,text:"4. Strong support with funding"},
+    //   {value:5,text:"5. Fully proactive leadership"}
+    // ]},
+    // { id:"Q3", title:"Digital Governance", text:"How structured is governance for finance systems and digital initiatives?", choices:[
+    //   {value:1,text:"1. None"},
+    //   {value:2,text:"2. Partial governance"},
+    //   {value:3,text:"3. Standard committees"},
+    //   {value:4,text:"4. Integrated governance"},
+    //   {value:5,text:"5. Data-driven governance decisions"}
+    // ]},
+    // { id:"Q4", title:"Risk & Controls Integration", text:"How well are financial risks and controls digitized into workflows?", choices:[
+    //   {value:1,text:"1. Manual controls"},
+    //   {value:2,text:"2. Basic checks"},
+    //   {value:3,text:"3. Standard digital controls"},
+    //   {value:4,text:"4. Automated controls"},
+    //   {value:5,text:"5. Predictive control automation"}
+    // ]},
 
-    { id:"Q5", title:"ERP Usage", text:"How effectively is the ERP used for finance operations?", choices:[
-      {value:1,text:"1. Mostly manual work"},
-      {value:2,text:"2. Basic ERP features"},
-      {value:3,text:"3. Standard ERP utilization"},
-      {value:4,text:"4. Advanced automation"},
-      {value:5,text:"5. Fully optimized ERP usage"}
-    ]},
-    { id:"Q6", title:"System Integration", text:"Are financial systems integrated with other departments (HR, procurement, sales)?", choices:[
-      {value:1,text:"1. No integration"},
-      {value:2,text:"2. Limited integration"},
-      {value:3,text:"3. Standard integration"},
-      {value:4,text:"4. Automated data flows"},
-      {value:5,text:"5. Fully unified finance ecosystem"}
-    ]},
-    { id:"Q7", title:"Process Automation", text:"How automated are key finance processes?", choices:[
-      {value:1,text:"1. Fully manual"},
-      {value:2,text:"2. Partially automated"},
-      {value:3,text:"3. Standard automation"},
-      {value:4,text:"4. Advanced automation (RPA)"},
-      {value:5,text:"5. Fully automated digital workflows"}
-    ]},
-    { id:"Q8", title:"Digital Document Management", text:"How mature is the digitization of finance-related documents?", choices:[
-      {value:1,text:"1. Paper-based"},
-      {value:2,text:"2. Basic digital files"},
-      {value:3,text:"3. Structured digital archive"},
-      {value:4,text:"4. Automated document flows"},
-      {value:5,text:"5. Full document intelligence"}
-    ]},
+    // { id:"Q5", title:"ERP Usage", text:"How effectively is the ERP used for finance operations?", choices:[
+    //   {value:1,text:"1. Mostly manual work"},
+    //   {value:2,text:"2. Basic ERP features"},
+    //   {value:3,text:"3. Standard ERP utilization"},
+    //   {value:4,text:"4. Advanced automation"},
+    //   {value:5,text:"5. Fully optimized ERP usage"}
+    // ]},
+    // { id:"Q6", title:"System Integration", text:"Are financial systems integrated with other departments (HR, procurement, sales)?", choices:[
+    //   {value:1,text:"1. No integration"},
+    //   {value:2,text:"2. Limited integration"},
+    //   {value:3,text:"3. Standard integration"},
+    //   {value:4,text:"4. Automated data flows"},
+    //   {value:5,text:"5. Fully unified finance ecosystem"}
+    // ]},
+    // { id:"Q7", title:"Process Automation", text:"How automated are key finance processes?", choices:[
+    //   {value:1,text:"1. Fully manual"},
+    //   {value:2,text:"2. Partially automated"},
+    //   {value:3,text:"3. Standard automation"},
+    //   {value:4,text:"4. Advanced automation (RPA)"},
+    //   {value:5,text:"5. Fully automated digital workflows"}
+    // ]},
+    // { id:"Q8", title:"Digital Document Management", text:"How mature is the digitization of finance-related documents?", choices:[
+    //   {value:1,text:"1. Paper-based"},
+    //   {value:2,text:"2. Basic digital files"},
+    //   {value:3,text:"3. Structured digital archive"},
+    //   {value:4,text:"4. Automated document flows"},
+    //   {value:5,text:"5. Full document intelligence"}
+    // ]},
 
-    { id:"Q9", title:"Financial Data Quality", text:"How reliable and consistent is financial data?", choices:[
-      {value:1,text:"1. Poor quality"},
-      {value:2,text:"2. Some validation"},
-      {value:3,text:"3. Standard quality controls"},
-      {value:4,text:"4. Automated cleansing"},
-      {value:5,text:"5. High-quality governed data"}
-    ]},
-    { id:"Q10", title:"Reporting Automation", text:"How automated are recurring financial reports?", choices:[
-      {value:1,text:"1. Manual reports"},
-      {value:2,text:"2. Semi-manual Excel"},
-      {value:3,text:"3. Standard reporting tools"},
-      {value:4,text:"4. Automated reporting pipelines"},
-      {value:5,text:"5. Real-time financial dashboards"}
-    ]},
-    { id:"Q11", title:"Analytics Capability", text:"How effectively is analytics used for financial decision-making?", choices:[
-      {value:1,text:"1. Minimal analytics"},
-      {value:2,text:"2. Basic analysis"},
-      {value:3,text:"3. Standard BI dashboards"},
-      {value:4,text:"4. Predictive analytics"},
-      {value:5,text:"5. Full financial data science usage"}
-    ]},
-    { id:"Q12", title:"Data Integration", text:"How well integrated are financial data sources?", choices:[
-      {value:1,text:"1. Siloed"},
-      {value:2,text:"2. Partial integration"},
-      {value:3,text:"3. Standard ETL"},
-      {value:4,text:"4. Enterprise data layer"},
-      {value:5,text:"5. Real-time unified data fabric"}
-    ]},
+    // { id:"Q9", title:"Financial Data Quality", text:"How reliable and consistent is financial data?", choices:[
+    //   {value:1,text:"1. Poor quality"},
+    //   {value:2,text:"2. Some validation"},
+    //   {value:3,text:"3. Standard quality controls"},
+    //   {value:4,text:"4. Automated cleansing"},
+    //   {value:5,text:"5. High-quality governed data"}
+    // ]},
+    // { id:"Q10", title:"Reporting Automation", text:"How automated are recurring financial reports?", choices:[
+    //   {value:1,text:"1. Manual reports"},
+    //   {value:2,text:"2. Semi-manual Excel"},
+    //   {value:3,text:"3. Standard reporting tools"},
+    //   {value:4,text:"4. Automated reporting pipelines"},
+    //   {value:5,text:"5. Real-time financial dashboards"}
+    // ]},
+    // { id:"Q11", title:"Analytics Capability", text:"How effectively is analytics used for financial decision-making?", choices:[
+    //   {value:1,text:"1. Minimal analytics"},
+    //   {value:2,text:"2. Basic analysis"},
+    //   {value:3,text:"3. Standard BI dashboards"},
+    //   {value:4,text:"4. Predictive analytics"},
+    //   {value:5,text:"5. Full financial data science usage"}
+    // ]},
+    // { id:"Q12", title:"Data Integration", text:"How well integrated are financial data sources?", choices:[
+    //   {value:1,text:"1. Siloed"},
+    //   {value:2,text:"2. Partial integration"},
+    //   {value:3,text:"3. Standard ETL"},
+    //   {value:4,text:"4. Enterprise data layer"},
+    //   {value:5,text:"5. Real-time unified data fabric"}
+    // ]},
 
     { id:"Q13", title:"Regulatory Compliance", text:"How digitized are compliance reporting and validation processes?", choices:[
       {value:1,text:"1. Manual"},

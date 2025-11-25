@@ -2,7 +2,7 @@
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["finance"] = {
   title: "Finance Department Digital Maturity Assessment (DMI)",
-  shortcode: "Fino",
+  shortcode: "FIN",
   totalQuestions: 32,
   maxScore: 32 * 5,
 
@@ -16,8 +16,7 @@ DMI_QUESTION_SETS["finance"] = {
     { name: "7) Finance Operations Efficiency & Workflow Automation", questions: ["Q25","Q26","Q27","Q28"] },
     { name: "8) People, Capability & Innovation in Finance", questions: ["Q29","Q30","Q31","Q32"] }
   ],
-
-  questions: [
+ questions: [
     { id:"Q1", title:"Digital Finance Roadmap", text:"Is there a documented digital finance strategy aligned with organizational goals?", choices:[
       {value:1,text:"1. No digital strategy"},
       {value:2,text:"2. Basic roadmap"},
@@ -162,8 +161,7 @@ DMI_QUESTION_SETS["finance"] = {
       {value:4,text:"4. Fully automated"},
       {value:5,text:"5. Intelligent multi-channel payments"}
     ]},
-
-    { id:"Q21", title:"Budgeting Automation", text:"How automated is the budgeting process?", choices:[
+ { id:"Q21", title:"Budgeting Automation", text:"How automated is the budgeting process?", choices:[
       {value:1,text:"1. Manual Excel"},
       {value:2,text:"2. Semi-manual"},
       {value:3,text:"3. Standard budgeting tool"},
@@ -251,18 +249,12 @@ DMI_QUESTION_SETS["finance"] = {
     ]
     }
 
-
-
-
-    
-      ],
-
+  ],
   maturityBands: [
-    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Reactive, manual operations, limited documentation." },
-    { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation; limited automation; reactive monitoring." },
-    { name: "51–75% (Managed)", range: [51, 75], description: "Documented services, growing automation, proactive monitoring." },
-    { name: "76–90% (Advanced)", range: [76, 90], description: "Strong automation, documentation, and integrated workflows." },
-    { name: "91–100% (Optimized)", range: [91, 100], description: "Predictive, self-healing, fully optimized digital operations." }
+    { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Manual analytics, undocumented processes, reactive reporting." },
+    { name: "26–50% (Basic)", range: [26, 50], description: "Basic documentation, partial automation, limited governance." },
+    { name: "51–75% (Managed)", range: [51, 75], description: "Majority of services documented; automation in pipelines; proactive monitoring." },
+    { name: "76–90% (Advanced)", range: [76, 90], description: "Fully documented; strong automation; integrated workflows; compliance tracked." },
+    { name: "91–100% (Optimized)", range: [91, 100], description: "Predictive/self-healing pipelines, end-to-end automation, governed data ecosystem, continuous improvement with feedback loops." }
   ]
 };
-

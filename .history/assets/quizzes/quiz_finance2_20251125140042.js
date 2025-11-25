@@ -250,11 +250,6 @@ DMI_QUESTION_SETS["finance"] = {
       {value:5,text:"5. Fully unified digital partnership"}
     ]
     }
-
-
-
-
-    
       ],
 
   maturityBands: [

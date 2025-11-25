@@ -2,7 +2,7 @@
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["finance"] = {
   title: "Finance Department Digital Maturity Assessment (DMI)",
-  shortcode: "Fino",
+  shortcode: "FIN",
   totalQuestions: 32,
   maxScore: 32 * 5,
 
@@ -235,7 +235,8 @@ DMI_QUESTION_SETS["finance"] = {
       {value:4,text:"4. Competency-based training roadmap"},
       {value:5,text:"5. Continuous learning culture"}
     ]},
-    { id:"Q31", title:"Innovation Culture", text:"How well does finance adopt new digital tools?", choices:[
+    { id:"Q31", title:"Innovation Culture", 
+      text:"How well does finance adopt new digital tools?", choices:[
       {value:1,text:"1. Resistant"},
       {value:2,text:"2. Limited adoption"},
       {value:3,text:"3. Regular adoption"},

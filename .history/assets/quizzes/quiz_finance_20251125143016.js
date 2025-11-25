@@ -25,35 +25,6 @@ DMI_QUESTION_SETS["finance"] = {
       {value:4,text:"4. Fully governed roadmap"},
       {value:5,text:"5. Continually updated with KPIs"}
     ]},
-    { id:"Q2", title:"Leadership Support", text:"How strong is leadership support for digital finance initiatives?", choices:[
-      {value:1,text:"1. Minimal"},
-      {value:2,text:"2. Some support"},
-      {value:3,text:"3. Structured sponsorship"},
-      {value:4,text:"4. Strong support with funding"},
-      {value:5,text:"5. Fully proactive leadership"}
-    ]},
-    { id:"Q3", title:"Digital Governance", text:"How structured is governance for finance systems and digital initiatives?", choices:[
-      {value:1,text:"1. None"},
-      {value:2,text:"2. Partial governance"},
-      {value:3,text:"3. Standard committees"},
-      {value:4,text:"4. Integrated governance"},
-      {value:5,text:"5. Data-driven governance decisions"}
-    ]},
-    { id:"Q4", title:"Risk & Controls Integration", text:"How well are financial risks and controls digitized into workflows?", choices:[
-      {value:1,text:"1. Manual controls"},
-      {value:2,text:"2. Basic checks"},
-      {value:3,text:"3. Standard digital controls"},
-      {value:4,text:"4. Automated controls"},
-      {value:5,text:"5. Predictive control automation"}
-    ]},
-
-    { id:"Q5", title:"ERP Usage", text:"How effectively is the ERP used for finance operations?", choices:[
-      {value:1,text:"1. Mostly manual work"},
-      {value:2,text:"2. Basic ERP features"},
-      {value:3,text:"3. Standard ERP utilization"},
-      {value:4,text:"4. Advanced automation"},
-      {value:5,text:"5. Fully optimized ERP usage"}
-    ]},
     { id:"Q6", title:"System Integration", text:"Are financial systems integrated with other departments (HR, procurement, sales)?", choices:[
       {value:1,text:"1. No integration"},
       {value:2,text:"2. Limited integration"},

@@ -2,7 +2,7 @@
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["finance"] = {
   title: "Finance Department Digital Maturity Assessment (DMI)",
-  shortcode: "Fino",
+  shortcode: "Fi",
   totalQuestions: 32,
   maxScore: 32 * 5,
 

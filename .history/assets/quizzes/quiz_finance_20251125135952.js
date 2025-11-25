@@ -2,7 +2,7 @@
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["finance"] = {
   title: "Finance Department Digital Maturity Assessment (DMI)",
-  shortcode: "Fino",
+  shortcode: "FIN",
   totalQuestions: 32,
   maxScore: 32 * 5,
 
@@ -250,11 +250,6 @@ DMI_QUESTION_SETS["finance"] = {
       {value:5,text:"5. Fully unified digital partnership"}
     ]
     }
-
-
-
-
-    
       ],
 
   maturityBands: [

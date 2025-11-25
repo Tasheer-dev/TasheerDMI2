@@ -1396,7 +1396,7 @@
       if (titleEl) titleEl.textContent = (meta && meta.name) || deptData.title || deptCode;
       
       const chartTitleEl = document.getElementById("chartTitle");
-      if (chartTitleEl) chartTitleEl.textContent = "Area Breakdown ";
+      if (chartTitleEl) chartTitleEl.textContent = "Area Breakdown (Sections Only)";
 
       // Visual KPIs
       setOverallMaturity(percent);
@@ -1418,9 +1418,7 @@
         else statusEl.textContent = "Complete";
       }
 
-      // renderSectionBreakdown(deptData, saved);
-      renderSectionBreakdownTable(deptData, saved);
-
+      renderSectionBreakdown(deptData, saved);
       updateTasheerOverall();
     }
     
@@ -1677,60 +1675,6 @@
       });
     }
 
-
-
-    function renderSectionBreakdownTable(deptData, saved) {
-    const container = document.getElementById("sectionChart");
-    container.innerHTML = "";
-
-    const sections = deptData.sections || [];
-    if (sections.length === 0) {
-        container.innerHTML = "<p class='text-muted'>No sections found.</p>";
-        return;
-    }
-
-    let html = `
-        <table class="table table-bordered align-middle" style="font-size:14px;">
-            <thead class="table-light">
-                <tr>
-                    <th style="width:40%; text-align:left;">Section</th>
-                    <th style="width:10%; text-align:left;">Score</th>
-                    <th style="width:50%; text-align:left;">Progress</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    sections.forEach(sec => {
-        const qIds = sec.questions || [];
-        const maxScore = qIds.length * 5 || 1;
-        let total = 0;
-
-        qIds.forEach(id => {
-            const val = saved[id];
-            if (val) total += Number(val);
-        });
-
-        const pct = Math.round((total / maxScore) * 100);
-
-        html += `
-            <tr>
-                <td style="text-align:left;">${sec.name}</td>
-                <td style="text-align:left; font-weight:600;">${pct}%</td>
-                <td>
-                    <div class="progress" style="height:16px;">
-                        <div class="progress-bar bg-primary" role="progressbar" 
-                             style="width:${pct}%;"></div>
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
-
-    html += `</tbody></table>`;
-    container.innerHTML = html;
-}
-
     // NEW/MODIFIED FUNCTION: Compute metrics for the entire company across ALL departments
     function computeCompanyOverallMetrics() {
       const allDeptCodes = ADMIN_DEPARTMENTS.map(d => d.code);
@@ -1919,7 +1863,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function getTasheerDeptScore(deptName) {
   // 1. Try direct department score
   if (typeof computeTasheerDepartmentDMI === "function") {
     const deptScore = computeTasheerDepartmentDMI(deptName);

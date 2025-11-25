@@ -2,7 +2,7 @@
 window.DMI_QUESTION_SETS = window.DMI_QUESTION_SETS || {};
 DMI_QUESTION_SETS["finance"] = {
   title: "Finance Department Digital Maturity Assessment (DMI)",
-  shortcode: "Fino",
+  shortcode: "FIN",
   totalQuestions: 32,
   maxScore: 32 * 5,
 
@@ -16,7 +16,6 @@ DMI_QUESTION_SETS["finance"] = {
     { name: "7) Finance Operations Efficiency & Workflow Automation", questions: ["Q25","Q26","Q27","Q28"] },
     { name: "8) People, Capability & Innovation in Finance", questions: ["Q29","Q30","Q31","Q32"] }
   ],
-
   questions: [
     { id:"Q1", title:"Digital Finance Roadmap", text:"Is there a documented digital finance strategy aligned with organizational goals?", choices:[
       {value:1,text:"1. No digital strategy"},
@@ -250,11 +249,6 @@ DMI_QUESTION_SETS["finance"] = {
       {value:5,text:"5. Fully unified digital partnership"}
     ]
     }
-
-
-
-
-    
       ],
 
   maturityBands: [
@@ -265,4 +259,3 @@ DMI_QUESTION_SETS["finance"] = {
     { name: "91–100% (Optimized)", range: [91, 100], description: "Predictive, self-healing, fully optimized digital operations." }
   ]
 };
-
