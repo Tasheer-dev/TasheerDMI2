@@ -292,6 +292,10 @@ DMI_QUESTION_SETS["legal_affairs"] = {
       ]
     }
 
+  ]
+};
+
+
   ],
   maturityBands: [
     { name: "0–25% (Ad-hoc)", range: [0, 25], description: "Legal processes are manual and reactive. No digital systems for case, contract, or compliance tracking. Documentation is scattered and non-standardized." },
