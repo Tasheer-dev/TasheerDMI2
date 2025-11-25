@@ -9,10 +9,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
   <style>
-    
     :root {
-  --primary-blue: #004d9c; /* This is correctly defined */
-  /* ... rest of your :root styles */
       --primary-blue: #004d9c;
       --sidebar-bg: #f8fafc;
       --sidebar-width: 350px; 
@@ -299,57 +296,87 @@
         cursor: pointer;
     }
 
+        /* --- LOADER OVERLAY + SAND CLOCK --- */
+    #loaderOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
 
-    /* ORG STRUCTURE POPUP */
-.popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.75);
-  display: none;          /* hidden by default */
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-}
+    #loaderOverlay.loader-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
 
-.popup-box {
-  background: #ffffff;
-  width: 90%;
-  max-width: 1200px;
-  max-height: 90vh;
-  overflow: auto;
-  border-radius: 16px;
-  padding: 20px 24px 28px;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  animation: popupFadeIn 0.25s ease-out;
-}
+    .loader-content {
+      text-align: center;
+      color: #f9fafb;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
 
-.popup-title {
-  margin: 0 0 14px;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #0f172a;
-}
+    .loader-text {
+      margin-top: 16px;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
 
-.close-popup {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  font-size: 28px;
-  line-height: 1;
-  cursor: pointer;
-  color: #64748b;
-}
+    .hourglass {
+      width: 40px;
+      height: 60px;
+      border-radius: 20px;
+      border: 3px solid #e5e7eb;
+      position: relative;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
 
-.close-popup:hover {
-  color: #0f172a;
-}
+    .hourglass::before,
+    .hourglass::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 70px;
+      height: 70px;
+      background: #facc15;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      animation-duration: 1.8s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
 
-@keyframes popupFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+    /* Top “sand” */
+    .hourglass::before {
+      top: -55px;
+      animation-name: sandTop;
+    }
 
+    /* Bottom “sand” */
+    .hourglass::after {
+      bottom: -55px;
+      animation-name: sandBottom;
+    }
+
+    @keyframes sandTop {
+      0%   { transform: translate(-50%, 0) scale(1); }
+      50%  { transform: translate(-50%, 20px) scale(0.2); }
+      100% { transform: translate(-50%, 20px) scale(0); }
+    }
+
+    @keyframes sandBottom {
+      0%   { transform: translate(-50%, -20px) scale(0); }
+      50%  { transform: translate(-50%, -20px) scale(0.2); }
+      100% { transform: translate(-50%, 0) scale(1); }
+    }
 
 
   </style>
@@ -357,64 +384,18 @@
 
 <body onload="initAdminDashboard()">
 
-  <div id="loadingOverlay" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
-    z-index: 10000; /* Ensure it's on top of everything */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.5s ease;
-    ">
-    <div class="sand-clock-container" style="
-        position: relative;
-        width: 60px;
-        height: 60px;
-        margin-bottom: 20px;
-        ">
-        <div style="
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-top: 30px solid var(--primary-blue);
-            border-bottom: 30px solid transparent;
-            border-radius: 50% / 0 0 50% 50%;
-            position: absolute;
-            top: 0;
-            "></div>
-        <div style="
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-bottom: 30px solid var(--primary-blue);
-            border-top: 30px solid transparent;
-            border-radius: 50% / 50% 50% 0 0;
-            position: absolute;
-            bottom: 0;
-            "></div>
 
-        <div class="spinner-border text-primary" role="status" style="
-            width: 40px; 
-            height: 40px;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            ">
-            <span class="visually-hidden">Loading...</span>
-        </div>
+  <body onload="initAdminDashboard()">
+
+  <!-- LOADER OVERLAY -->
+  <div id="loaderOverlay">
+    <div class="loader-content">
+      <div class="hourglass"></div>
+      <div class="loader-text">Looding ..........</div>
     </div>
-    
-    <div id="loadingText" class="fw-bold text-primary" style="font-size: 1.2rem;">
-        Loading . . . . . . . . . .
-    </div>
-</div>
+  </div>
+  <!-- /LOADER OVERLAY -->
+
 
   <div class="admin-sidebar-header">
     <div class="d-flex align-items-center gap-2">
@@ -573,10 +554,8 @@
    onclick="showOrgStructureView()">
     <span class="d-flex align-items-center gap-2">
         <i class="bi bi-diagram-3"></i>
-<a href="javascript:void(0)" id="tasheerOrgStructureBtn">
-  Tasheer Org Structure Overview
-</a>
-
+        <span>Tasheer Org Structure Overview</span>
+    </span>
 </a>
   </main> 
 
@@ -702,20 +681,6 @@
         };
     });
 
-    // NEW FUNCTION: Handles fading out and hiding the preloader
-    function hideLoadingScreen() {
-        const overlay = document.getElementById('loadingOverlay');
-        if (overlay) {
-            // 1. Start the fade-out
-            overlay.style.opacity = '0'; 
-            
-            // 2. Hide completely after the transition (0.5s)
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 500); 
-        }
-    }
-
     function initAdminDashboard() {
       if (typeof requireLogin === "function" && !requireLogin()) return;
 
@@ -733,8 +698,6 @@
 
       // Select the Company Overall view by default
       selectCompanyOverall(); 
-      // NEW: Hide the loading screen after all initialization is done
-      hideLoadingScreen();
     }
 
     // NEW: Function to handle slider control
@@ -1770,257 +1733,15 @@
     renderFullOrgStructureWithScores();
 }
 
-// === ORG STRUCTURE MODAL CONTROL ===
-function openOrgStructureModal() {
-  const modal = document.getElementById("orgStructureModal");
-  if (modal) {
-    modal.style.display = "flex";
-    populateOrgStructurePercentages();
-  }
-}
-
-function closeOrgStructureModal() {
-  const modal = document.getElementById("orgStructureModal");
-  if (modal) {
-    modal.style.display = "none";
-  }
-}
-
-// Optional: close when clicking outside the box
-window.addEventListener("click", function (e) {
-  const modal = document.getElementById("orgStructureModal");
-  if (!modal) return;
-  if (e.target === modal) {
-    closeOrgStructureModal();
-  }
-});
-
-// === DYNAMIC PERCENTAGES FOR EACH DEPARTMENT ===
-
-// This function should return the DMI / percentage for each department.
-// Plug it into your existing data (API or calculations).
-
-// === HOOK THE BUTTON AFTER DOM LOADED ===
-document.addEventListener("DOMContentLoaded", function () {
-  const orgBtn = document.getElementById("tasheerOrgStructureBtn");
-  if (orgBtn) {
-    orgBtn.addEventListener("click", openOrgStructureModal);
-  }
-});
-
-
-// === ORG STRUCTURE MODAL CONTROL ===
-function openOrgStructureModal() {
-  const modal = document.getElementById("orgStructureModal");
-  if (modal) {
-    modal.style.display = "flex";
-    populateOrgStructurePercentages();
-  }
-}
-
-function closeOrgStructureModal() {
-  const modal = document.getElementById("orgStructureModal");
-  if (modal) {
-    modal.style.display = "none";
-  }
-}
-
-// Optional: close when clicking outside the box
-window.addEventListener("click", function (e) {
-  const modal = document.getElementById("orgStructureModal");
-  if (!modal) return;
-  if (e.target === modal) {
-    closeOrgStructureModal();
-  }
-});
-
-// === DYNAMIC PERCENTAGES FOR EACH DEPARTMENT ===
-
-// This function should return the DMI / percentage for each department.
-// Plug it into your existing data (API or calculations).
-
-function populateOrgStructurePercentages() {
-  const badges = document.querySelectorAll(".percent-badge");
-  badges.forEach(badge => {
-    const dept = badge.getAttribute("data-dept");
-    const value = getTasheerDeptScore(dept);
-    if (value === null || value === undefined) {
-      badge.textContent = "N/A";
-      badge.style.background = "#6b7280"; // gray for missing
-    } else {
-      badge.textContent = value + "%";
-      badge.style.background = "#2563eb"; // blue (normal)
+    function hideLoader() {
+      const overlay = document.getElementById("loaderOverlay");
+      if (!overlay) return;
+      overlay.classList.add("loader-hidden");
+      // Optional: remove from DOM after transition
+      setTimeout(() => overlay.remove(), 500);
     }
-  });
-}
-
-// === HOOK THE BUTTON AFTER DOM LOADED ===
-document.addEventListener("DOMContentLoaded", function () {
-  const orgBtn = document.getElementById("tasheerOrgStructureBtn");
-  if (orgBtn) {
-    orgBtn.addEventListener("click", openOrgStructureModal);
-  }
-});
-
-
-function getTasheerDeptScore(deptName) {
-  // 1. Try direct department score
-  if (typeof computeTasheerDepartmentDMI === "function") {
-    const deptScore = computeTasheerDepartmentDMI(deptName);
-    if (deptScore !== null && deptScore !== undefined) {
-      return deptScore;
-    }
-    console.log("Looking for score:", deptName);
-  }
-
-  // 2. Try division-level score (child units under a department)
-  if (typeof computeTasheerDMIForDivision === "function") {
-    // If your system has divisions stored somewhere (e.g. window.divisions)
-    if (window.allDivisions && Array.isArray(window.allDivisions)) {
-      for (const d of window.allDivisions) {
-        if (d.name === deptName) {
-          const score = computeTasheerDMIForDivision(d.parentDepartment, deptName);
-          if (score !== null && score !== undefined) {
-            return score;
-          }
-        }
-      }
-    }
-  }
-
-  // 3. Try full company mapping if available (you may already have something like this)
-  if (typeof getAllDMIScores === "function") {
-    const allScores = getAllDMIScores(); // returns { name: %, name: %, ... }
-    if (allScores && allScores[deptName] !== undefined) {
-      return allScores[deptName];
-    }
-  }
-
-  // 4. If nothing found — return N/A
-  return null;
-}
 
 
   </script>
-
-
-  <!-- ORG STRUCTURE POPUP -->
-<div id="orgStructureModal" class="popup-overlay">
-  <div class="popup-box">
-    <span class="close-popup" onclick="closeOrgStructureModal()">×</span>
-
-    <h2 class="popup-title">DMI by Departments</h2>
-
-    <div class="org-chart-container">
-      <!-- Org chart image exported from Org.Str.pptx -->
-      <img src="assets/img/Org.png" alt="Tasheer Org Structure" class="org-chart-image">
-
-      <!-- Percentage badges – positioned over departments -->
-      <!-- You will fine-tune top/left values visually in the browser -->
-
-        <!-- TOP-LEVEL DEPARTMENTS ONLY -->
-
-  <!-- Strategy & Performance -->
-  <div class="percent-badge" data-dept="Strategy & Performance"></div>
-
-  <!-- Digitization & Technology -->
-  <div class="percent-badge" data-dept="Digitization & Technology"></div>
-
-  <!-- Business Excellence -->
-  <div class="percent-badge" data-dept="Business Excellence"></div>
-
-  <!-- Product & Business Development -->
-  <div class="percent-badge" data-dept="Product & Business Development"></div>
-
-  <!-- GRR -->
-  <div class="percent-badge" data-dept="GRR"></div>
-
-  <!-- Legal & Regulatory -->
-  <div class="percent-badge" data-dept="Legal & Regulatory"></div>
-
-  <!-- Operations -->
-  <div class="percent-badge" data-dept="Operations"></div>
-
-  <!-- Finance -->
-  <div class="percent-badge" data-dept="Finance"></div>
-
-  <!-- Shared Services -->
-  <div class="percent-badge" data-dept="Shared Services"></div>
-
-    </div>
-  </div>
-</div>
-<style>
-
-  /* ORG CHART IMAGE + BADGES */
-.org-chart-container {
-  position: relative;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.org-chart-image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* BADGE STYLE */
-.percent-badge {
-  position: absolute;
-  min-width: 40px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #2563eb;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(15,23,42,0.35);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-/* ── Positions (rough) – you can fine-tune visually ── */
-/* These use % so they stay in place when the image resizes */
-
-.percent-badge[data-dept="Strategy & Performance"] {
-  top: 30.1%; left: 13.5%;
-}
-
-.percent-badge[data-dept="Digitization & Technology"] {
-  top: 30.1%; left: 25.6%;
-}
-
-.percent-badge[data-dept="Business Excellence"] {
-  top: 30.1%; left: 38.1%;
-}
-
-.percent-badge[data-dept="Product & Business Development"] {
-  top: 30.1%; left: 48.3%;
-}
-
-.percent-badge[data-dept="GRR"] {
-  top: 30.1%; left: 60.0%;
-}
-
-.percent-badge[data-dept="Legal & Regulatory"] {
-  top: 43.1%; left: 70.3%;
-}
-
-.percent-badge[data-dept="Operations"] {
-  top: 43.1%; left: 80.5%;
-}
-
-.percent-badge[data-dept="Finance"] {
-  top: 43.1%; left: 89.0%;
-}
-
-.percent-badge[data-dept="Shared Services"] {
-  top: 50%; left: 100%;
-}
-
-</style>
-
 </body>
 </html>

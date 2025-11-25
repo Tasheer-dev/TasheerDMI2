@@ -1863,42 +1863,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function getTasheerDeptScore(deptName) {
-  // 1. Try direct department score
-  if (typeof computeTasheerDepartmentDMI === "function") {
-    const deptScore = computeTasheerDepartmentDMI(deptName);
-    if (deptScore !== null && deptScore !== undefined) {
-      return deptScore;
-    }
-    console.log("Looking for score:", deptName);
-  }
-
-  // 2. Try division-level score (child units under a department)
-  if (typeof computeTasheerDMIForDivision === "function") {
-    // If your system has divisions stored somewhere (e.g. window.divisions)
-    if (window.allDivisions && Array.isArray(window.allDivisions)) {
-      for (const d of window.allDivisions) {
-        if (d.name === deptName) {
-          const score = computeTasheerDMIForDivision(d.parentDepartment, deptName);
-          if (score !== null && score !== undefined) {
-            return score;
-          }
-        }
-      }
-    }
-  }
-
-  // 3. Try full company mapping if available (you may already have something like this)
-  if (typeof getAllDMIScores === "function") {
-    const allScores = getAllDMIScores(); // returns { name: %, name: %, ... }
-    if (allScores && allScores[deptName] !== undefined) {
-      return allScores[deptName];
-    }
-  }
-
-  // 4. If nothing found — return N/A
-  return null;
-}
 
 
   </script>

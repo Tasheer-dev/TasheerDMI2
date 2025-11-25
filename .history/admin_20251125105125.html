@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tasheer DMI – Admin Dashboard</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+
+  <style>
+    :root {
+      --primary-blue: #004d9c;
+      --sidebar-bg: #f8fafc;
+      --sidebar-width: 350px; 
+      transition: --sidebar-width 0.2s ease;
+    }
+
+    body {
+      background: #f3f4f6;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* --- CHART ANIMATIONS & STYLES --- */
+    
+    #dmiDoughnutFill {
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .ladder-bar {
+      transition: opacity 0.2s;
+    }
+    .ladder-bar:hover {
+      opacity: 0.8;
+    }
+
+    /* --- SIDEBAR STYLES --- */
+    .admin-sidebar {
+      width: var(--sidebar-width);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      background: var(--sidebar-bg);
+      border-right: 1px solid #e5e7eb;
+      padding-top: 130px; 
+      z-index: 90;
+      transition: width 0.2s ease;
+    }
+
+    .admin-sidebar-header {
+      width: var(--sidebar-width);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 70px;
+      background: var(--sidebar-bg);
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 91;
+      transition: width 0.2s ease;
+    }
+
+    .sidebar-controls {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: var(--sidebar-width);
+        padding: 5px 16px;
+        background: var(--sidebar-bg);
+        border-bottom: 1px solid #e5e7eb;
+        z-index: 91;
+        transition: width 0.2s ease;
+    }
+
+    .company-overall-link {
+        position: fixed;
+        top: 105px;
+        left: 0;
+        width: var(--sidebar-width);
+        background: var(--sidebar-bg);
+        z-index: 91;
+        padding-bottom: 5px;
+        transition: width 0.2s ease;
+    }
+    
+    .division-header {
+      text-transform: none;
+      font-weight: 700;
+      color: var(--primary-blue);
+      font-size: 1rem;
+      padding: 10px 16px 4px 16px;
+      margin-top: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer; 
+      user-select: none;
+    }
+    
+    .division-header.active {
+        background: #e0ecff;
+        color: var(--primary-blue);
+        border-radius: 10px;
+        margin: 2px 8px;
+    }
+    
+    .sub-group-header {
+        font-weight: 600;
+        color: #1f2937;
+        font-size: 0.9rem;
+        padding: 8px 16px 4px 16px;
+        margin: 4px 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 10px;
+        transition: background 0.2s;
+    }
+    .sub-group-header:hover {
+        background: #e5e7eb;
+    }
+
+    .division-average {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--primary-blue);
+      background: #e5f1ff;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .division-toggle {
+        transition: transform 0.2s;
+    }
+    .division-toggle.collapsed {
+        transform: rotate(-90deg);
+    }
+    .division-toggle.expanded {
+        transform: rotate(0deg);
+    }
+
+    .admin-sidebar .nav-link {
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin: 2px 8px;
+      color: #475569;
+      font-size: 0.92rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    
+    .admin-sidebar .nav-link.overall-link {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+    }
+    .admin-sidebar .nav-link.overall-link.active {
+        background: #e0ecff;
+        color: var(--primary-blue);
+        font-weight: 700;
+    }
+
+    .admin-sidebar .nav-link.sub-link {
+        padding-left: 30px;
+    }
+    
+    .admin-sidebar .nav-link span:first-of-type {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .admin-sidebar .nav-link i {
+      font-size: 1.1rem;
+    }
+
+    .admin-sidebar .nav-link:hover {
+      background: #e5f1ff;
+      color: var(--primary-blue);
+    }
+
+    .admin-sidebar .nav-link.active {
+      background: #e0ecff;
+      color: var(--primary-blue);
+      font-weight: 600;
+    }
+    
+    .department-separator {
+        border-top: 1px solid #e5e7eb;
+        margin: 10px 16px;
+    }
+
+    /* Topbar */
+    .admin-topbar {
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-width);
+      right: 0;
+      height: 70px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 100;
+      transition: left 0.2s ease;
+    }
+
+    /* Content */
+    .admin-content {
+      margin-left: var(--sidebar-width);
+      padding: 90px 24px 32px;
+      min-height: 100vh;
+      transition: margin-left 0.2s ease;
+    }
+
+    .kpi-card {
+      border-radius: 16px;
+      background: #ffffff;
+      border: none;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+      padding: 18px 20px;
+      height: 100%; 
+    }
+
+    .kpi-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .kpi-sub {
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+
+    .card-section {
+      border-radius: 16px;
+      border: none;
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    #sectionChart text {
+      pointer-events: none;
+    }
+    #batteryGauge text {
+      pointer-events: none;
+    }
+    
+    /* Slider style fix for range input */
+    .sidebar-controls input[type=range] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 4px;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity .2s;
+    }
+    .sidebar-controls input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: var(--primary-blue);
+        cursor: pointer;
+    }
+    .sidebar-controls input[type=range]::-moz-range-thumb {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: var(--primary-blue);
+        cursor: pointer;
+    }
+    
+    /* --- NEW ORG CHART MODAL STYLES --- */
+    #orgChartContainer {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 20px;
+        overflow-x: auto; /* Allow horizontal scroll if chart is too wide */
+    }
+
+    .org-chart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 1000px; /* Base width for visualization */
+        font-size: 0.9rem;
+    }
+
+    .org-node {
+        background-color: #f0f7ff;
+        border: 2px solid var(--primary-blue);
+        border-radius: 10px;
+        padding: 10px 15px;
+        margin: 10px 0;
+        text-align: center;
+        position: relative;
+        font-weight: 600;
+        min-width: 200px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .org-node:hover {
+        transform: translateY(-2px);
+    }
+
+    .org-node.division-node {
+        background-color: var(--primary-blue);
+        color: #fff;
+        border-color: #00366b;
+    }
+
+    .org-node-percent {
+        position: absolute;
+        top: -10px; 
+        right: -10px;
+        background-color: #dc3545; 
+        color: white;
+        padding: 2px 8px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        line-height: 1;
+        white-space: nowrap;
+        z-index: 10;
+    }
+
+    .org-children {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding-top: 20px;
+        position: relative;
+    }
+    
+    .org-children:not(:only-child)::before {
+        content: '';
+        position: absolute;
+        top: 0; 
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: var(--primary-blue);
+    }
+
+    .org-children > .org-chart-branch {
+        padding: 0 10px;
+        flex: 1; 
+        min-width: 0;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+    
+    .org-chart-branch::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 2px;
+        height: 20px; 
+        background-color: var(--primary-blue);
+        transform: translateX(-50%);
+        z-index: 1;
+    }
+    
+    .org-chart-branch .org-node {
+        margin-top: 20px; 
+    }
+
+    /* Standalone departments layout */
+    .standalone-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+        padding: 20px 10px;
+        border-top: 2px dashed #9ca3af;
+        width: 100%;
+    }
+    
+    .standalone-container .org-node {
+        margin: 0;
+        min-width: 180px;
+        flex: 0 1 auto;
+    }
+    /* --- END NEW ORG CHART MODAL STYLES --- */
+
+  </style>
+</head>
+
+<body onload="initAdminDashboard()">
+
+  <div class="admin-sidebar-header">
+    <div class="d-flex align-items-center gap-2">
+      <div class="rounded-3 bg-primary text-white d-flex align-items-center justify-content-center"
+           style="width:32px;height:32px;">
+        <i class="bi bi-graph-up"></i>
+      </div>
+      <div>
+        <div class="fw-semibold" style="font-size:0.95rem;">Tasheer DMI</div>
+        <div class="text-muted" style="font-size:0.75rem;">Admin Dashboard</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-controls">
+      <input type="range" class="form-range" id="sidebarWidthSlider" min="250" max="450" value="350">
+  </div>
+  
+  <div class="company-overall-link">
+
+    <a href="javascript:void(0)" id="companyOverallLink" 
+       class="nav-link overall-link d-flex justify-content-between align-items-center" 
+       onclick="selectCompanyOverall()">
+        <span class="d-flex align-items-center gap-2">
+            <i class="bi bi-building"></i>
+            <span>Tasheer Company Overall</span>
+        </span>
+        <span class="badge rounded-pill bg-light text-primary small" id="companyOverallBadge">–</span>
+    </a>
+    <div class="department-separator" style="margin-top: 5px;"></div>
+
+
+  </div>
+
+
+  <aside class="admin-sidebar">
+    <nav id="adminDeptList" class="nav flex-column mt-2 pb-4">
+      </nav>
+  </aside>
+
+  <header class="admin-topbar">
+    <div>
+      <div class="text-muted small">Dashboard View</div>
+      <h4 class="fw-semibold mb-0 text-primary" id="adminDeptTitle">Select a Department or Division</h4>
+    </div>
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <button id="openAssessmentBtn" class="btn btn-sm btn-outline-primary" type="button">
+        <i class="bi bi-box-arrow-up-right me-1"></i> Open Assessment
+      </button>
+      <button class="btn btn-sm btn-outline-danger" type="button" onclick="logout()">
+        <i class="bi bi-power me-1"></i> Logout
+      </button>
+    </div>
+  </header>
+
+  <main class="admin-content">
+
+    <div class="row g-3 mb-4">
+
+      <div class="col-lg-3 col-md-6">
+         <div class="kpi-card text-center">
+            <div class="kpi-label">Maturity Band</div>
+
+            <svg id="batteryGauge" width="200" height="90">
+                <rect id="batteryFrame"
+                      x="10" y="20"
+                      width="160" height="60"
+                      rx="8"
+                      stroke="#9ca3af"
+                      stroke-width="4"
+                      fill="none"></rect>
+
+                <rect x="170" y="40" width="15" height="20" rx="3" fill="#9ca3af"></rect>
+
+                <g id="batteryBars"></g>
+
+                <text id="batteryRecharge"
+                      x="90" y="60"
+                      text-anchor="middle"
+                      font-size="22"
+                      fill="#b91c1c"
+                      style="display: none;">⚡</text>
+            </svg>
+
+            <div id="bandLabel" class="fw-bold mt-2">–</div>
+            <div id="bandDesc" class="kpi-sub"></div>
+            <div class="mt-2">
+                <span class="badge bg-light text-dark" id="adminDataStatus">No Data</span>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="kpi-card text-center">
+          <div class="kpi-label">Overall Maturity</div>
+          <svg id="overallGauge" width="240" height="170" viewBox="0 0 240 120">
+            <path d="M20 110 A100 100 0 0 1 220 110"
+                  fill="none" stroke="#e5e7eb" stroke-width="20" />
+            <path id="overallGaugeArc"
+                  d="M20 110 A100 100 0 0 1 220 110"
+                  fill="none" stroke="#3b82f6" stroke-width="20"
+                  stroke-linecap="round"
+                  stroke-dasharray="314" stroke-dashoffset="314" />
+            <text id="overallGaugeText"
+                  x="120" y="85"
+                  text-anchor="middle"
+                  font-size="28" font-weight="700"
+                  fill="#111827">0%</text>
+          </svg>
+          <div class="kpi-sub">Percentage of max score</div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="kpi-card text-center">
+          <div class="kpi-label">Progress</div>
+          
+          <div class="d-flex justify-content-center align-items-end" style="height: 170px;">
+            <svg id="ladderGauge" width="120" height="160"></svg>
+          </div>
+          
+          <div class="kpi-sub mt-2" id="cupLabel">Answered / total questions</div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="kpi-card text-center">
+          <div class="kpi-label">Total Tasheer Overall DMI</div>
+          
+          <div class="position-relative d-inline-block mt-2" style="width: 160px; height: 160px;">
+              <svg id="dmiDoughnut" width="160" height="160" viewBox="0 0 160 160" style="transform: rotate(-90deg);">
+                  <circle cx="80" cy="80" r="70" fill="none" stroke="#e5e7eb" stroke-width="15" />
+                  <circle id="dmiDoughnutFill" cx="80" cy="80" r="70" fill="none" stroke="#004d9c" stroke-width="15" 
+                          stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" />
+              </svg>
+              <div class="position-absolute top-50 start-50 translate-middle text-center">
+                  <div id="dmiDoughnutText" class="fw-bold text-dark" style="font-size: 2rem;">0%</div>
+                  <div class="text-muted small" style="font-size: 0.65rem;">Overall</div>
+              </div>
+          </div>
+
+          <div class="kpi-sub mt-2">Average maturity across all departments</div>
+        </div>
+      </div>
+
+    </div> 
+    
+    <div class="row g-4">
+      <div class="col-12">
+        <div class="card card-section p-3">
+          <h6 class="fw-semibold mb-2" id="chartTitle">Area Breakdown (Sections Only)</h6>
+          <svg id="sectionChart" width="100%" height="450"></svg>
+        </div>
+      </div>
+    </div>
+    
+    <a href="javascript:void(0)" id="orgStructureLink"
+       class="nav-link overall-link d-flex justify-content-between align-items-center mt-3"
+       onclick="showOrgStructureView()">
+        <span class="d-flex align-items-center gap-2">
+            <i class="bi bi-diagram-3"></i>
+            <span style="color: var(--primary-blue);">Tasheer Org Structure Overview</span>
+        </span>
+    </a>
+
+  </main> 
+  
+  <div class="modal fade" id="orgStructureModal" tabindex="-1" aria-labelledby="orgStructureModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orgStructureModalLabel">Tasheer Organizational Structure Maturity Overview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="orgChartContainer" class="p-3">
+            <div class="text-center text-muted">Loading Organizational Structure...</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // --- DUMMY DATA AND ESSENTIAL FUNCTIONS (To run without external files) ---
+    // !!! IMPORTANT: In your actual project, ensure these data/functions are correctly loaded from your quiz_*.js, logic.js, and users.js files.
+    
+    // Simulate DMI Questions Data (Required for all score calculations)
+    const DMI_QUESTION_SETS = {
+        "finance": { title: "Finance DMI", maxScore: 100, questions: Array(20).fill({id: 'q1'}) },
+        "branches_ops": { title: "Branches Ops DMI", maxScore: 80, questions: Array(16).fill({id: 'q1'}) },
+        "business_dev": { title: "Business Dev DMI", maxScore: 50, questions: Array(10).fill({id: 'q1'}) },
+        "marketing": { title: "Marketing DMI", maxScore: 60, questions: Array(12).fill({id: 'q1'}) },
+        "product_mgmt": { title: "Product Mgmt DMI", maxScore: 75, questions: Array(15).fill({id: 'q1'}) },
+        "tech_strategy": { title: "Tech Strategy DMI", maxScore: 40, questions: Array(8).fill({id: 'q1'}) },
+        "sap_ERP": { title: "SAP ERP DMI", maxScore: 50, questions: Array(10).fill({id: 'q1'}) },
+        "tech_ITSM": { title: "Tech ITSM DMI", maxScore: 45, questions: Array(9).fill({id: 'q1'}) },
+        "solution_delivery": { title: "Solution Delivery DMI", maxScore: 90, questions: Array(18).fill({id: 'q1'}) },
+        "it_operations": { title: "IT Operations DMI", maxScore: 65, questions: Array(13).fill({id: 'q1'}) },
+        "infra_ops": { title: "Infra Ops DMI", maxScore: 55, questions: Array(11).fill({id: 'q1'}) },
+        "corporate_it": { title: "Corporate IT DMI", maxScore: 70, questions: Array(14).fill({id: 'q1'}) },
+        "data_analytics": { title: "Data Analytics DMI", maxScore: 85, questions: Array(17).fill({id: 'q1'}) },
+        "human_capital": { title: "Human Capital DMI", maxScore: 95, questions: Array(19).fill({id: 'q1'}) },
+        "procurement": { title: "Procurement DMI", maxScore: 70, questions: Array(14).fill({id: 'q1'}) },
+        "pmo": { title: "PMO DMI", maxScore: 60, questions: Array(12).fill({id: 'q1'}) },
+        "internal_audit": { title: "Internal Audit DMI", maxScore: 50, questions: Array(10).fill({id: 'q1'}) },
+        "grc": { title: "GRC DMI", maxScore: 40, questions: Array(8).fill({id: 'q1'}) },
+        "business_excellence": { title: "Biz Excellence DMI", maxScore: 30, questions: Array(6).fill({id: 'q1'}) },
+        "legal_affairs": { title: "Legal Affairs DMI", maxScore: 55, questions: Array(11).fill({id: 'q1'}) },
+        "cybersecurity": { title: "Cybersecurity DMI", maxScore: 75, questions: Array(15).fill({id: 'q1'}) },
+    };
+
+    // Simulate saved data (Set arbitrary scores for testing the chart)
+    const simulatedScores = {
+        "finance": 70, "branches_ops": 85, "business_dev": 45, "marketing": 60, "product_mgmt": 70,
+        "tech_strategy": 55, "sap_ERP": 80, "tech_ITSM": 35, "solution_delivery": 75, "it_operations": 50,
+        "infra_ops": 65, "corporate_it": 88, "data_analytics": 40, "human_capital": 90, "procurement": 50,
+        "pmo": 72, "internal_audit": 58, "grc": 62, "business_excellence": 48, "legal_affairs": 78, "cybersecurity": 82,
+    };
+    
+    // Populate localStorage with simulated scores (required for compute functions)
+    Object.keys(DMI_QUESTION_SETS).forEach(code => {
+        const set = DMI_QUESTION_SETS[code];
+        const score = simulatedScores[code] || 0;
+        
+        let totalAnswered = Math.ceil(set.questions.length * (score / 100));
+        let totalPoints = Math.round(set.maxScore * (score / 100));
+        
+        const saved = {};
+        for(let i = 0; i < totalAnswered; i++) {
+            saved[set.questions[i].id + i] = 5; // Simulate max score per answered question
+        }
+        
+        // This is a simple approximation. The goal is to ensure a percentage is calculated.
+        if (totalAnswered > 0) {
+           saved[set.questions[0].id] = Math.round(totalPoints / totalAnswered); // Set score for the first q
+        }
+
+        localStorage.setItem("tasheer_dmi_" + code, JSON.stringify(saved));
+    });
+
+
+    // Mock functions (Replacing maturitybands.js, users.js, logic.js)
+    function requireLogin() { return true; } 
+    function getStorageKeyFor(code) { return "tasheer_dmi_" + code; }
+    function getMaturityBand(pct) {
+        if (pct >= 85) return { name: "Optimized", color: "#10b981", desc: "Highest Maturity Level" };
+        if (pct >= 60) return { name: "Managed", color: "#3b82f6", desc: "Intermediate Maturity" };
+        if (pct >= 35) return { name: "Defined", color: "#f59e0b", desc: "Basic Foundation" };
+        return { name: "Initial", color: "#ef4444", desc: "Starting Point" };
+    }
+    // --- END DUMMY DATA ---
+
+    // --- GLOBAL VARIABLES AND HIERARCHY ---
+    let currentAdminDeptCode = null; 
+    let isCompanyOverallSelected = false; 
+
+    // Division groups and Standalone Departments
+    const ADMIN_HIERARCHY = [
+        {
+          code: "product_bizdev",
+          name: "Product & Business Development",
+          isDivision: true,
+          departments: [
+            { code: "business_dev", name: "Business Development", icon: "bi-briefcase" },
+            { code: "marketing", name: "Marketing & Communication", icon: "bi-megaphone" }, 
+            { code: "product_mgmt", name: "Product Management", icon: "bi-box-seam" },
+          ]
+        },
+        {
+          code: "digi_tech",
+          name: "Digitization & Technology",
+          isDivision: true,
+          departments: [
+            { 
+              code: "tech_strategy_group",
+              name: "Tech Strategy & EA Unit", 
+              isSubGroup: true,
+              groupDepartments: [
+                { code: "tech_strategy", name: "Tech Strategy & EA", icon: "bi-layers" }, 
+                { code: "sap_ERP", name: "SAP ERP", icon: "bi-diagram-3-fill" }, 
+                { code: "tech_ITSM", name: "Tech & ITSM", icon: "bi-tools" }, 
+              ]
+            },
+            { code: "solution_delivery", name: "Solution Development & Delivery", icon: "bi-gear" },
+            { code: "it_operations", name: "Platforms & IT Solution Ops", icon: "bi-cpu" },
+            { code: "infra_ops", name: "Infrastructure & Operations", icon: "bi-hdd-stack" },
+            { code: "corporate_it", name: "Corporate IT", icon: "bi-laptop" },
+            { code: "data_analytics", name: "Data Analytics", icon: "bi-bar-chart-line" },
+          ]
+        },
+        {
+          code: "shared_services",
+          name: "Shared Services",
+          isDivision: true,
+          departments: [
+            { code: "human_capital", name: "Human Capital Management", icon: "bi-people" },
+            { code: "procurement", name: "Procurement", icon: "bi-cart-check" },
+          ]
+        },
+        
+        // --- STANDALONE DEPARTMENTS ---
+        { code: "branches_ops", name: "Branches Operations", icon: "bi-shop", isStandalone: true },
+        { code: "finance", name: "Finance", icon: "bi-bank", isStandalone: true },
+        { code: "pmo", name: "PMO", icon: "bi-diagram-3", isStandalone: true },
+        { code: "internal_audit", name: "Internal Auditing", icon: "bi-clipboard-data", isStandalone: true },
+        { code: "grc", name: "GRC", icon: "bi-shield-check", isStandalone: true },
+        { code: "business_excellence", name: "Business Excellence", icon: "bi-stars", isStandalone: true },
+        { code: "legal_affairs", name: "Legal & Regulatory", icon: "bi-journal-text", isStandalone: true },
+        { code: "cybersecurity", name: "Cybersecurity", icon: "bi-shield-lock", isStandalone: true },
+    ];
+
+    const ADMIN_DEPARTMENTS = ADMIN_HIERARCHY.flatMap(item => {
+        if (item.isDivision) {
+            return item.departments.flatMap(dept => 
+                dept.isSubGroup ? dept.groupDepartments : [dept]
+            );
+        }
+        return [item]; 
+    });
+    
+    // --- SCORE & METRIC CALCULATIONS ---
+
+    // Helper to get a single department's score (returns "X%" or "N/A")
+    function computeDepartmentAverage(deptCode) {
+        const sets = window.DMI_QUESTION_SETS || {};
+        const data = sets[deptCode];
+        if (!data) return "N/A";
+
+        const key = getStorageKeyFor(deptCode);
+
+        let saved = {};
+        try {
+            saved = JSON.parse(localStorage.getItem(key) || "{}");
+        } catch (e) {
+            console.error(`Error parsing data for ${deptCode}:`, e);
+            return "N/A";
+        }
+
+        let points = 0;
+        let answered = 0;
+        
+        // Simple scoring model: count the keys in saved data as answered
+        if (Object.keys(saved).length === 0) return "N/A";
+        
+        // For accurate calculation, we should iterate over DMI_QUESTION_SETS
+        data.questions.forEach(q => {
+          // Find the value in the saved data (this needs to match your actual question ID structure)
+          // For the simulated data above, we are just checking if any key exists
+          for (const key in saved) {
+              if (key.includes(q.id)) { // Simplistic check
+                points += Number(saved[key]);
+                answered++;
+                break;
+              }
+          }
+        });
+        
+        // Re-calculate the score based on the simulation logic used in the dummy data setup
+        if (simulatedScores[deptCode]) {
+            return simulatedScores[deptCode] + "%";
+        }
+
+
+        if (answered === 0) return "N/A";
+
+        const maxScore = data.maxScore || (data.questions.length * 5);
+        const pct = maxScore ? (points / maxScore) * 100 : 0;
+        return Math.round(pct) + "%";
+    }
+
+    // Function to compute the average maturity for a list of department codes
+    function computeDivisionOrGroupMetrics(deptCodes) {
+      let totalPct = 0;
+      let count = 0; 
+
+      deptCodes.forEach(code => {
+        const avgStr = computeDepartmentAverage(code);
+        if (avgStr !== "N/A") {
+          const pct = parseFloat(avgStr.replace('%', ''));
+          totalPct += pct;
+          count++;
+        }
+      });
+      
+      const percentage = count ? Math.round(totalPct / count) : "N/A";
+      return { percentage: percentage, count: count, totalCount: deptCodes.length };
+    }
+
+    function computeTasheerOverallDMI() {
+        // Collect all department codes
+        const allDeptCodes = ADMIN_DEPARTMENTS.map(d => d.code);
+        const metrics = computeDivisionOrGroupMetrics(allDeptCodes);
+        return metrics.percentage;
+    }
+    
+    // Utility function to calculate the percentage for any entity (Division, Department, or SubGroup)
+    function getEntityPercentage(entity) {
+        if (entity.isDivision) {
+            const deptCodes = entity.departments.flatMap(d => d.isSubGroup ? d.groupDepartments.map(sd => sd.code) : [d.code]);
+            const metrics = computeDivisionOrGroupMetrics(deptCodes);
+            return metrics.percentage; 
+        } else if (entity.isStandalone) {
+            return computeDepartmentAverage(entity.code).replace('%', ''); 
+        } else if (entity.isSubGroup && entity.groupDepartments) {
+            const codes = entity.groupDepartments.map(d => d.code);
+            const metrics = computeDivisionOrGroupMetrics(codes); 
+            return metrics.percentage;
+        }
+        return "N/A";
+    }
+
+    // --- ORG CHART RENDERING (NEW LOGIC) ---
+    
+    // Recursive function to generate the HTML for a department or sub-group
+    function generateDepartmentNode(entity) {
+        const avg = getEntityPercentage(entity);
+        const percentBadge = (avg !== "N/A") ? `<span class="org-node-percent">${avg}%</span>` : '';
+        const name = entity.name;
+        const className = (entity.isDivision || entity.isSubGroup) ? 'division-node' : '';
+        
+        // Start of the current node's branch
+        let html = `
+            <div class="org-chart-branch">
+                <div class="org-node ${className}">
+                    ${name}
+                    ${percentBadge}
+                </div>
+        `;
+        
+        const departments = entity.isDivision ? entity.departments : (entity.isSubGroup ? entity.groupDepartments : null);
+        
+        if (departments && departments.length > 0) {
+            html += `<div class="org-children">`;
+            
+            // Filter out nested groups/departments to ensure correct rendering
+            departments.forEach(child => {
+                if (child.isSubGroup) {
+                    // Recurse for the sub-group (e.g., Tech Strategy Group)
+                     html += generateDepartmentNode(child);
+                } else if (entity.isDivision || entity.isSubGroup) {
+                    // Regular department under a division or sub-group
+                    const deptAvg = computeDepartmentAverage(child.code);
+                    const deptPercentBadge = (deptAvg !== "N/A") ? `<span class="org-node-percent">${deptAvg}</span>` : '';
+                    
+                    html += `<div class="org-chart-branch">
+                                <div class="org-node">
+                                    ${child.name}
+                                    ${deptPercentBadge}
+                                </div>
+                             </div>`;
+                }
+            });
+            html += `</div>`;
+        }
+        
+        html += `</div>`; 
+        return html;
+    }
+
+    // Main function to render the organizational chart and display the modal
+    function renderOrgChartInModal() {
+        const container = document.getElementById("orgChartContainer");
+        if (!container) return;
+
+        // 1. Calculate Tasheer Overall Maturity
+        const overallPct = computeTasheerOverallDMI();
+        const overallBadge = (overallPct !== "N/A") ? `<span class="org-node-percent">${overallPct}%</span>` : '';
+
+        let html = `<div class="org-chart">`;
+        
+        // --- Tasheer Executive Management (The root node) ---
+        html += `
+            <div class="org-chart-branch">
+                <div class="org-node division-node" style="min-width: 250px;">
+                    TASHEER EXECUTIVE MANAGEMENT (Overall DMI)
+                    ${overallBadge}
+                </div>
+        `;
+
+        // 2. Separate the main divisions from standalone departments
+        const divisions = ADMIN_HIERARCHY.filter(item => item.isDivision);
+        const standaloneDepartments = ADMIN_HIERARCHY.filter(item => item.isStandalone);
+
+        // --- Divisions (Grouped under the main root) ---
+        html += `<div class="org-children">`;
+        divisions.forEach(division => {
+            // Generate the branch for the whole division (which includes its departments)
+            html += generateDepartmentNode(division);
+        });
+        html += `</div>`; // Close org-children for divisions
+        
+        html += `</div>`; // Close org-chart-branch for Executive Management
+        
+        // --- Standalone Departments (Displayed separately, below the main tree) ---
+        if (standaloneDepartments.length > 0) {
+            html += `<div class="text-center w-100 mt-4"><h6 class="text-primary">Standalone Departments</h6></div>`;
+            html += `<div class="standalone-container">`;
+            
+            standaloneDepartments.forEach(dept => {
+                const deptAvg = computeDepartmentAverage(dept.code);
+                const percentBadge = (deptAvg !== "N/A") ? `<span class="org-node-percent">${deptAvg}</span>` : '';
+                
+                html += `
+                    <div class="org-node">
+                        ${dept.name}
+                        ${percentBadge}
+                    </div>
+                `;
+            });
+            html += `</div>`; // Close standalone-container
+        }
+
+        html += `</div>`; // Close org-chart
+        
+        container.innerHTML = html;
+        
+        // Show the modal using Bootstrap JS
+        const orgModal = new bootstrap.Modal(document.getElementById('orgStructureModal'));
+        orgModal.show();
+    }
+    
+    // OVERWRITING THE EXISTING showOrgStructureView function
+    function showOrgStructureView() {
+        // Remove highlights
+        document.querySelectorAll(".nav-link").forEach(a => a.classList.remove("active"));
+        document.querySelectorAll(".division-header").forEach(h => h.classList.remove("active"));
+        
+        // Highlight the new link
+        document.getElementById("orgStructureLink").classList.add("active");
+        
+        // Reset the main dashboard to the default state (Optional: prevents confusion)
+        currentAdminDeptCode = null;
+        isCompanyOverallSelected = false;
+        document.getElementById("adminDeptTitle").textContent = "Tasheer — Organizational Structure Overview";
+
+        // Call the modal rendering function
+        renderOrgChartInModal();
+    }
+
+    // --- UI/CHART RENDERING FUNCTIONS (Required for dashboard functionality) ---
+    function setGaugeArc(id, percentage) {
+        const arc = document.getElementById(id);
+        const text = document.getElementById(id.replace("Arc", "Text"));
+        if (arc) {
+            const circumference = 314; // Approximate circumference for the path
+            const offset = circumference * (1 - (percentage / 100));
+            arc.style.strokeDashoffset = offset;
+        }
+        if (text) {
+            text.textContent = percentage + "%";
+        }
+    }
+    
+    function setBatteryGauge(percentage) {
+        const container = document.getElementById("batteryBars");
+        const label = document.getElementById("bandLabel");
+        const desc = document.getElementById("bandDesc");
+        const recharge = document.getElementById("batteryRecharge");
+        container.innerHTML = "";
+        recharge.style.display = "none";
+
+        const band = getMaturityBand(percentage);
+        label.textContent = band.name;
+        label.style.color = band.color;
+        desc.textContent = band.desc;
+
+        if (percentage > 0) {
+            const fillWidth = percentage * 1.6; // 160px max width
+            const fill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            fill.setAttribute("x", "10");
+            fill.setAttribute("y", "20");
+            fill.setAttribute("width", fillWidth);
+            fill.setAttribute("height", "60");
+            fill.setAttribute("rx", "8");
+            fill.setAttribute("fill", band.color);
+            container.appendChild(fill);
+        } else if (percentage === 0) {
+             recharge.style.display = "block";
+        }
+    }
+    
+    function setDmiDoughnut(percentage) {
+        const circle = document.getElementById("dmiDoughnutFill");
+        const text = document.getElementById("dmiDoughnutText");
+        const circumference = 440; // Approx 2*pi*70
+        const offset = circumference * (1 - (percentage / 100));
+        
+        if (circle) circle.style.strokeDashoffset = offset;
+        if (text) text.textContent = percentage + "%";
+    }
+    
+    function setLadderChart(answered, total) {
+        const svg = document.getElementById("ladderGauge");
+        svg.innerHTML = ""; 
+        
+        const maxBarHeight = 130; 
+        const maxScoreBar = 110; 
+
+        // Draw the reference cup/container
+        svg.innerHTML += `
+            <rect x="50" y="${maxBarHeight - maxScoreBar + 10}" width="20" height="${maxScoreBar}" rx="5" 
+                  fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+        `;
+        
+        const answeredHeight = (answered / total) * maxScoreBar;
+        const answeredBarY = maxBarHeight - answeredHeight + 10;
+
+        // Draw the answered progress bar
+        svg.innerHTML += `
+            <rect class="ladder-bar" x="50" y="${answeredBarY}" width="20" height="${answeredHeight}" rx="5" 
+                  fill="${answeredHeight > 0 ? var(--primary-blue) : 'none'}"/>
+        `;
+        
+        // Label the progress
+        const cupLabel = document.getElementById("cupLabel");
+        cupLabel.textContent = `${answered} / ${total} questions answered`;
+        
+        // Add percentage text
+        const percentage = total > 0 ? Math.round((answered / total) * 100) : 0;
+        svg.innerHTML += `<text x="60" y="20" text-anchor="middle" font-size="16" font-weight="700" fill="#111827">${percentage}%</text>`;
+    }
+
+    function setSectionChart(data = []) {
+        // Data format: [{ section: 'Name', percentage: 75, maxScore: 50, score: 37.5 }]
+        const svg = document.getElementById("sectionChart");
+        const width = svg.clientWidth;
+        const height = 450;
+        svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+        svg.innerHTML = "";
+
+        const margin = { top: 30, right: 20, bottom: 60, left: 120 };
+        const chartWidth = width - margin.left - margin.right;
+        const chartHeight = height - margin.top - margin.bottom;
+        const barHeight = 25;
+        const gap = 15;
+        const maxPercentage = 100;
+        
+        // Draw Chart Area
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute("transform", `translate(${margin.left}, ${margin.top})`);
+        svg.appendChild(g);
+
+        // X-axis: 0%, 25%, 50%, 75%, 100%
+        for (let p = 0; p <= 100; p += 25) {
+            const x = (p / 100) * chartWidth;
+            // Line
+            g.innerHTML += `<line x1="${x}" y1="0" x2="${x}" y2="${chartHeight}" stroke="#e5e7eb" stroke-dasharray="2,2"/>`;
+            // Label
+            g.innerHTML += `<text x="${x}" y="${chartHeight + 20}" text-anchor="middle" font-size="12" fill="#6b7280">${p}%</text>`;
+        }
+        
+        // Y-axis Label
+        g.innerHTML += `<text x="${-margin.left + 5}" y="${chartHeight / 2}" text-anchor="start" transform="rotate(-90, ${-margin.left + 5}, ${chartHeight / 2})" font-size="14" fill="#111827" font-weight="600">Sections</text>`;
+
+
+        data.forEach((item, index) => {
+            const y = index * (barHeight + gap);
+            const barWidth = (item.percentage / maxPercentage) * chartWidth;
+            const barColor = getMaturityBand(item.percentage).color;
+
+            // Section Label
+            g.innerHTML += `<text x="-5" y="${y + barHeight / 2 + 5}" text-anchor="end" font-size="12" fill="#111827" font-weight="500">${item.section}</text>`;
+            
+            // Background Bar (100% reference)
+            g.innerHTML += `<rect x="0" y="${y}" width="${chartWidth}" height="${barHeight}" rx="4" fill="#e5e7eb"/>`;
+
+            // Data Bar
+            g.innerHTML += `<rect x="0" y="${y}" width="${barWidth}" height="${barHeight}" rx="4" fill="${barColor}" class="ladder-bar"/>`;
+            
+            // Percentage Text
+            g.innerHTML += `<text x="${barWidth + 5}" y="${y + barHeight / 2 + 5}" text-anchor="start" font-size="12" fill="#111827" font-weight="700">${item.percentage}%</text>`;
+        });
+    }
+
+    // Function to compute and set all main dashboard KPIs
+    function setOverallMaturity(deptCode) {
+        const sets = window.DMI_QUESTION_SETS || {};
+        const data = sets[deptCode];
+        
+        if (!data) {
+            // Handle no data case
+            document.getElementById("overallGaugeText").textContent = "N/A";
+            document.getElementById("adminDataStatus").textContent = "No Data";
+            document.getElementById("adminDataStatus").className = "badge bg-light text-dark";
+            setGaugeArc("overallGaugeArc", 0);
+            setBatteryGauge(0);
+            setLadderChart(0, 0);
+            setSectionChart([]);
+            return;
+        }
+
+        const key = getStorageKeyFor(deptCode);
+        let saved = {};
+        try {
+            saved = JSON.parse(localStorage.getItem(key) || "{}");
+        } catch (e) { /* Error is handled in computeDepartmentAverage */ }
+        
+        let totalPoints = 0;
+        let answeredQuestions = 0;
+        let totalQuestions = data.questions.length;
+        
+        // Use simulated score for consistency with org chart
+        const percentage = simulatedScores[deptCode] || 0;
+        
+        // --- Score Calculation (Actual logic should be more robust) ---
+        let maxScore = data.maxScore || (totalQuestions * 5); 
+        totalPoints = maxScore * (percentage / 100);
+        answeredQuestions = totalQuestions * (percentage / 100);
+        
+        const finalPercentage = Math.round(percentage); 
+        const status = answeredQuestions > 0 ? "Data Present" : "No Data";
+        const statusClass = answeredQuestions > 0 ? "badge bg-primary text-white" : "badge bg-light text-dark";
+
+        document.getElementById("adminDataStatus").textContent = status;
+        document.getElementById("adminDataStatus").className = statusClass;
+        
+        // 1. Overall Gauge
+        setGaugeArc("overallGaugeArc", finalPercentage);
+        
+        // 2. Battery Gauge / Maturity Band
+        setBatteryGauge(finalPercentage);
+        
+        // 3. Ladder Chart / Progress
+        setLadderChart(Math.round(answeredQuestions), totalQuestions);
+        
+        // 4. Section Chart (Dummy Data for Sections)
+        const sectionData = [
+            { section: "Strategy", percentage: (finalPercentage * 0.95), maxScore: 20, score: 19 },
+            { section: "People & Culture", percentage: (finalPercentage * 1.05), maxScore: 30, score: 31.5 },
+            { section: "Processes", percentage: (finalPercentage * 0.8), maxScore: 25, score: 20 },
+            { section: "Technology", percentage: finalPercentage, maxScore: 25, score: 25 },
+        ].filter(d => d.percentage >= 0);
+        setSectionChart(sectionData);
+
+    }
+    
+    // Function to handle Division selection
+    function selectDivision(division) {
+        currentAdminDeptCode = null;
+        isCompanyOverallSelected = false;
+        
+        // Clear all active classes
+        document.querySelectorAll(".nav-link").forEach(a => a.classList.remove("active"));
+        document.querySelectorAll(".division-header").forEach(h => h.classList.remove("active"));
+        document.getElementById("companyOverallLink").classList.remove("active");
+
+        // Highlight the selected division header
+        document.getElementById(`header-${division.code}`).classList.add("active");
+
+        // Update title
+        document.getElementById("adminDeptTitle").textContent = division.name + " Division Overview";
+        document.getElementById("chartTitle").textContent = division.name + " Division Breakdown (Departments)";
+
+        // Calculate and set metrics for the division
+        const deptCodes = division.departments.flatMap(d => d.isSubGroup ? d.groupDepartments.map(sd => sd.code) : [d.code]);
+        const metrics = computeDivisionOrGroupMetrics(deptCodes);
+        
+        // Set KPIs for the division's average
+        const finalPercentage = metrics.percentage !== "N/A" ? metrics.percentage : 0;
+        setGaugeArc("overallGaugeArc", finalPercentage);
+        setBatteryGauge(finalPercentage);
+        setLadderChart(metrics.count, metrics.totalCount); // Use count of departments
+        
+        // Set Section Chart to show Department breakdown instead of sections
+        const departmentBreakdown = deptCodes.map(code => {
+            const dept = ADMIN_DEPARTMENTS.find(d => d.code === code);
+            const percentage = getEntityPercentage(dept);
+            return {
+                section: dept.name,
+                percentage: percentage !== "N/A" ? parseFloat(percentage) : 0,
+                maxScore: 100, // Normalized
+                score: percentage !== "N/A" ? parseFloat(percentage) : 0
+            };
+        });
+        setSectionChart(departmentBreakdown);
+    }
+    
+    // Function to handle Department selection
+    function selectDepartment(deptCode) {
+      currentAdminDeptCode = deptCode;
+      isCompanyOverallSelected = false;
+
+      const dept = ADMIN_DEPARTMENTS.find(d => d.code === deptCode);
+      const divisionHeader = document.getElementById(`header-${dept.parentCode}`);
+      
+      // Clear all active classes
+      document.querySelectorAll(".nav-link").forEach(a => a.classList.remove("active"));
+      document.querySelectorAll(".division-header").forEach(h => h.classList.remove("active"));
+      
+      // Set active classes for the department link and its parent division
+      document.querySelector(`[data-code="${deptCode}"]`).classList.add("active");
+      if (dept.parentCode) {
+        document.getElementById(`header-${dept.parentCode}`).classList.add("active");
+      }
+
+      // Update title
+      document.getElementById("adminDeptTitle").textContent = dept.name + " Department Dashboard";
+      document.getElementById("chartTitle").textContent = dept.name + " Area Breakdown (Sections Only)";
+      
+      // Update KPIs
+      setOverallMaturity(deptCode);
+    }
+    
+    // Function to handle Company Overall selection
+    function selectCompanyOverall() {
+      currentAdminDeptCode = null;
+      isCompanyOverallSelected = true;
+
+      // Clear all active classes
+      document.querySelectorAll(".nav-link").forEach(a => a.classList.remove("active"));
+      document.querySelectorAll(".division-header").forEach(h => h.classList.remove("active"));
+      
+      // Highlight the Overall link
+      document.getElementById("companyOverallLink").classList.add("active");
+
+      // Update title
+      document.getElementById("adminDeptTitle").textContent = "Tasheer Company Overall Dashboard";
+      document.getElementById("chartTitle").textContent = "Company Breakdown (Divisions & Standalone Depts)";
+
+      // Calculate and set metrics
+      const overallPct = computeTasheerOverallDMI();
+      const finalPercentage = overallPct !== "N/A" ? overallPct : 0;
+      
+      // Find all departments to calculate overall progress
+      const allDeptCodes = ADMIN_DEPARTMENTS.map(d => d.code);
+      const allMetrics = computeDivisionOrGroupMetrics(allDeptCodes);
+
+
+      // Set KPIs for the overall average
+      setGaugeArc("overallGaugeArc", finalPercentage);
+      setBatteryGauge(finalPercentage);
+      setLadderChart(allMetrics.count, allMetrics.totalCount); // Use count of departments
+
+
+      // Set Section Chart to show breakdown by major entity (Divisions + Standalone Depts)
+      const breakdownData = ADMIN_HIERARCHY.map(entity => {
+          const percentage = getEntityPercentage(entity);
+          return {
+              section: entity.name,
+              percentage: percentage !== "N/A" ? parseFloat(percentage) : 0,
+              maxScore: 100,
+              score: percentage !== "N/A" ? parseFloat(percentage) : 0
+          };
+      });
+      setSectionChart(breakdownData);
+    }
+
+    // Function to initialize the dashboard on load
+    function initAdminDashboard() {
+      if (typeof requireLogin === "function" && !requireLogin()) return;
+
+      setupSidebarSlider(); 
+      
+      const overallPct = computeTasheerOverallDMI();
+      document.getElementById('companyOverallBadge').textContent = overallPct ? overallPct + "%" : "N/A";
+      setDmiDoughnut(overallPct !== "N/A" ? overallPct : 0);
+
+      buildAdminSidebar();
+      
+      const openBtn = document.getElementById("openAssessmentBtn");
+      if (openBtn) openBtn.addEventListener("click", openAssessmentForCurrent);
+
+      selectCompanyOverall(); 
+    }
+    
+    // Function to handle slider control
+    function setupSidebarSlider() {
+        const slider = document.getElementById('sidebarWidthSlider');
+        if (slider) {
+            const root = document.documentElement;
+            slider.addEventListener('input', (e) => {
+                const newWidth = e.target.value + 'px';
+                root.style.setProperty('--sidebar-width', newWidth);
+            });
+        }
+    }
+
+
+    // UPDATED buildAdminSidebar for division selection, dropdown, AND SUB-GROUPING functionality
+    function buildAdminSidebar() {
+      const list = document.getElementById("adminDeptList");
+      list.innerHTML = "";
+
+      let departmentsSeen = 0; 
+
+      ADMIN_HIERARCHY.forEach(item => {
+          if (item.isDivision) {
+              const group = item;
+              // 1. Calculate average for the entire division (including sub-groups)
+              const deptCodes = group.departments.flatMap(d => d.isSubGroup ? d.groupDepartments.map(sd => sd.code) : [d.code]);
+              const metrics = computeDivisionOrGroupMetrics(deptCodes);
+              const average = metrics.percentage;
+              const containerId = `dept-container-${group.code}`;
+              const headerId = `header-${group.code}`;
+
+              // 2. Create the division header
+              const groupHeader = document.createElement("div");
+              groupHeader.className = "division-header";
+              groupHeader.id = headerId;
+              groupHeader.dataset.code = group.code;
+              groupHeader.innerHTML = `
+                  <span>${group.name}</span>
+                  <span class="d-flex align-items-center gap-2">
+                    <span class="division-average" title="Average Maturity">
+                      ${(average !== "N/A") ? average + "%" : "N/A"}
+                    </span>
+                    <i class="bi bi-chevron-down division-toggle expanded"></i>
+                  </span>
+              `;
+              list.appendChild(groupHeader);
+
+              // 3. Container for the division's departments/sub-groups
+              const deptContainer = document.createElement("div");
+              deptContainer.id = containerId;
+              list.appendChild(deptContainer); 
+
+              // 4. Populate departments and sub-groups
+              group.departments.forEach(deptOrGroup => {
+                  if (deptOrGroup.isSubGroup) {
+                      const subGroup = deptOrGroup;
+                      const subContainerId = `sub-container-${subGroup.code}`;
+                      
+                      const subGroupCodes = subGroup.groupDepartments.map(d => d.code);
+                      const subGroupMetrics = computeDivisionOrGroupMetrics(subGroupCodes);
+                      const subGroupAverage = subGroupMetrics.percentage;
+
+                      // Create Sub-Group Header
+                      const subHeader = document.createElement("div");
+                      subHeader.className = "sub-group-header";
+                      subHeader.dataset.code = subGroup.code;
+                      subHeader.innerHTML = `
+                        <span>${subGroup.name}</span>
+                        <span class="d-flex align-items-center gap-2">
+                          <span class="division-average" title="Average Maturity">
+                            ${(subGroupAverage !== "N/A") ? subGroupAverage + "%" : "N/A"}
+                          </span>
+                            <i class="bi bi-chevron-down division-toggle expanded" style="font-size: 0.9rem;"></i>
+                        </span>
+                      `;
+                      deptContainer.appendChild(subHeader);
+
+                      // Sub-Group Departments Container
+                      const subDeptContainer = document.createElement("div");
+                      subDeptContainer.id = subContainerId;
+                      deptContainer.appendChild(subDeptContainer);
+                      
+                      subGroup.groupDepartments.forEach(dept => {
+                          const deptAverage = computeDepartmentAverage(dept.code); 
+                          const a = document.createElement("a");
+                          a.href = "javascript:void(0)";
+                          a.className = "nav-link sub-link d-flex justify-content-between align-items-center";
+                          a.dataset.code = dept.code;
+                          a.dataset.parentCode = group.code;
+                          a.innerHTML = `
+                              <span class="d-flex align-items-center gap-2">
+                                  <i class="bi ${dept.icon}"></i>
+                                  <span>${dept.name}</span>
+                              </span>
+                              <span class="badge rounded-pill bg-light text-primary small">${deptAverage}</span>
+                          `;
+                          a.addEventListener("click", () => selectDepartment(dept.code));
+                          subDeptContainer.appendChild(a);
+                          departmentsSeen++;
+                      });
+
+                      // Add click event for sub-group collapse/expand
+                      subHeader.addEventListener('click', (e) => {
+                          const icon = subHeader.querySelector('.division-toggle');
+                          if (subDeptContainer.style.display === 'none') {
+                              subDeptContainer.style.display = ''; 
+                              icon.classList.remove('collapsed');
+                              icon.classList.add('expanded');
+                          } else {
+                              subDeptContainer.style.display = 'none'; 
+                              icon.classList.remove('expanded');
+                              icon.classList.add('collapsed');
+                          }
+                      });
+
+
+                  } else {
+                      // Regular department link in a division
+                      const deptAverage = computeDepartmentAverage(deptOrGroup.code); 
+                      const a = document.createElement("a");
+                      a.href = "javascript:void(0)";
+                      a.className = "nav-link d-flex justify-content-between align-items-center"; 
+                      a.dataset.code = deptOrGroup.code;
+                      a.dataset.parentCode = group.code;
+                      a.innerHTML = `
+                          <span class="d-flex align-items-center gap-2">
+                              <i class="bi ${deptOrGroup.icon}"></i>
+                              <span>${deptOrGroup.name}</span>
+                          </span>
+                          <span class="badge rounded-pill bg-light text-primary small">${deptAverage}</span>
+                      `;
+                      a.addEventListener("click", () => selectDepartment(deptOrGroup.code));
+                      deptContainer.appendChild(a);
+                      departmentsSeen++;
+                  }
+              });
+
+              // 5. Add click event listener to the whole division header
+              groupHeader.addEventListener('click', (e) => {
+                  selectDivision(group);
+                  
+                  const icon = groupHeader.querySelector('.division-toggle');
+                  if (deptContainer.style.display === 'none') {
+                      deptContainer.style.display = ''; 
+                      icon.classList.remove('collapsed');
+                      icon.classList.add('expanded');
+                  } else {
+                      deptContainer.style.display = 'none'; 
+                      icon.classList.remove('expanded');
+                      icon.classList.add('collapsed');
+                  }
+              });
+
+
+          } else {
+              // Standalone Department
+              if(departmentsSeen > 0 && list.querySelector('.department-separator') === null) {
+                  const separator = document.createElement("div");
+                  separator.className = "department-separator";
+                  list.appendChild(separator);
+              }
+              const deptAverage = computeDepartmentAverage(item.code); 
+              const a = document.createElement("a");
+              a.href = "javascript:void(0)";
+              a.className = "nav-link d-flex justify-content-between align-items-center"; 
+              a.dataset.code = item.code;
+              a.innerHTML = `
+                  <span class="d-flex align-items-center gap-2">
+                      <i class="bi ${item.icon}"></i>
+                      <span>${item.name}</span>
+                  </span>
+                  <span class="badge rounded-pill bg-light text-primary small">${deptAverage}</span>
+              `;
+              a.addEventListener("click", () => selectDepartment(item.code));
+              list.appendChild(a);
+              departmentsSeen++;
+          }
+      });
+    }
+
+    // Function to handle the "Open Assessment" button click
+    function openAssessmentForCurrent() {
+      if (typeof requireLogin === "function" && !requireLogin()) return;
+
+      if (!currentAdminDeptCode) {
+          alert("Please select a Department before opening the assessment. Division view is for analysis only.");
+          return;
+      }
+
+      const sets = window.DMI_QUESTION_SETS || {};
+      const deptData = sets[currentAdminDeptCode];
+
+      // Simulate setting session storage (if you have an index.html for assessment)
+      sessionStorage.setItem("dmi_logged_in", "true");
+      sessionStorage.setItem("dmi_role", "department");
+      sessionStorage.setItem("dmi_deptCode", currentAdminDeptCode);
+      sessionStorage.setItem("dmi_displayName",
+        (deptData && deptData.title) || currentAdminDeptCode.toUpperCase()
+      );
+
+      // In a real environment, you would use:
+      // window.open("index.html", "_blank");
+      console.log(`Simulating opening assessment for: ${currentAdminDeptCode}`);
+      alert(`Simulating opening assessment for ${currentAdminDeptCode}. The actual assessment page (index.html) is not included in this file.`);
+    }
+    
+    // Function to handle Logout
+    function logout() {
+        console.log("Simulating Logout");
+        alert("Simulating Logout.");
+        // window.location.href = "login.html"; // Your actual logout redirect
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1864,40 +1864,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function getTasheerDeptScore(deptName) {
-  // 1. Try direct department score
-  if (typeof computeTasheerDepartmentDMI === "function") {
-    const deptScore = computeTasheerDepartmentDMI(deptName);
-    if (deptScore !== null && deptScore !== undefined) {
-      return deptScore;
-    }
-    console.log("Looking for score:", deptName);
-  }
+  const demoData = {
+    "Strategy & Performance": 83,
+    "Digitization & Technology": 82,
+    "Business Excellence": 86,
+    "Product & Business Development": 84,
+    "GRR": 78,
+    "Legal & Regulatory": 70,
+    "Operations": 75,
+    "Finance": 81,
+    "Shared Services": 79
+  };
 
-  // 2. Try division-level score (child units under a department)
-  if (typeof computeTasheerDMIForDivision === "function") {
-    // If your system has divisions stored somewhere (e.g. window.divisions)
-    if (window.allDivisions && Array.isArray(window.allDivisions)) {
-      for (const d of window.allDivisions) {
-        if (d.name === deptName) {
-          const score = computeTasheerDMIForDivision(d.parentDepartment, deptName);
-          if (score !== null && score !== undefined) {
-            return score;
-          }
-        }
-      }
-    }
-  }
-
-  // 3. Try full company mapping if available (you may already have something like this)
-  if (typeof getAllDMIScores === "function") {
-    const allScores = getAllDMIScores(); // returns { name: %, name: %, ... }
-    if (allScores && allScores[deptName] !== undefined) {
-      return allScores[deptName];
-    }
-  }
-
-  // 4. If nothing found — return N/A
-  return null;
+  // replace with your real data lookup later
+  return demoData[deptName] ?? null;
 }
 
 
@@ -1909,7 +1889,7 @@ function getTasheerDeptScore(deptName) {
   <div class="popup-box">
     <span class="close-popup" onclick="closeOrgStructureModal()">×</span>
 
-    <h2 class="popup-title">DMI by Departments</h2>
+    <h2 class="popup-title">Tasheer Organizational Structure</h2>
 
     <div class="org-chart-container">
       <!-- Org chart image exported from Org.Str.pptx -->
@@ -1950,77 +1930,7 @@ function getTasheerDeptScore(deptName) {
     </div>
   </div>
 </div>
-<style>
-
-  /* ORG CHART IMAGE + BADGES */
-.org-chart-container {
-  position: relative;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.org-chart-image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* BADGE STYLE */
-.percent-badge {
-  position: absolute;
-  min-width: 40px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #2563eb;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(15,23,42,0.35);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-/* ── Positions (rough) – you can fine-tune visually ── */
-/* These use % so they stay in place when the image resizes */
-
-.percent-badge[data-dept="Strategy & Performance"] {
-  top: 30.1%; left: 13.5%;
-}
-
-.percent-badge[data-dept="Digitization & Technology"] {
-  top: 30.1%; left: 25.6%;
-}
-
-.percent-badge[data-dept="Business Excellence"] {
-  top: 30.1%; left: 38.1%;
-}
-
-.percent-badge[data-dept="Product & Business Development"] {
-  top: 30.1%; left: 48.3%;
-}
-
-.percent-badge[data-dept="GRR"] {
-  top: 30.1%; left: 60.0%;
-}
-
-.percent-badge[data-dept="Legal & Regulatory"] {
-  top: 43.1%; left: 70.3%;
-}
-
-.percent-badge[data-dept="Operations"] {
-  top: 43.1%; left: 80.5%;
-}
-
-.percent-badge[data-dept="Finance"] {
-  top: 43.1%; left: 89.0%;
-}
-
-.percent-badge[data-dept="Shared Services"] {
-  top: 50%; left: 100%;
-}
-
-</style>
+s
 
 </body>
 </html>

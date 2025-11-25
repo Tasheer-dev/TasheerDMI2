@@ -350,6 +350,100 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ORG CHART IMAGE + BADGES */
+.org-chart-container {
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.org-chart-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* BADGE STYLE */
+.percent-badge {
+  position: absolute;
+  min-width: 40px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(15,23,42,0.35);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* ── Positions (rough) – you can fine-tune visually ── */
+/* These use % so they stay in place when the image resizes */
+
+.percent-badge[data-dept="Strategy & Performance"] {
+  top: 10%; left: 50%;
+}
+
+.percent-badge[data-dept="PMO"] {
+  top: 18%; left: 50%;
+}
+
+.percent-badge[data-dept="VSCs Setup"] {
+  top: 26%; left: 25%;
+}
+
+.percent-badge[data-dept="Digitization & Technology"] {
+  top: 26%; left: 50%;
+}
+
+.percent-badge[data-dept="Solution Development & Delivery"] {
+  top: 26%; left: 75%;
+}
+
+.percent-badge[data-dept="Platforms and IT Solution Operations"] {
+  top: 34%; left: 25%;
+}
+
+.percent-badge[data-dept="Infrastructure & Operations"] {
+  top: 34%; left: 50%;
+}
+
+.percent-badge[data-dept="Corporate IT"] {
+  top: 34%; left: 75%;
+}
+
+.percent-badge[data-dept="Business Excellence"] {
+  top: 42%; left: 25%;
+}
+
+.percent-badge[data-dept="Governance"] {
+  top: 42%; left: 50%;
+}
+
+.percent-badge[data-dept="Operations"] {
+  top: 42%; left: 75%;
+}
+
+/* …add/adjust for the rest as you see them on the image… */
+
+/* Example more down the chart – you’ll tweak later */
+.percent-badge[data-dept="Finance"] {
+  top: 60%; left: 20%;
+}
+
+.percent-badge[data-dept="Human Resources"] {
+  top: 60%; left: 40%;
+}
+
+.percent-badge[data-dept="Risk"] {
+  top: 60%; left: 60%;
+}
+
+.percent-badge[data-dept="Product & Business Development"] {
+  top: 60%; left: 80%;
+}
 
 
   </style>
@@ -1799,45 +1893,50 @@ window.addEventListener("click", function (e) {
 
 // This function should return the DMI / percentage for each department.
 // Plug it into your existing data (API or calculations).
+function getTasheerDeptScore(deptName) {
+  // EXAMPLES – replace with your real logic, e.g.:
+  // return computeTasheerDepartmentDMI(deptName);
 
-// === HOOK THE BUTTON AFTER DOM LOADED ===
-document.addEventListener("DOMContentLoaded", function () {
-  const orgBtn = document.getElementById("tasheerOrgStructureBtn");
-  if (orgBtn) {
-    orgBtn.addEventListener("click", openOrgStructureModal);
-  }
-});
+  const demoData = {
+    "Strategy & Performance": 88,
+    "PMO": 81,
+    "VSCs Setup": 74,
+    "Digitization & Technology": 79,
+    "Solution Development & Delivery": 83,
+    "Platforms and IT Solution Operations": 77,
+    "Infrastructure & Operations": 72,
+    "Corporate IT": 80,
+    "Business Excellence": 86,
+    "Governance": 78,
+    "Operations": 75,
+    "VSCs Operations": 73,
+    "Finance": 82,
+    "Accounting & Treasury": 79,
+    "Budgeting & Planning": 80,
+    "Financial Reporting": 81,
+    "Shared Services": 76,
+    "Human Resources": 84,
+    "Risk": 70,
+    "Tech Strategy & Enterprise Architecture": 83,
+    "Field Operations": 71,
+    "Business Operations": 74,
+    "Customer Care": 85,
+    "Procurement": 77,
+    "Admin": 69,
+    "Financial Reporting": 81, // if duplicated on chart
+    "GRR": 72,
+    "Legal & Regulatory": 79,
+    "Compliance": 82,
+    "Cybersecurity": 88,
+    "Legal Affairs": 80,
+    "Audit": 85,
+    "Product & Business Development": 81,
+    "Business Development": 79,
+    "Product Management": 83
+  };
 
-
-// === ORG STRUCTURE MODAL CONTROL ===
-function openOrgStructureModal() {
-  const modal = document.getElementById("orgStructureModal");
-  if (modal) {
-    modal.style.display = "flex";
-    populateOrgStructurePercentages();
-  }
+  return demoData[deptName] ?? null;
 }
-
-function closeOrgStructureModal() {
-  const modal = document.getElementById("orgStructureModal");
-  if (modal) {
-    modal.style.display = "none";
-  }
-}
-
-// Optional: close when clicking outside the box
-window.addEventListener("click", function (e) {
-  const modal = document.getElementById("orgStructureModal");
-  if (!modal) return;
-  if (e.target === modal) {
-    closeOrgStructureModal();
-  }
-});
-
-// === DYNAMIC PERCENTAGES FOR EACH DEPARTMENT ===
-
-// This function should return the DMI / percentage for each department.
-// Plug it into your existing data (API or calculations).
 
 function populateOrgStructurePercentages() {
   const badges = document.querySelectorAll(".percent-badge");
@@ -1863,164 +1962,127 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function getTasheerDeptScore(deptName) {
-  // 1. Try direct department score
-  if (typeof computeTasheerDepartmentDMI === "function") {
-    const deptScore = computeTasheerDepartmentDMI(deptName);
-    if (deptScore !== null && deptScore !== undefined) {
-      return deptScore;
-    }
-    console.log("Looking for score:", deptName);
-  }
-
-  // 2. Try division-level score (child units under a department)
-  if (typeof computeTasheerDMIForDivision === "function") {
-    // If your system has divisions stored somewhere (e.g. window.divisions)
-    if (window.allDivisions && Array.isArray(window.allDivisions)) {
-      for (const d of window.allDivisions) {
-        if (d.name === deptName) {
-          const score = computeTasheerDMIForDivision(d.parentDepartment, deptName);
-          if (score !== null && score !== undefined) {
-            return score;
-          }
-        }
-      }
-    }
-  }
-
-  // 3. Try full company mapping if available (you may already have something like this)
-  if (typeof getAllDMIScores === "function") {
-    const allScores = getAllDMIScores(); // returns { name: %, name: %, ... }
-    if (allScores && allScores[deptName] !== undefined) {
-      return allScores[deptName];
-    }
-  }
-
-  // 4. If nothing found — return N/A
-  return null;
-}
-
-
   </script>
-
 
   <!-- ORG STRUCTURE POPUP -->
 <div id="orgStructureModal" class="popup-overlay">
   <div class="popup-box">
     <span class="close-popup" onclick="closeOrgStructureModal()">×</span>
 
-    <h2 class="popup-title">DMI by Departments</h2>
+    <h2 class="popup-title">Tasheer Organizational Structure</h2>
 
     <div class="org-chart-container">
       <!-- Org chart image exported from Org.Str.pptx -->
-      <img src="assets/img/Org.png" alt="Tasheer Org Structure" class="org-chart-image">
+      <img src="s" alt="Tasheer Org Structure" class="org-chart-image">
 
       <!-- Percentage badges – positioned over departments -->
       <!-- You will fine-tune top/left values visually in the browser -->
 
-        <!-- TOP-LEVEL DEPARTMENTS ONLY -->
+      <!-- Strategy & Performance -->
+      <div class="percent-badge" data-dept="Strategy & Performance"></div>
 
-  <!-- Strategy & Performance -->
-  <div class="percent-badge" data-dept="Strategy & Performance"></div>
+      <!-- PMO -->
+      <div class="percent-badge" data-dept="PMO"></div>
 
-  <!-- Digitization & Technology -->
-  <div class="percent-badge" data-dept="Digitization & Technology"></div>
+      <!-- VSCs Setup -->
+      <div class="percent-badge" data-dept="VSCs Setup"></div>
 
-  <!-- Business Excellence -->
-  <div class="percent-badge" data-dept="Business Excellence"></div>
+      <!-- Digitization & Technology -->
+      <div class="percent-badge" data-dept="Digitization & Technology"></div>
 
-  <!-- Product & Business Development -->
-  <div class="percent-badge" data-dept="Product & Business Development"></div>
+      <!-- Solution Development & Delivery -->
+      <div class="percent-badge" data-dept="Solution Development & Delivery"></div>
 
-  <!-- GRR -->
-  <div class="percent-badge" data-dept="GRR"></div>
+      <!-- Platforms and IT Solution Operations -->
+      <div class="percent-badge" data-dept="Platforms and IT Solution Operations"></div>
 
-  <!-- Legal & Regulatory -->
-  <div class="percent-badge" data-dept="Legal & Regulatory"></div>
+      <!-- Infrastructure & Operations -->
+      <div class="percent-badge" data-dept="Infrastructure & Operations"></div>
 
-  <!-- Operations -->
-  <div class="percent-badge" data-dept="Operations"></div>
+      <!-- Corporate IT -->
+      <div class="percent-badge" data-dept="Corporate IT"></div>
 
-  <!-- Finance -->
-  <div class="percent-badge" data-dept="Finance"></div>
+      <!-- Business Excellence -->
+      <div class="percent-badge" data-dept="Business Excellence"></div>
 
-  <!-- Shared Services -->
-  <div class="percent-badge" data-dept="Shared Services"></div>
+      <!-- Governance -->
+      <div class="percent-badge" data-dept="Governance"></div>
 
+      <!-- Operations -->
+      <div class="percent-badge" data-dept="Operations"></div>
+
+      <!-- VSCs Operations -->
+      <div class="percent-badge" data-dept="VSCs Operations"></div>
+
+      <!-- Finance -->
+      <div class="percent-badge" data-dept="Finance"></div>
+
+      <!-- Accounting & Treasury -->
+      <div class="percent-badge" data-dept="Accounting & Treasury"></div>
+
+      <!-- Budgeting & Planning -->
+      <div class="percent-badge" data-dept="Budgeting & Planning"></div>
+
+      <!-- Financial Reporting -->
+      <div class="percent-badge" data-dept="Financial Reporting"></div>
+
+      <!-- Shared Services -->
+      <div class="percent-badge" data-dept="Shared Services"></div>
+
+      <!-- Human Resources -->
+      <div class="percent-badge" data-dept="Human Resources"></div>
+
+      <!-- Risk -->
+      <div class="percent-badge" data-dept="Risk"></div>
+
+      <!-- Tech Strategy & Enterprise Architecture -->
+      <div class="percent-badge" data-dept="Tech Strategy & Enterprise Architecture"></div>
+
+      <!-- Field Operations -->
+      <div class="percent-badge" data-dept="Field Operations"></div>
+
+      <!-- Business Operations -->
+      <div class="percent-badge" data-dept="Business Operations"></div>
+
+      <!-- Customer Care -->
+      <div class="percent-badge" data-dept="Customer Care"></div>
+
+      <!-- Procurement -->
+      <div class="percent-badge" data-dept="Procurement"></div>
+
+      <!-- Admin -->
+      <div class="percent-badge" data-dept="Admin"></div>
+
+      <!-- GRR -->
+      <div class="percent-badge" data-dept="GRR"></div>
+
+      <!-- Legal & Regulatory -->
+      <div class="percent-badge" data-dept="Legal & Regulatory"></div>
+
+      <!-- Compliance -->
+      <div class="percent-badge" data-dept="Compliance"></div>
+
+      <!-- Cybersecurity -->
+      <div class="percent-badge" data-dept="Cybersecurity"></div>
+
+      <!-- Legal Affairs -->
+      <div class="percent-badge" data-dept="Legal Affairs"></div>
+
+      <!-- Audit -->
+      <div class="percent-badge" data-dept="Audit"></div>
+
+      <!-- Product & Business Development -->
+      <div class="percent-badge" data-dept="Product & Business Development"></div>
+
+      <!-- Business Development -->
+      <div class="percent-badge" data-dept="Business Development"></div>
+
+      <!-- Product Management -->
+      <div class="percent-badge" data-dept="Product Management"></div>
     </div>
   </div>
 </div>
-<style>
 
-  /* ORG CHART IMAGE + BADGES */
-.org-chart-container {
-  position: relative;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.org-chart-image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* BADGE STYLE */
-.percent-badge {
-  position: absolute;
-  min-width: 40px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #2563eb;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(15,23,42,0.35);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-/* ── Positions (rough) – you can fine-tune visually ── */
-/* These use % so they stay in place when the image resizes */
-
-.percent-badge[data-dept="Strategy & Performance"] {
-  top: 30.1%; left: 13.5%;
-}
-
-.percent-badge[data-dept="Digitization & Technology"] {
-  top: 30.1%; left: 25.6%;
-}
-
-.percent-badge[data-dept="Business Excellence"] {
-  top: 30.1%; left: 38.1%;
-}
-
-.percent-badge[data-dept="Product & Business Development"] {
-  top: 30.1%; left: 48.3%;
-}
-
-.percent-badge[data-dept="GRR"] {
-  top: 30.1%; left: 60.0%;
-}
-
-.percent-badge[data-dept="Legal & Regulatory"] {
-  top: 43.1%; left: 70.3%;
-}
-
-.percent-badge[data-dept="Operations"] {
-  top: 43.1%; left: 80.5%;
-}
-
-.percent-badge[data-dept="Finance"] {
-  top: 43.1%; left: 89.0%;
-}
-
-.percent-badge[data-dept="Shared Services"] {
-  top: 50%; left: 100%;
-}
-
-</style>
 
 </body>
 </html>
