@@ -56,7 +56,7 @@ body {
 .report-grid { display: flex; gap: 1px; margin-bottom: 2px; background: #fff; padding: 1px; border-radius: 0 0 6px 6px; box-shadow: 0 4px 1px rgba(0,0,0,0.05); }
 .report-summary { flex: 5; }
 .score-display { font-size: 3rem; font-weight: 700; color: var(--secondary-green); }
-.chart-wrapper { flex: 1; max-width: 1200px; height: 220px; }
+.chart-wrapper { flex: 1; max-width: 600px; height: 220px; }
 .print-button { width: 100%; background: var(--secondary-green); color: #fff; border: none; border-radius: 6px; padding: 12px; font-size: 1rem; cursor: pointer; margin-top: 15px; }
 .score-table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 15px; }
 .score-table th, .score-table td { border: 1px solid #ddd; padding: 10px 12px; text-align: left; vertical-align: top; font-size: 0.9rem; }
