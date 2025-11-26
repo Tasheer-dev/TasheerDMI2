@@ -1669,7 +1669,10 @@
 
         // Section label (on the left)
         const label = document.createElementNS(ns, "text");
-        label.setAttribute("x", marginX - 50);
+label.setAttribute("x", 10);
+label.setAttribute("text-anchor", "start");
+label.setAttribute("x", 10);
+
         label.setAttribute("y", y + fixedBarHeight / 2 + 4);
         label.setAttribute("text-anchor", "end");
         label.setAttribute("font-size", "12");

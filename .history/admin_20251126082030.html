@@ -1157,13 +1157,17 @@
             }
 
             // Entity label (on the left)
-            const label = document.createElementNS(ns, "text");
-            label.setAttribute("x", marginX - 10);
-            label.setAttribute("y", y + fixedBarHeight / 2 + 4);
-            label.setAttribute("text-anchor", "end");
-            label.setAttribute("font-size", "12");
-            label.textContent = entityName;
-            svg.appendChild(label);
+const label = document.createElementNS(ns, "text");
+label.setAttribute("x", 10); // flush left
+label.setAttribute("y", y + fixedBarHeight / 2 + 4);
+label.setAttribute("text-anchor", "start"); // align left
+label.setAttribute("font-size", "14");
+label.setAttribute("font-weight", "500");
+label.textContent = "• " + sec.name;  // add bullet like your screenshot
+svg.appendChild(label);
+
+
+
         });
     }
 
@@ -1680,7 +1684,7 @@
 
 
 
-    function renderSectionBreakdownTable(deptData, saved) {
+    function renderSectionBreakdown(deptData, saved) {
     const container = document.getElementById("sectionChart");
     container.innerHTML = "";
 
