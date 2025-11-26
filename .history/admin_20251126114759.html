@@ -869,16 +869,16 @@
               groupHeader.id = headerId;
               groupHeader.dataset.code = group.code;
               groupHeader.innerHTML = `
-    <span class="d-flex align-items-center gap-2">
-        <img src="assets/img/divisions/${group.code}.png"
-             style="width:24px;height:24px;">
-        <span>${group.name}</span>
-    </span>
-    <span class="d-flex align-items-center gap-2">
-        <span class="division-average">${average}%</span>
-        <i class="bi bi-chevron-down division-toggle expanded"></i>
-    </span>
+              
+                  <span>${group.name}</span>
+                  <span class="d-flex align-items-center gap-2">
+                    <span class="division-average" title="Average Maturity">
 
+                      ${(average !== "N/A") ? average + "%" : "N/A"}
+                    </span>
+
+                    <i class="bi bi-chevron-down division-toggle expanded"></i>
+                  </span>
               `;
               list.appendChild(groupHeader);
 
