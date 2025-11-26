@@ -550,10 +550,20 @@
                   <circle id="dmiDoughnutFill" cx="80" cy="80" r="70" fill="none" stroke="#004d9c" stroke-width="15" 
                           stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" />
               </svg>
-              <div class="position-absolute top-50 start-50 translate-middle text-center">
-                  <div id="dmiDoughnutText" class="fw-bold text-dark" style="font-size: 2rem;">0%</div>
-                  <div class="text-muted small" style="font-size: 0.65rem;">Overall</div>
-              </div>
+<div class="position-absolute top-50 start-50 translate-middle text-center">
+
+    <img src="assets/img/company-logo.png"
+         alt="Tasheer Logo"
+         style="width:72px; margin-bottom:4px; opacity:0.99;" />
+
+    <div id="dmiDoughnutText" class="fw-bold text-dark" style="font-size: 2rem;">
+        0%
+    </div>
+
+    <div class="text-muted small" style="font-size: 0.65rem;">Overall</div>
+
+</div>
+
           </div>
 
           <div class="kpi-sub mt-2">Average maturity across all departments</div>
@@ -2147,6 +2157,171 @@ function normalizeName(name) {
     .replace(/[^a-z0-9 ]/g, "")
     .trim();
 }
+
+
+
+function renderDepartmentBreakdown(departments) {
+    const svg = document.getElementById("sectionChart");
+    if (!svg) return;
+
+    svg.innerHTML = "";
+
+    const width = svg.clientWidth || 900;
+    const height = 450;
+
+    svg.setAttribute("width", width);
+    svg.setAttribute("height", height);
+
+    const ns = "http://www.w3.org/2000/svg";
+
+    // GRAPH MARGINS
+    const margin = {
+        top: 30,
+        right: 30,
+        bottom: 130,
+        left: 60
+    };
+
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    const barWidth = chartWidth / departments.length - 40; // space between bars
+
+    // --- Compute Percentages ---
+    const percentages = departments.map(dept => {
+        const code = dept.code;
+        const data = window.DMI_QUESTION_SETS[code];
+        if (!data) return 0;
+
+        const key = getStorageKeyFor(code);
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem(key) || "{}") } catch(e) {}
+
+        let total = 0;
+        let answered = 0;
+
+        data.questions.forEach(q => {
+            const val = saved[q.id];
+            if (val) {
+                total += Number(val);
+                answered++;
+            }
+        });
+
+        if (answered === 0) return 0;
+        const max = data.questions.length * 5;
+
+        return Math.round((total / max) * 100);
+    });
+
+    const maxValue = 100; // always 100% maturity
+
+    // --- DRAW GRID LINES ---
+    for (let i = 0; i <= 5; i++) {
+        const y = margin.top + (chartHeight / 5) * i;
+
+        const line = document.createElementNS(ns, "line");
+        line.setAttribute("x1", margin.left);
+        line.setAttribute("x2", margin.left + chartWidth);
+        line.setAttribute("y1", y);
+        line.setAttribute("y2", y);
+        line.setAttribute("stroke", "#d1d5db");
+        line.setAttribute("stroke-width", "1");
+
+        svg.appendChild(line);
+
+        // % label
+        const label = document.createElementNS(ns, "text");
+        label.setAttribute("x", margin.left - 10);
+        label.setAttribute("y", y + 4);
+        label.setAttribute("text-anchor", "end");
+        label.setAttribute("font-size", "12");
+        label.textContent = (maxValue - (i * 20)) + "%";
+        svg.appendChild(label);
+    }
+
+    // --- DRAW BARS ---
+    percentages.forEach((pct, i) => {
+        const barHeight = (pct / maxValue) * chartHeight;
+        const x = margin.left + i * (barWidth + 40);
+        const y = margin.top + (chartHeight - barHeight);
+
+        // BAR
+        const bar = document.createElementNS(ns, "rect");
+        bar.setAttribute("x", x);
+        bar.setAttribute("y", y);
+        bar.setAttribute("width", barWidth);
+        bar.setAttribute("height", barHeight);
+        bar.setAttribute("rx", 6);
+        bar.setAttribute("fill", "#004d9c");
+        svg.appendChild(bar);
+
+        // BAR VALUE LABEL
+        const val = document.createElementNS(ns, "text");
+        val.setAttribute("x", x + barWidth / 2);
+        val.setAttribute("y", y - 8);
+        val.setAttribute("text-anchor", "middle");
+        val.setAttribute("font-size", "14");
+        val.setAttribute("font-weight", "600");
+        val.textContent = pct + "%";
+        svg.appendChild(val);
+
+        // DEPARTMENT LABEL (BOTTOM)
+        const deptName = departments[i].name;
+
+        const text = document.createElementNS(ns, "text");
+        text.setAttribute("x", x + barWidth / 2);
+        text.setAttribute("y", margin.top + chartHeight + 20);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("font-size", "13");
+        text.setAttribute("font-weight", "500");
+        text.textContent = deptName;
+        svg.appendChild(text);
+
+        // WRAP LONG LABELS
+        wrapSVGText(text, 90);
+    });
+
+    // --- TEXT WRAPPING FUNCTION ---
+    function wrapSVGText(textElement, maxWidth) {
+        const words = textElement.textContent.split(" ");
+        textElement.textContent = "";
+
+        let line = "";
+        let y = parseFloat(textElement.getAttribute("y"));
+        let x = parseFloat(textElement.getAttribute("x"));
+        let dy = 15;
+
+        for (let i = 0; i < words.length; i++) {
+            const testLine = line + words[i] + " ";
+            const testElement = document.createElementNS(ns, "text");
+            testElement.setAttribute("font-size", "13");
+            testElement.textContent = testLine;
+            svg.appendChild(testElement);
+
+            if (testElement.getBBox().width > maxWidth) {
+                const tspan = document.createElementNS(ns, "tspan");
+                tspan.setAttribute("x", x);
+                tspan.setAttribute("y", y);
+                tspan.textContent = line;
+                textElement.appendChild(tspan);
+
+                line = words[i] + " ";
+                y += dy;
+            } else {
+                line = testLine;
+            }
+            svg.removeChild(testElement);
+        }
+
+        const tspan = document.createElementNS(ns, "tspan");
+        tspan.setAttribute("x", x);
+        tspan.setAttribute("y", y);
+        tspan.textContent = line;
+        textElement.appendChild(tspan);
+    }
+}
+
  
   </script>
 
@@ -2197,6 +2372,16 @@ function normalizeName(name) {
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
 <style>
 
   /* ORG CHART IMAGE + BADGES */
