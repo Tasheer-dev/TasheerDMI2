@@ -1599,7 +1599,7 @@
       if (svg) svg.innerHTML = "";
     }
 
-    function renderSectionBreakdown(deptData, saved) {
+
       const svg = document.getElementById("sectionChart");
       if (!svg) return;
       svg.innerHTML = "";
@@ -1756,109 +1756,6 @@ function renderSectionBreakdown(deptData, saved) {
     });
 }
 
-
-
-function renderSectionBreakdown(deptData, saved) {
-    const svg = document.getElementById("sectionChart");
-    if (!svg) return;
-    svg.innerHTML = "";
-
-    const width = svg.clientWidth || 900;
-
-    const marginY = 25;
-    const barHeight = 24;
-    const gap = 28;
-
-    const sections = deptData.sections || [];
-    const barCount = sections.length;
-
-    const totalHeight = marginY * 2 + (barCount * (barHeight + gap));
-    svg.setAttribute("height", totalHeight);
-
-    const ns = "http://www.w3.org/2000/svg";
-
-    // TEMP GROUP TO MEASURE TEXT WIDTH
-    const tempGroup = document.createElementNS(ns, "g");
-    svg.appendChild(tempGroup);
-
-    let longestWidth = 0;
-
-    // Measure longest label width
-    sections.forEach(sec => {
-        const tempText = document.createElementNS(ns, "text");
-        tempText.setAttribute("font-size", "15");
-        tempText.setAttribute("font-weight", "500");
-        tempText.textContent = sec.name;
-
-        tempGroup.appendChild(tempText);
-        const w = tempText.getBBox().width;
-        if (w > longestWidth) longestWidth = w;
-        tempGroup.removeChild(tempText);
-    });
-
-    svg.removeChild(tempGroup);
-
-    // Add 20px padding after longest label
-    const barStartX = longestWidth + 30;
-    const maxBarWidth = width - barStartX - 50;
-
-    // --- DRAW CHART ---
-    sections.forEach((sec, i) => {
-        const qIds = sec.questions || [];
-        const maxScore = qIds.length * 5;
-        let total = 0;
-
-        qIds.forEach(id => {
-            const val = saved[id];
-            if (val) total += Number(val);
-        });
-
-        const pct = Math.round((total / maxScore) * 100);
-        const barWidth = (pct / 100) * maxBarWidth;
-
-        const y = marginY + i * (barHeight + gap);
-
-        // LABEL
-        const label = document.createElementNS(ns, "text");
-        label.setAttribute("x", 10);
-        label.setAttribute("y", y + barHeight / 2 + 6);
-        label.setAttribute("text-anchor", "start");
-        label.setAttribute("font-size", "15");
-        label.setAttribute("font-weight", "500");
-        label.textContent = sec.name;
-        svg.appendChild(label);
-
-        // BACKGROUND BAR
-        const bg = document.createElementNS(ns, "rect");
-        bg.setAttribute("x", barStartX);
-        bg.setAttribute("y", y);
-        bg.setAttribute("width", maxBarWidth);
-        bg.setAttribute("height", barHeight);
-        bg.setAttribute("rx", 8);
-        bg.setAttribute("fill", "#e5e7eb");
-        svg.appendChild(bg);
-
-        // VALUE BAR
-        const bar = document.createElementNS(ns, "rect");
-        bar.setAttribute("x", barStartX);
-        bar.setAttribute("y", y);
-        bar.setAttribute("width", barWidth);
-        bar.setAttribute("height", barHeight);
-        bar.setAttribute("rx", 8);
-        bar.setAttribute("fill", "#4c8afe");
-        svg.appendChild(bar);
-
-        // PERCENTAGE TEXT
-        const pctText = document.createElementNS(ns, "text");
-        pctText.setAttribute("x", barStartX + barWidth + 10);
-        pctText.setAttribute("y", y + barHeight / 2 + 6);
-        pctText.setAttribute("text-anchor", "start");
-        pctText.setAttribute("font-size", "15");
-        pctText.setAttribute("font-weight", "600");
-        pctText.textContent = pct + "%";
-        svg.appendChild(pctText);
-    });
-}
 
 
     function renderSectionBreakdownTable(deptData, saved) {
