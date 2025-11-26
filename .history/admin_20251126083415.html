@@ -1599,36 +1599,37 @@
       if (svg) svg.innerHTML = "";
     }
 
-    function renderSectionBreakdown(deptData, saved) {
-      const svg = document.getElementById("sectionChart");
-      if (!svg) return;
-      svg.innerHTML = "";
+function renderSectionBreakdown(deptData, saved) {
+    const svg = document.getElementById("sectionChart");
+    if (!svg) return;
+    svg.innerHTML = "";
 
-      const width = svg.clientWidth || 800;
-      const marginY = 20;
-      const marginX = 250; 
-      const fixedBarHeight = 20; 
-      const gap = 15; 
+    const width = svg.clientWidth || 800;
+    const marginY = 20;
+    const marginX = 250; 
+    const fixedBarHeight = 20; 
+    const gap = 20; 
 
-      const sections = deptData.sections || [];
-      const barCount = sections.length || 1;
-      const requiredHeight = (barCount * (fixedBarHeight + gap)) + (2 * marginY);
-        
-      svg.setAttribute("height", requiredHeight); 
+    const sections = deptData.sections || [];
+    const barCount = sections.length || 1;
+    const requiredHeight = (barCount * (fixedBarHeight + gap)) + (2 * marginY);
+    
+    svg.setAttribute("height", requiredHeight); 
 
-      const usableWidth = width - marginX - 20;
-      const maxBarWidth = usableWidth;
-      const startY = marginY;
+    const usableWidth = width - marginX - 20;
+    const maxBarWidth = usableWidth;
+    const startY = marginY;
 
-
-      sections.forEach((sec, i) => {
+    sections.forEach((sec, i) => {
         const qIds = sec.questions || [];
         const maxSecScore = qIds.length * 5 || 1;
         let total = 0;
+
         qIds.forEach(id => {
-          const val = saved[id];
-          if (val) total += Number(val);
+            const val = saved[id];
+            if (val) total += Number(val);
         });
+
         const percent = Math.round((total / maxSecScore) * 100);
         const barActualWidth = (percent / 100) * maxBarWidth;
 
@@ -1647,19 +1648,19 @@
         bgRect.setAttribute("fill", "#e5e7eb");
         svg.appendChild(bgRect);
 
-        // Value bar (horizontal)
+        // Value bar (actual score)
         const rect = document.createElementNS(ns, "rect");
         rect.setAttribute("x", x);
         rect.setAttribute("y", y);
         rect.setAttribute("width", barActualWidth);
         rect.setAttribute("height", fixedBarHeight);
         rect.setAttribute("rx", 6);
-        rect.setAttribute("fill", "#3b82f6");
+        rect.setAttribute("fill", "#004d9c");
         svg.appendChild(rect);
 
         // Percentage text
         const pctText = document.createElementNS(ns, "text");
-        pctText.setAttribute("x", x + barActualWidth + 5); 
+        pctText.setAttribute("x", x + barActualWidth + 8);
         pctText.setAttribute("y", y + fixedBarHeight / 2 + 4);
         pctText.setAttribute("text-anchor", "start");
         pctText.setAttribute("font-size", "14");
@@ -1667,95 +1668,17 @@
         pctText.textContent = percent + "%";
         svg.appendChild(pctText);
 
-        // Section label (on the left)
+        // LEFT-ALIGNED BULLET LABEL
         const label = document.createElementNS(ns, "text");
-        label.setAttribute("x", marginX - 50);
+        label.setAttribute("x", 10);                         // align to left
         label.setAttribute("y", y + fixedBarHeight / 2 + 4);
-        label.setAttribute("text-anchor", "end");
-        label.setAttribute("font-size", "12");
-        label.textContent = sec.name;
-        svg.appendChild(label);
-      });
-    }
-
-function renderSectionBreakdown(deptData, saved) {
-    const svg = document.getElementById("sectionChart");
-    if (!svg) return;
-    svg.innerHTML = "";
-
-    const width = svg.clientWidth || 900;
-    const leftLabelWidth = 180;   // space for labels (adjust if needed)
-    const marginY = 25;
-    const barHeight = 24;
-    const gap = 30;
-
-    const sections = deptData.sections || [];
-    const barCount = sections.length;
-    const totalHeight = marginY * 2 + barCount * (barHeight + gap);
-
-    svg.setAttribute("height", totalHeight);
-
-    const maxBarWidth = width - leftLabelWidth - 50;
-
-    const ns = "http://www.w3.org/2000/svg";
-
-    sections.forEach((sec, i) => {
-        const qIds = sec.questions || [];
-        const maxScore = qIds.length * 5;
-        let total = 0;
-
-        qIds.forEach(id => {
-            const val = saved[id];
-            if (val) total += Number(val);
-        });
-
-        const pct = Math.round((total / maxScore) * 100);
-        const barWidth = (pct / 100) * maxBarWidth;
-
-        const y = marginY + i * (barHeight + gap);
-
-        // --- LEFT LABEL (aligned cleanly) ---
-        const label = document.createElementNS(ns, "text");
-        label.setAttribute("x", 10);
-        label.setAttribute("y", y + barHeight / 2 + 6);
-        label.setAttribute("text-anchor", "start");
-        label.setAttribute("font-size", "15");
+        label.setAttribute("text-anchor", "start");          // left aligned
+        label.setAttribute("font-size", "14");
         label.setAttribute("font-weight", "500");
-        label.textContent = sec.name;
+        label.textContent = "• " + sec.name;                 // bullet style
         svg.appendChild(label);
-
-        // --- BACKGROUND BAR ---
-        const bg = document.createElementNS(ns, "rect");
-        bg.setAttribute("x", leftLabelWidth);
-        bg.setAttribute("y", y);
-        bg.setAttribute("width", maxBarWidth);
-        bg.setAttribute("height", barHeight);
-        bg.setAttribute("rx", 8);
-        bg.setAttribute("fill", "#e5e7eb");
-        svg.appendChild(bg);
-
-        // --- VALUE BAR ---
-        const bar = document.createElementNS(ns, "rect");
-        bar.setAttribute("x", leftLabelWidth);
-        bar.setAttribute("y", y);
-        bar.setAttribute("width", barWidth);
-        bar.setAttribute("height", barHeight);
-        bar.setAttribute("rx", 8);
-        bar.setAttribute("fill", "#4c8afe");
-        svg.appendChild(bar);
-
-        // --- PERCENT TEXT ---
-        const pctText = document.createElementNS(ns, "text");
-        pctText.setAttribute("x", leftLabelWidth + barWidth + 8);
-        pctText.setAttribute("y", y + barHeight / 2 + 6);
-        pctText.setAttribute("text-anchor", "start");
-        pctText.setAttribute("font-size", "15");
-        pctText.setAttribute("font-weight", "600");
-        pctText.textContent = pct + "%";
-        svg.appendChild(pctText);
     });
 }
-
 
 
     function renderSectionBreakdownTable(deptData, saved) {

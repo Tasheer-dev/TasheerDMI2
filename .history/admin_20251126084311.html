@@ -1756,9 +1756,98 @@ function renderSectionBreakdown(deptData, saved) {
     });
 }
 
+function renderSectionBreakdown(deptData, saved) {
+    const svg = document.getElementById("sectionChart");
+    if (!svg) return;
+
+    svg.innerHTML = "";
+
+    const width = svg.clientWidth || 900;
+
+    // LEFT SPACE for labels
+    const labelArea = 200;
+
+    const marginY = 25;
+    const barHeight = 24;
+    const gap = 28;
+
+    const sections = deptData.sections || [];
+    const barCount = sections.length;
+
+    // Required SVG height
+    const totalHeight = marginY * 2 + (barCount * (barHeight + gap));
+    svg.setAttribute("height", totalHeight);
+
+    const maxBarWidth = width - labelArea - 50;
+    const ns = "http://www.w3.org/2000/svg";
+
+    sections.forEach((sec, i) => {
+
+        // --- SCORE CALCULATION ---
+        const qIds = sec.questions || [];
+        const maxScore = qIds.length * 5;
+        let total = 0;
+
+        qIds.forEach(id => {
+            const val = saved[id];
+            if (val) total += Number(val);
+        });
+
+        const pct = Math.round((total / maxScore) * 100);
+        const barWidth = (pct / 100) * maxBarWidth;
+
+        // Y coordinate
+        const y = marginY + i * (barHeight + gap);
 
 
-    function renderSectionBreakdownTable(deptData, saved) {
+        // --- LABEL (LEFT-ALIGNED) ---
+        const label = document.createElementNS(ns, "text");
+        label.setAttribute("x", 10);
+        label.setAttribute("y", y + barHeight / 2 + 6);
+        label.setAttribute("text-anchor", "start");
+        label.setAttribute("font-size", "15");
+        label.setAttribute("font-weight", "500");
+        label.textContent = sec.name;
+        svg.appendChild(label);
+
+
+        // --- BACKGROUND BAR ---
+        const bg = document.createElementNS(ns, "rect");
+        bg.setAttribute("x", labelArea);
+        bg.setAttribute("y", y);
+        bg.setAttribute("width", maxBarWidth);
+        bg.setAttribute("height", barHeight);
+        bg.setAttribute("rx", 8);
+        bg.setAttribute("fill", "#e5e7eb");
+        svg.appendChild(bg);
+
+
+        // --- VALUE BAR ---
+        const bar = document.createElementNS(ns, "rect");
+        bar.setAttribute("x", labelArea);
+        bar.setAttribute("y", y);
+        bar.setAttribute("width", barWidth);
+        bar.setAttribute("height", barHeight);
+        bar.setAttribute("rx", 8);
+        bar.setAttribute("fill", "#4c8afe");
+        svg.appendChild(bar);
+
+
+        // --- PERCENT LABEL ---
+        const pctText = document.createElementNS(ns, "text");
+        pctText.setAttribute("x", labelArea + barWidth + 10);
+        pctText.setAttribute("y", y + barHeight / 2 + 6);
+        pctText.setAttribute("text-anchor", "start");
+        pctText.setAttribute("font-weight", "600");
+        pctText.setAttribute("font-size", "15");
+        pctText.textContent = pct + "%";
+        svg.appendChild(pctText);
+
+    });
+}
+
+
+
     const container = document.getElementById("sectionChart");
     container.innerHTML = "";
 
