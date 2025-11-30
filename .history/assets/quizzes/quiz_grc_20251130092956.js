@@ -58,7 +58,7 @@ DMI_QUESTION_SETS["grc"] = {
     {
       id: "Q3", area: "Policy Governance & Lifecycle Management",
       title: "Policy Repository & Version Control",
-      text: "Are all policies stored in a centralized digital repository with version control and searchable access?",
+      text: "Are all policies, standards, and procedures stored in a centralized digital repository with version control and searchable access?",
       Evidence: "Central policy repository, search logs, version history, access permissions.",
       choices: [
         { value: 1, text: "No structured policy-repository process; documents stored ad-hoc." },

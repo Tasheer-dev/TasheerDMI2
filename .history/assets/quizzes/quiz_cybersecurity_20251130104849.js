@@ -160,7 +160,7 @@ DMI_QUESTION_SETS["cybersecurity"] = {
     {
       id: "Q11", area: "Policies, Data Protection & Compliance",
       title: "Digital Policy Documentation",
-      text: "Are cybersecurity policies, procedures, and standards digitally documented, version-controlled ?",
+      text: "Are cybersecurity policies, procedures, and standards digitally documented, version-controlled?",
       Evidence: "Policy repository, version logs, acknowledgment tracking.",
       choices: [
         { value: 1, text: "1. Policies informal and manual." },
