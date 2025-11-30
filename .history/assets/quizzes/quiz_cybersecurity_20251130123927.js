@@ -314,7 +314,7 @@ DMI_QUESTION_SETS["cybersecurity"] = {
     { value: 2, text: "2. Basic awareness of standards but inconsistent application." },
     { value: 3, text: "3. Defined mapping to national standards with partial digital enforcement." },
     { value: 4, text: "4. Advanced digital enforcement of national classification rules." },
-    { value: 5, text: "5. Fully automated classification compliance aligned with national standards." }
+    { value: 5, text: "Fully automated classification compliance aligned with national standards." }
   ]
 },
     {
