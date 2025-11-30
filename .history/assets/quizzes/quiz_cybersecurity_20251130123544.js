@@ -356,9 +356,22 @@ DMI_QUESTION_SETS["cybersecurity"] = {
     { value: 5, text: "Fully automated classification engine with intelligent tagging and analytics." }
   ]
 }
-,
 
 
+{
+  id: "Q29",
+  area: "Data Quality & Cleansing",
+  title: "Data Cleansing & Updating",
+  text: "Is data regularly cleaned, validated, and updated using structured or digital processes?",
+  Evidence: "Cleansing logs, data-quality dashboards, update records.",
+  choices: [
+    { value: 1, text: "No structured data cleansing; activities handled ad-hoc." },
+    { value: 2, text: "Basic cleansing conducted manually and inconsistently." },
+    { value: 3, text: "Defined data cleansing processes supported by partial digital tools." },
+    { value: 4, text: "Advanced automated cleansing routines with monitoring dashboards." },
+    { value: 5, text: "Fully optimized and automated data quality system with intelligent anomaly detection." }
+  ]
+},
 
   ],
 

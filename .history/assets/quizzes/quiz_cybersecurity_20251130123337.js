@@ -356,10 +356,6 @@ DMI_QUESTION_SETS["cybersecurity"] = {
     { value: 5, text: "Fully automated classification engine with intelligent tagging and analytics." }
   ]
 }
-,
-
-
-
   ],
 
   maturityBands: [

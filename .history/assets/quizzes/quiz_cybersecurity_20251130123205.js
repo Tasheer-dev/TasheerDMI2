@@ -305,18 +305,18 @@ DMI_QUESTION_SETS["cybersecurity"] = {
       ]
     },
     {
-      id: "Q22",   area: "Data Classification & Protection",
-  title: "National Data Classification Standards",
-  text: "Are national data classification standards applied consistently across the organization?",
-  Evidence: "Classification framework, national standard mapping, compliance reports.",
-  choices: [
-    { value: 1, text: "No structured compliance with national classification standards; activities handled ad-hoc." },
-    { value: 2, text: "Basic awareness of standards but inconsistent application." },
-    { value: 3, text: "Defined mapping to national standards with partial digital enforcement." },
-    { value: 4, text: "Advanced digital enforcement of national classification rules." },
-    { value: 5, text: "Fully automated classification compliance aligned with national standards." }
-  ]
-},
+      id: "Q22", area: "Infrastructure, Identity & Automation",
+      title: "Identity & Access Automation",
+      text: "Is identity and access management (IAM/IDAM) automated and integrated with HR systems to ensure timely provisioning and deprovisioning?",
+      Evidence: "IAM logs, HR integration reports.",
+      choices: [
+        { value: 1, text: "1. Manual access lifecycle." },
+        { value: 2, text: "2. Basic IAM tools without automation." },
+        { value: 3, text: "3. Managed IAM with partial automation." },
+        { value: 4, text: "4. Fully automated IAM with HR integration." },
+        { value: 5, text: "5. Intelligent identity lifecycle with AI anomaly detection." }
+      ]
+    },
     {
       id: "Q23", area: "Infrastructure, Identity & Automation",
       title: "Privileged Access Management",
@@ -356,10 +356,6 @@ DMI_QUESTION_SETS["cybersecurity"] = {
     { value: 5, text: "Fully automated classification engine with intelligent tagging and analytics." }
   ]
 }
-,
-
-
-
   ],
 
   maturityBands: [

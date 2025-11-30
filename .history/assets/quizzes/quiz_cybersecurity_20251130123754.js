@@ -11,14 +11,14 @@ DMI_QUESTION_SETS["cybersecurity"] = {
   title: "Cybersecurity Department Digital Maturity Assessment (DMI)",
   shortcode: "CYBER",
   totalQuestions: 25,
-  maxScore: 25 * 5,
+  maxScore: 27 * 5,
 
   sections: [
     { name: "1) Governance, Risk & Compliance (GRC)", questions: ["Q1","Q2","Q3","Q4","Q5"] },
     { name: "2) SOC, Monitoring & Incident Response", questions: ["Q6","Q7","Q8","Q9","Q10"] },
     { name: "3) Policies, Data Protection & Compliance", questions: ["Q11","Q12","Q13","Q14","Q15"] },
     { name: "4) Awareness, Workforce & Culture", questions: ["Q16","Q17","Q18","Q19","Q20"] },
-    { name: "5) Infrastructure, Identity & Automation", questions: ["Q21","Q22","Q23","Q24","Q25"] }
+    { name: "5) Infrastructure, Identity & Automation", questions: ["Q21","Q22","Q23","Q24","Q25","Q26"] }
   ],
 
   questions: [
@@ -358,7 +358,20 @@ DMI_QUESTION_SETS["cybersecurity"] = {
 }
 ,
 
-
+{
+  id: "Q26",
+  area: "Data Quality & Cleansing",
+  title: "Data Cleansing & Updating",
+  text: "Is data regularly cleaned, validated, and updated using structured or digital processes?",
+  Evidence: "Cleansing logs, data-quality dashboards, update records.",
+  choices: [
+    { value: 1, text: "No structured data cleansing; activities handled ad-hoc." },
+    { value: 2, text: "Basic cleansing conducted manually and inconsistently." },
+    { value: 3, text: "Defined data cleansing processes supported by partial digital tools." },
+    { value: 4, text: "Advanced automated cleansing routines with monitoring dashboards." },
+    { value: 5, text: "Fully optimized and automated data quality system with intelligent anomaly detection." }
+  ]
+},
 
   ],
 
