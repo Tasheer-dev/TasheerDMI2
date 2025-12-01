@@ -1078,13 +1078,14 @@
 
 
     // NEW FUNCTION: Renders horizontal bar chart for divisions/standalone departments
-// Overall Maturity Breakdown by Entity with improved formatting
+
+// Overall Maturity Breakdown by Entity (Divisions + Standalone Depts)
 function renderCompanyEntityBreakdown(entities) {
   const svg = document.getElementById("sectionChart");
   if (!svg) return;
   svg.innerHTML = "";
 
-  // --- 1) Prepare and sort entities ---
+  // --- 1) Prepare and sort entities by score (desc) ---
   const computed = (entities || []).map(entity => {
     let percent = 0;
     let hasData = false;
@@ -1104,35 +1105,37 @@ function renderCompanyEntityBreakdown(entities) {
 
   computed.sort((a, b) => b.percent - a.percent);
 
-  // --- 2) Layout updates: more space for labels ---
-  const width = svg.clientWidth || 1300;
-  const marginY = 30;
-  const labelMarginLeft = 40;
-  const barStartX = 400;          // More space so names never collide
-  const barHeight = 28;           // Slightly larger bars
-  const gap = 20;
-  const rows = computed.length;
-  const height = rows * (barHeight + gap) + marginY * 2;
+  // --- 2) Layout settings (more room for names, aligned labels) ---
+  const width = svg.clientWidth || 1200;
+  const marginTopBottom = 24;
+  const labelColumnWidth = 260;         // space reserved for numbering + names
+  const marginLeftForBars = 320;        // where bars start (aligned)
+  const barHeight = 34;
+  const gap = 18;
+  const rows = computed.length || 1;
+  const height = rows * (barHeight + gap) + 1 * marginTopBottom;
 
   svg.setAttribute("height", height);
 
-  const maxBarWidth = width - barStartX - 40;
+  const maxBarWidth = width - marginLeftForBars - 30;
+  const startY = marginTopBottom;
   const ns = "http://www.w3.org/2000/svg";
 
-  // --- 3) Draw rows ---
-  computed.forEach((row, index) => {
+  // --- 3) Draw each row ---
+  computed.forEach((row, i) => {
     const entity = row.entity;
     const percent = row.percent;
-    const isDivision = entity.isDivision;
     const hasData = row.hasData;
 
-    const numberedName = `${index + 1}) ${entity.displayName || entity.name}`;
+    const name = entity.displayName || entity.name || entity.code || "N/A";
+    const numberedName = `${i + 1}) ${name}`;
 
-    const y = marginY + index * (barHeight + gap);
+    const xBar = marginLeftForBars;
+    const y = startY + i * (barHeight + gap);
 
-    // Background Bar
+    // Background bar (100%)
     const bgRect = document.createElementNS(ns, "rect");
-    bgRect.setAttribute("x", barStartX);
+    bgRect.setAttribute("x", xBar);
     bgRect.setAttribute("y", y);
     bgRect.setAttribute("width", maxBarWidth);
     bgRect.setAttribute("height", barHeight);
@@ -1140,35 +1143,46 @@ function renderCompanyEntityBreakdown(entities) {
     bgRect.setAttribute("fill", "#e5e7eb");
     svg.appendChild(bgRect);
 
-    // Actual Bar
+    // Actual bar
     const barWidth = (percent / 100) * maxBarWidth;
     const rect = document.createElementNS(ns, "rect");
-    rect.setAttribute("x", barStartX);
+    rect.setAttribute("x", xBar);
     rect.setAttribute("y", y);
     rect.setAttribute("width", barWidth);
     rect.setAttribute("height", barHeight);
     rect.setAttribute("rx", 6);
-    rect.setAttribute("fill", getEntityBarColor(percent, isDivision));
+    rect.setAttribute("fill", hasData ? getEntityBarColor(percent) : "#cbd5f5");
     svg.appendChild(rect);
 
-    // Percent Label
-    const pctText = document.createElementNS(ns, "text");
-    pctText.setAttribute("x", barStartX + barWidth + 10);
-    pctText.setAttribute("y", y + barHeight / 2 + 6);
-    pctText.setAttribute("font-size", "17");
-    pctText.setAttribute("font-weight", "600");
-    pctText.textContent = percent + "%";
-    svg.appendChild(pctText);
+    // Percentage text
+    if (hasData) {
+      const pctText = document.createElementNS(ns, "text");
+      pctText.setAttribute("x", xBar + barWidth + 6);
+      pctText.setAttribute("y", y + barHeight / 2 + 5);
+      pctText.setAttribute("text-anchor", "start");
+      pctText.setAttribute("font-size", "15");
+      pctText.setAttribute("font-weight", "600");
+      pctText.textContent = percent + "%";
+      svg.appendChild(pctText);
+    } else {
+      const noDataText = document.createElementNS(ns, "text");
+      noDataText.setAttribute("x", xBar + maxBarWidth / 2);
+      noDataText.setAttribute("y", y + barHeight / 2 + 5);
+      noDataText.setAttribute("text-anchor", "middle");
+      noDataText.setAttribute("font-size", "13");
+      noDataText.setAttribute("fill", "#6b7280");
+      noDataText.textContent = "No Data";
+      svg.appendChild(noDataText);
+    }
 
-    // LEFT LABEL — Bigger + Bold for Divisions
+    // LEFT-ALIGNED label with numbering
     const label = document.createElementNS(ns, "text");
-    label.setAttribute("x", labelMarginLeft);
-    label.setAttribute("y", y + barHeight / 2 + 6);
-    label.setAttribute("font-size", isDivision ? "20" : "18");  // Divisions bigger
-    label.setAttribute("font-weight", isDivision ? "700" : "500");
+    label.setAttribute("x", 20);                        // left margin
+    label.setAttribute("y", y + barHeight / 2 + 5);
     label.setAttribute("text-anchor", "start");
+    label.setAttribute("font-size", "14");
+    label.setAttribute("font-weight", "500");
     label.textContent = numberedName;
-
     svg.appendChild(label);
   });
 }
@@ -2319,19 +2333,14 @@ function renderDepartmentBreakdown(departments) {
     }
 }
 
-// Updated color logic: green only if > 60%
-function getEntityBarColor(percent, isDivision) {
-  if (percent > 60) {
-    return "#16a34a";         // Green (HIGH maturity)
-  }
-  if (percent >= 41) {
-    return "#2563eb";         // Blue (medium)
-  }
-  if (percent >= 26) {
-    return "#f97316";         // Orange (low/medium)
-  }
-  return "#dc2626";           // Red (very low)
+// Color categories for entity breakdown bars based on percentage
+function getEntityBarColor(percent) {
+  if (percent >= 76) return "#16a34a";        // Advanced / Optimized (green)
+  if (percent >= 51) return "#2563eb";        // Managed (blue)
+  if (percent >= 26) return "#f97316";        // Developing (orange)
+  return "#dc2626";                           // Ad-hoc / low (red)
 }
+
 
 
 

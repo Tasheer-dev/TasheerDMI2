@@ -35,7 +35,7 @@ DMI_QUESTION_SETS["grc"] = {
       text: "Is the policy governance Policy of policies and  manual charter  formally defined, approved, and managed through a digital tool with clear ownership and responsibilities?",
       Evidence: "Policy framework documents, governance model, ownership matrix, digital policy portal.",
       choices: [
-        { value: 1, text: "Add-hoc structured policy-governance process; activities handled ad-hoc." },
+        { value: 1, text: "A structured policy-governance process; activities handled ad-hoc." },
         { value: 2, text: "Basic implementation with limited digital tools and inconsistent policy-governance practices." },
         { value: 3, text: "Defined and managed policy-governance framework with partially digital workflows and regular application." },
         { value: 4, text: "Advanced, integrated digital policy-governance process with strong automation and consistent performance." },

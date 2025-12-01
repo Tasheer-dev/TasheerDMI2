@@ -1078,13 +1078,14 @@
 
 
     // NEW FUNCTION: Renders horizontal bar chart for divisions/standalone departments
-// Overall Maturity Breakdown by Entity with improved formatting
+
+// Overall Maturity Breakdown by Entity (Divisions + Standalone Depts)
 function renderCompanyEntityBreakdown(entities) {
   const svg = document.getElementById("sectionChart");
   if (!svg) return;
   svg.innerHTML = "";
 
-  // --- 1) Prepare and sort entities ---
+  // 1) Compute % score for each entity first
   const computed = (entities || []).map(entity => {
     let percent = 0;
     let hasData = false;
@@ -1102,76 +1103,91 @@ function renderCompanyEntityBreakdown(entities) {
     return { entity, percent, hasData };
   });
 
+  // 2) Sort: highest score → lowest
   computed.sort((a, b) => b.percent - a.percent);
 
-  // --- 2) Layout updates: more space for labels ---
-  const width = svg.clientWidth || 1300;
-  const marginY = 30;
-  const labelMarginLeft = 40;
-  const barStartX = 400;          // More space so names never collide
-  const barHeight = 28;           // Slightly larger bars
-  const gap = 20;
-  const rows = computed.length;
-  const height = rows * (barHeight + gap) + marginY * 2;
+  // 3) Layout: make chart wider + taller bars + bigger gap
+  const width = svg.clientWidth || 1000;     // wider default
+  const marginY = 24;
+  const marginX = 220;                       // slightly smaller left margin → more bar width
+  const fixedBarHeight = 24;                 // taller bars
+  const gap = 18;
+  const barCount = computed.length || 1;
+  const requiredHeight = barCount * (fixedBarHeight + gap) + 2 * marginY;
 
-  svg.setAttribute("height", height);
+  svg.setAttribute("height", requiredHeight);
 
-  const maxBarWidth = width - barStartX - 40;
+  const usableWidth = width - marginX - 40;
+  const maxBarWidth = usableWidth;
+  const startY = marginY;
   const ns = "http://www.w3.org/2000/svg";
 
-  // --- 3) Draw rows ---
-  computed.forEach((row, index) => {
+  // 4) Draw each bar row
+  computed.forEach((row, i) => {
     const entity = row.entity;
     const percent = row.percent;
-    const isDivision = entity.isDivision;
     const hasData = row.hasData;
 
-    const numberedName = `${index + 1}) ${entity.displayName || entity.name}`;
+    const entityName = entity.displayName || entity.name || entity.code || "N/A";
 
-    const y = marginY + index * (barHeight + gap);
+    const x = marginX;
+    const y = startY + i * (fixedBarHeight + gap);
 
-    // Background Bar
+    // Background bar (100%)
     const bgRect = document.createElementNS(ns, "rect");
-    bgRect.setAttribute("x", barStartX);
+    bgRect.setAttribute("x", x);
     bgRect.setAttribute("y", y);
     bgRect.setAttribute("width", maxBarWidth);
-    bgRect.setAttribute("height", barHeight);
+    bgRect.setAttribute("height", fixedBarHeight);
     bgRect.setAttribute("rx", 6);
     bgRect.setAttribute("fill", "#e5e7eb");
     svg.appendChild(bgRect);
 
-    // Actual Bar
+    // Actual value bar
     const barWidth = (percent / 100) * maxBarWidth;
     const rect = document.createElementNS(ns, "rect");
-    rect.setAttribute("x", barStartX);
+    rect.setAttribute("x", x);
     rect.setAttribute("y", y);
     rect.setAttribute("width", barWidth);
-    rect.setAttribute("height", barHeight);
+    rect.setAttribute("height", fixedBarHeight);
     rect.setAttribute("rx", 6);
-    rect.setAttribute("fill", getEntityBarColor(percent, isDivision));
+    rect.setAttribute("fill", hasData ? getEntityBarColor(percent) : "#cbd5f5");
     svg.appendChild(rect);
 
-    // Percent Label
-    const pctText = document.createElementNS(ns, "text");
-    pctText.setAttribute("x", barStartX + barWidth + 10);
-    pctText.setAttribute("y", y + barHeight / 2 + 6);
-    pctText.setAttribute("font-size", "17");
-    pctText.setAttribute("font-weight", "600");
-    pctText.textContent = percent + "%";
-    svg.appendChild(pctText);
+    // Percentage text (bigger font)
+    if (hasData) {
+      const pctText = document.createElementNS(ns, "text");
+      pctText.setAttribute("x", x + barWidth + 6);
+      pctText.setAttribute("y", y + fixedBarHeight / 2 + 5);
+      pctText.setAttribute("text-anchor", "start");
+      pctText.setAttribute("font-size", "15");
+      pctText.setAttribute("font-weight", "600");
+      pctText.textContent = percent + "%";
+      svg.appendChild(pctText);
+    } else {
+      const noDataText = document.createElementNS(ns, "text");
+      noDataText.setAttribute("x", x + maxBarWidth / 2);
+      noDataText.setAttribute("y", y + fixedBarHeight / 2 + 5);
+      noDataText.setAttribute("text-anchor", "middle");
+      noDataText.setAttribute("font-size", "13");
+      noDataText.setAttribute("fill", "#6b7280");
+      noDataText.textContent = "No Data";
+      svg.appendChild(noDataText);
+    }
 
-    // LEFT LABEL — Bigger + Bold for Divisions
+    // Entity label on the left (bigger font to be more readable)
     const label = document.createElementNS(ns, "text");
-    label.setAttribute("x", labelMarginLeft);
-    label.setAttribute("y", y + barHeight / 2 + 6);
-    label.setAttribute("font-size", isDivision ? "20" : "18");  // Divisions bigger
-    label.setAttribute("font-weight", isDivision ? "700" : "500");
-    label.setAttribute("text-anchor", "start");
-    label.textContent = numberedName;
-
+    label.setAttribute("x", marginX - 12);
+    label.setAttribute("y", y + fixedBarHeight / 2 + 5);
+    label.setAttribute("text-anchor", "end");
+    label.setAttribute("font-size", "14");
+    label.setAttribute("font-weight", "500");
+    label.textContent = entityName;
     svg.appendChild(label);
   });
 }
+
+
 
 
     // UPDATED FUNCTION: Selects a Division and displays its aggregated data
@@ -2319,19 +2335,14 @@ function renderDepartmentBreakdown(departments) {
     }
 }
 
-// Updated color logic: green only if > 60%
-function getEntityBarColor(percent, isDivision) {
-  if (percent > 60) {
-    return "#16a34a";         // Green (HIGH maturity)
-  }
-  if (percent >= 41) {
-    return "#2563eb";         // Blue (medium)
-  }
-  if (percent >= 26) {
-    return "#f97316";         // Orange (low/medium)
-  }
-  return "#dc2626";           // Red (very low)
+// Color categories for entity breakdown bars based on percentage
+function getEntityBarColor(percent) {
+  if (percent >= 76) return "#16a34a";        // Advanced / Optimized (green)
+  if (percent >= 51) return "#2563eb";        // Managed (blue)
+  if (percent >= 26) return "#f97316";        // Developing (orange)
+  return "#dc2626";                           // Ad-hoc / low (red)
 }
+
 
 
 
