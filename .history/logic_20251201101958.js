@@ -1,56 +1,7 @@
-
-
 function initAdminPage() {
-  // Ensure user is logged in before proceeding
-  if (typeof requireLogin === "function" && !requireLogin()) return;
-
-  // Admin dashboard bootstrap (safe no-op placeholder)
-  // You may add any initialization logic here later if needed.
-
-  const deptButtons = document.querySelectorAll("#adminDeptList .nav-link");
-
-  // Attach event listeners to all department buttons
-  deptButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const deptCode = btn.dataset.code;
-
-      // Compute overall company DMI (used for summary dashboards)
-      const companyScore = computeCompanyOverallDMI();
-      // TODO: Use companyScore as required (e.g., update UI)
-      const band = findMaturityBand(companyScore);
-
-
-      // Highlight the active department button
-      deptButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      // Load department dashboard content
-      handleAdminDeptClick(deptCode);
-    });
-  });
-
-  // Auto-select the FIRST department on initial load
-  if (deptButtons.length > 0) {
-    deptButtons[0].classList.add("active");
-    handleAdminDeptClick(deptButtons[0].dataset.code);
-  }
+  if (typeof requireLogin === 'function' && !requireLogin()) return;
+  // Admin dashboard bootstrap — safe no-op for now
 }
-
-function findMaturityBand(score) {
-    const bands = [
-        { name: "0–25% (Ad-hoc)", range: [0, 25] },
-        { name: "26–50% (Basic)", range: [26, 50] },
-        { name: "51–75% (Managed)", range: [51, 75] },
-        { name: "76–90% (Advanced)", range: [76, 90] },
-        { name: "91–100% (Optimized)", range: [91, 100] }
-    ];
-
-    return bands.find(b => score >= b.range[0] && score <= b.range[1]) || null;
-}
-
-
-// near the top of logic.js
-let CURRENT_DEPT_CODE = null;
 
 function openEvidenceFolder() {
   const url = (window.EVIDENCE_SHARED_FOLDER || '').trim();
@@ -181,10 +132,10 @@ function handleLogin() {
 function initAssessmentPage() {
   if (!requireLogin()) return; // Stop if not logged in
 
-  const deptCode = sessionStorage.getItem("dmi_deptCode");
-  CURRENT_DEPT_CODE = deptCode; // 🔹 keep it globally for evidence storage
+
 
   const role = sessionStorage.getItem("dmi_role");
+  const deptCode = sessionStorage.getItem("dmi_deptCode");
   const displayName = sessionStorage.getItem("dmi_displayName");
 
   // Prevent admin from accessing department UI
@@ -254,99 +205,6 @@ function getStorageKeyFor(deptCode) {
   return "tasheer_dmi_" + deptCode;
 
   
-}
-
-
-function buildAssessmentForm(questionSet) {
-  const container = document.getElementById("assessment-form");
-  container.innerHTML = "";
-
-  questionSet.sections.forEach(section => {
-    // Section wrapper
-    const sectionCard = document.createElement("div");
-    sectionCard.className = "card mb-4 shadow-sm";
-
-    const sectionHeader = document.createElement("div");
-    sectionHeader.className = "card-header bg-light fw-bold";
-    sectionHeader.textContent = section.name;
-    sectionCard.appendChild(sectionHeader);
-
-    const sectionBody = document.createElement("div");
-    sectionBody.className = "card-body";
-
-    section.questions.forEach(qId => {
-      const q = questionSet.questions.find(qq => qq.id === qId);
-      if (!q) return;
-
-      const qContainer = document.createElement("div");
-      qContainer.className = "mb-4 question-block";
-      qContainer.dataset.questionId = q.id;
-
-      // Title
-      const titleEl = document.createElement("h6");
-      titleEl.className = "fw-semibold";
-      titleEl.textContent = `${q.id}) ${q.title || ""}`;
-      qContainer.appendChild(titleEl);
-
-      // Question text
-      const textEl = document.createElement("p");
-      textEl.className = "mb-2";
-      textEl.textContent = q.text;
-      qContainer.appendChild(textEl);
-
-      // 🔹 Optional Evidence guidance (if defined in quiz)
-      if (q.Evidence) {
-        const evidenceHint = document.createElement("div");
-        evidenceHint.className = "small text-muted mb-2 evidence-hint";
-        evidenceHint.innerHTML = `<strong>Evidence guidance:</strong> ${q.Evidence}`;
-        qContainer.appendChild(evidenceHint);
-      }
-
-      // Choices (1–5) – keep your existing rendering style
-      const select = document.createElement("select");
-      select.className = "form-select dmi-choice-select";
-      select.dataset.questionId = q.id;
-
-      const placeholderOpt = document.createElement("option");
-      placeholderOpt.value = "";
-      placeholderOpt.textContent = "Select maturity level…";
-      select.appendChild(placeholderOpt);
-
-      (q.choices || []).forEach(choice => {
-        const opt = document.createElement("option");
-        opt.value = choice.value;
-        opt.textContent = choice.text;
-        select.appendChild(opt);
-      });
-
-      select.addEventListener("change", handleSelectionChange);
-      qContainer.appendChild(select);
-
-      // 🔹 Evidence / Notes textarea (saved to localStorage)
-      const evidenceLabel = document.createElement("label");
-      evidenceLabel.className = "form-label mt-2 mb-1 small text-secondary";
-      evidenceLabel.textContent = "Evidence / notes (where is this documented?)";
-      qContainer.appendChild(evidenceLabel);
-
-      const evidenceInput = document.createElement("textarea");
-      evidenceInput.className = "form-control evidence-input";
-      evidenceInput.rows = 2;
-      evidenceInput.dataset.questionId = q.id;
-
-      evidenceInput.addEventListener("change", handleEvidenceChange);
-      qContainer.appendChild(evidenceInput);
-
-      sectionBody.appendChild(qContainer);
-    });
-
-    sectionCard.appendChild(sectionBody);
-    container.appendChild(sectionCard);
-  });
-
-  // After building the form and attaching handlers:
-  loadSelections();          // your existing function – keeps answers
-  loadEvidenceForForm();     // 🔹 new: restore saved evidence notes
-  updateLiveScore();         // recalc the live DMI
 }
 
 
@@ -1239,25 +1097,50 @@ function getMaturityBand(percent, deptData) {
 ----------------------------------------------------------------------------- */
 
 
+function initAdminPage() {
+  if (typeof requireLogin === "function" && !requireLogin()) return;
 
+  const deptButtons = document.querySelectorAll("#adminDeptList .nav-link");
 
+  deptButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const deptCode = btn.dataset.code;
 
-function computeCompanyOverallDMI() {
-    let total = 0;
-    let count = 0;
+      // Highlight active button
+      deptButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
 
-    // Loop through all admin hierarchy departments
-    ADMIN_HIERARCHY.forEach(div => {
-        div.departments.forEach(dept => {
-            const score = getTasheerDeptScore(dept.code);  // already exists in your code
-            if (score !== null && !isNaN(score)) {
-                total += score;
-                count++;
-            }
-        });
+      // Load department dashboard
+      handleAdminDeptClick(deptCode);
     });
+  });
 
-    if (count === 0) return null;  // no completed departments yet
+  // Auto-select FIRST department
+  if (deptButtons.length > 0) {
+    deptButtons[0].classList.add("active");
+    handleAdminDeptClick(deptButtons[0].dataset.code);
+  }
+}
 
-    return Math.round(total / count);  // the company average
+function initAdminPage() {
+  if (typeof requireLogin === 'function' && !requireLogin()) return;
+
+  const deptButtons = document.querySelectorAll("#adminDeptList .nav-link");
+
+  deptButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const deptCode = btn.dataset.code;
+
+      deptButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      handleAdminDeptClick(deptCode);
+    });
+  });
+
+  // Auto-load first department
+  if (deptButtons.length > 0) {
+    deptButtons[0].classList.add("active");
+    handleAdminDeptClick(deptButtons[0].dataset.code);
+  }
 }

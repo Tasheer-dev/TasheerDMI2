@@ -36,17 +36,6 @@ function initAdminPage() {
   }
 }
 
-function findMaturityBand(score) {
-    const bands = [
-        { name: "0–25% (Ad-hoc)", range: [0, 25] },
-        { name: "26–50% (Basic)", range: [26, 50] },
-        { name: "51–75% (Managed)", range: [51, 75] },
-        { name: "76–90% (Advanced)", range: [76, 90] },
-        { name: "91–100% (Optimized)", range: [91, 100] }
-    ];
-
-    return bands.find(b => score >= b.range[0] && score <= b.range[1]) || null;
-}
 
 
 // near the top of logic.js

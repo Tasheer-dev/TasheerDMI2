@@ -1,52 +1,33 @@
+function initAdminPage() {
+  if (typeof requireLogin === 'function' && !requireLogin()) return;
+  // Admin dashboard bootstrap — safe no-op for now
+}
 
 
 function initAdminPage() {
-  // Ensure user is logged in before proceeding
-  if (typeof requireLogin === "function" && !requireLogin()) return;
-
-  // Admin dashboard bootstrap (safe no-op placeholder)
-  // You may add any initialization logic here later if needed.
+  if (typeof requireLogin === 'function' && !requireLogin()) return;
 
   const deptButtons = document.querySelectorAll("#adminDeptList .nav-link");
 
-  // Attach event listeners to all department buttons
   deptButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const deptCode = btn.dataset.code;
 
-      // Compute overall company DMI (used for summary dashboards)
-      const companyScore = computeCompanyOverallDMI();
-      // TODO: Use companyScore as required (e.g., update UI)
-      const band = findMaturityBand(companyScore);
-
-
-      // Highlight the active department button
       deptButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
-      // Load department dashboard content
       handleAdminDeptClick(deptCode);
     });
   });
 
-  // Auto-select the FIRST department on initial load
+  // Auto-load first department
   if (deptButtons.length > 0) {
     deptButtons[0].classList.add("active");
     handleAdminDeptClick(deptButtons[0].dataset.code);
   }
 }
 
-function findMaturityBand(score) {
-    const bands = [
-        { name: "0–25% (Ad-hoc)", range: [0, 25] },
-        { name: "26–50% (Basic)", range: [26, 50] },
-        { name: "51–75% (Managed)", range: [51, 75] },
-        { name: "76–90% (Advanced)", range: [76, 90] },
-        { name: "91–100% (Optimized)", range: [91, 100] }
-    ];
 
-    return bands.find(b => score >= b.range[0] && score <= b.range[1]) || null;
-}
 
 
 // near the top of logic.js
@@ -1238,6 +1219,32 @@ function getMaturityBand(percent, deptData) {
    End of logic.js
 ----------------------------------------------------------------------------- */
 
+
+function initAdminPage() {
+  if (typeof requireLogin === "function" && !requireLogin()) return;
+
+  const deptButtons = document.querySelectorAll("#adminDeptList .nav-link");
+
+  deptButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const deptCode = btn.dataset.code;
+const companyScore = computeCompanyOverallDMI();
+
+      // Highlight active button
+      deptButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      // Load department dashboard
+      handleAdminDeptClick(deptCode);
+    });
+  });
+
+  // Auto-select FIRST department
+  if (deptButtons.length > 0) {
+    deptButtons[0].classList.add("active");
+    handleAdminDeptClick(deptButtons[0].dataset.code);
+  }
+}
 
 
 
