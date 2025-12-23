@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ISO 27001 Compliance App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- Top Bar -->
+  <header class="w-full bg-white shadow flex items-center justify-between px-6 py-3">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+        IS
+      </div>
+      <div>
+        <h1 class="font-semibold text-lg">ISO 27001 Compliance</h1>
+        <p class="text-xs text-gray-500">Small Business ISMS Management</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 text-sm">
+      <span class="text-gray-600">ISMS Manager</span>
+      <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs">
+        AA
+      </div>
+    </div>
+  </header>
+
+  <div class="flex h-[calc(100vh-56px)]">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+      <nav class="flex-1 p-4 space-y-1 text-sm" id="sidebar-nav">
+        <button data-page="dashboard" class="nav-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium">
+          <span>🏠</span><span>Dashboard</span>
+        </button>
+        <button data-page="risk" class="nav-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100">
+          <span>⚠️</span><span>Risk Register</span>
+        </button>
+        <button data-page="assets" class="nav-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100">
+          <span>💾</span><span>Assets</span>
+        </button>
+        <button data-page="documents" class="nav-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100">
+          <span>📄</span><span>Documents</span>
+        </button>
+        <button data-page="tasks" class="nav-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100">
+          <span>✅</span><span>Tasks & Reminders</span>
+        </button>
+        <button data-page="settings" class="nav-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100">
+          <span>⚙️</span><span>Settings</span>
+        </button>
+      </nav>
+      <div class="p-4 border-t border-gray-200 text-xs text-gray-500">
+        v0.1 – Demo UI (no backend)
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-50" id="main-content">
+      <!-- Content is injected by JS -->
+    </main>
+  </div>
+
+  <script>
+    // Simple in-memory demo data
+    const state = {
+      risks: [
+        {
+          id: 'R-001',
+          asset: 'Customer Data (CRM)',
+          description: 'Unauthorized access to customer personal data',
+          likelihood: 'Medium',
+          impact: 'High',
+          treatment: 'Apply access control, encryption, monitoring',
+          owner: 'ISMS Manager',
+          status: 'Open'
+        },
+        {
+          id: 'R-002',
+          asset: 'Email System (O365)',
+          description: 'Phishing attack leading to credential theft',
+          likelihood: 'High',
+          impact: 'High',
+          treatment: 'Awareness training, MFA, phishing simulation',
+          owner: 'Security Officer',
+          status: 'Mitigation in progress'
+        }
+      ],
+      assets: [
+        { id: 'A-001', name: 'CRM Database', owner: 'IT Manager', type: 'Information', classification: 'Confidential' },
+        { id: 'A-002', name: 'File Server', owner: 'IT Ops', type: 'Infrastructure', classification: 'Internal' },
+        { id: 'A-003', name: 'HR System', owner: 'HR Manager', type: 'Application', classification: 'Restricted' }
+      ],
+      documents: [
+        { id: 'DOC-ISMS-001', name: 'ISMS Scope', type: 'Policy', status: 'Approved', owner: 'ISMS Manager' },
+        { id: 'DOC-ISMS-002', name: 'Information Security Policy', type: 'Policy', status: 'Under Review', owner: 'CISO' },
+        { id: 'DOC-ISMS-003', name: 'Risk Assessment Methodology', type: 'Procedure', status: 'Approved', owner: 'Risk Officer' }
+      ],
+      tasks: [
+        { id: 'T-001', title: 'Review risk register Q1', due: '2025-12-31', assignee: 'ISMS Manager', status: 'Open' },
+        { id: 'T-002', title: 'Conduct internal audit – HR processes', due: '2026-01-15', assignee: 'Internal Auditor', status: 'Planned' },
+        { id: 'T-003', title: 'Management review meeting', due: '2026-02-01', assignee: 'Top Management', status: 'Planned' }
+      ]
+    };
+
+    // Render functions for each page
+    function renderDashboard() {
+      const totalRisks = state.risks.length;
+      const openRisks = state.risks.filter(r => r.status.toLowerCase().includes('open')).length;
+      const totalDocs = state.documents.length;
+      const approvedDocs = state.documents.filter(d => d.status === 'Approved').length;
+      const openTasks = state.tasks.filter(t => t.status === 'Open').length;
+
+      return `
+        <section class="space-y-6">
+          <div>
+            <h2 class="text-xl font-semibold mb-1">Dashboard</h2>
+            <p class="text-sm text-gray-500">Overview of your ISO 27001 implementation and ongoing ISMS activities.</p>
+          </div>
+
+          <div class="grid md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-xl shadow p-4">
+              <p class="text-xs text-gray-500 mb-1">Risks (total / open)</p>
+              <p class="text-2xl font-semibold">${totalRisks} / ${openRisks}</p>
+            </div>
+            <div class="bg-white rounded-xl shadow p-4">
+              <p class="text-xs text-gray-500 mb-1">Documents (approved)</p>
+              <p class="text-2xl font-semibold">${approvedDocs} / ${totalDocs}</p>
+            </div>
+            <div class="bg-white rounded-xl shadow p-4">
+              <p class="text-xs text-gray-500 mb-1">Open Tasks</p>
+              <p class="text-2xl font-semibold">${openTasks}</p>
+            </div>
+            <div class="bg-white rounded-xl shadow p-4">
+              <p class="text-xs text-gray-500 mb-1">ISMS Status</p>
+              <p class="text-lg font-semibold text-emerald-600">On Track</p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white rounded-xl shadow p-4">
+              <h3 class="font-semibold mb-2 text-sm">Upcoming Tasks & Reviews</h3>
+              <ul class="divide-y divide-gray-100">
+                ${state.tasks.slice(0, 5).map(t => `
+                  <li class="py-2 flex items-center justify-between text-xs">
+                    <div>
+                      <p class="font-medium">${t.title}</p>
+                      <p class="text-gray-500">Assignee: ${t.assignee}</p>
+                    </div>
+                    <div class="text-right">
+                      <p class="text-gray-500">${t.due}</p>
+                      <span class="inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] ${
+                        t.status === 'Open' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
+                      }">${t.status}</span>
+                    </div>
+                  </li>
+                }).join('')}
+              </ul>
+            </div>
+            <div class="bg-white rounded-xl shadow p-4">
+              <h3 class="font-semibold mb-2 text-sm">Recent Risks</h3>
+              <ul class="divide-y divide-gray-100">
+                ${state.risks.slice(0, 5).map(r => `
+                  <li class="py-2 text-xs">
+                    <p class="font-medium">${r.id} – ${r.asset}</p>
+                    <p class="text-gray-500">${r.description}</p>
+                    <p class="mt-1"><span class="font-medium">Status:</span> ${r.status}</p>
+                  </li>
+                }).join('')}
+              </ul>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderRiskRegister() {
+      return `
+        <section class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-semibold mb-1">Risk Register</h2>
+              <p class="text-sm text-gray-500">Identify, evaluate, and treat risks to information assets.</p>
+            </div>
+            <button class="text-sm bg-blue-600 text-white px-3 py-1.5 rounded-lg opacity-60 cursor-not-allowed">
+              + New Risk (demo)
+            </button>
+          </div>
+
+          <div class="bg-white rounded-xl shadow overflow-x-auto">
+            <table class="min-w-full text-xs">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">ID</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Asset</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Description</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Likelihood</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Impact</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Treatment</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Owner</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.risks.map(r => `
+                  <tr class="border-t border-gray-100">
+                    <td class="px-3 py-2 whitespace-nowrap">${r.id}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${r.asset}</td>
+                    <td class="px-3 py-2 max-w-xs">${r.description}</td>
+                    <td class="px-3 py-2">${r.likelihood}</td>
+                    <td class="px-3 py-2">${r.impact}</td>
+                    <td class="px-3 py-2 max-w-xs">${r.treatment}</td>
+                    <td class="px-3 py-2">${r.owner}</td>
+                    <td class="px-3 py-2">
+                      <span class="px-2 py-0.5 rounded-full text-[10px] ${
+                        r.status.toLowerCase().includes('open')
+                          ? 'bg-red-100 text-red-700'
+                          : 'bg-emerald-100 text-emerald-700'
+                      }">${r.status}</span>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderAssets() {
+      return `
+        <section class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-semibold mb-1">Asset Register</h2>
+              <p class="text-sm text-gray-500">Maintain inventory of information assets and their classification.</p>
+            </div>
+            <button class="text-sm bg-blue-600 text-white px-3 py-1.5 rounded-lg opacity-60 cursor-not-allowed">
+              + New Asset (demo)
+            </button>
+          </div>
+
+          <div class="bg-white rounded-xl shadow overflow-x-auto">
+            <table class="min-w-full text-xs">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">ID</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Name</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Owner</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Type</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Classification</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.assets.map(a => `
+                  <tr class="border-t border-gray-100">
+                    <td class="px-3 py-2 whitespace-nowrap">${a.id}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${a.name}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${a.owner}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${a.type}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${a.classification}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderDocuments() {
+      return `
+        <section class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-semibold mb-1">Documents</h2>
+              <p class="text-sm text-gray-500">Manage ISO 27001 policies, procedures, and records.</p>
+            </div>
+            <button class="text-sm bg-blue-600 text-white px-3 py-1.5 rounded-lg opacity-60 cursor-not-allowed">
+              + New Document (demo)
+            </button>
+          </div>
+
+          <div class="bg-white rounded-xl shadow overflow-x-auto">
+            <table class="min-w-full text-xs">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">ID</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Name</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Type</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Owner</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.documents.map(d => `
+                  <tr class="border-t border-gray-100">
+                    <td class="px-3 py-2 whitespace-nowrap">${d.id}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${d.name}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${d.type}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${d.owner}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <span class="px-2 py-0.5 rounded-full text-[10px] ${
+                        d.status === 'Approved'
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-amber-100 text-amber-700'
+                      }">${d.status}</span>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderTasks() {
+      return `
+        <section class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-semibold mb-1">Tasks & Reminders</h2>
+              <p class="text-sm text-gray-500">Plan internal audits, reviews, and recurring ISMS activities.</p>
+            </div>
+            <button class="text-sm bg-blue-600 text-white px-3 py-1.5 rounded-lg opacity-60 cursor-not-allowed">
+              + New Task (demo)
+            </button>
+          </div>
+
+          <div class="bg-white rounded-xl shadow overflow-x-auto">
+            <table class="min-w-full text-xs">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">ID</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Title</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Assignee</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Due Date</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-600">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.tasks.map(t => `
+                  <tr class="border-t border-gray-100">
+                    <td class="px-3 py-2 whitespace-nowrap">${t.id}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${t.title}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${t.assignee}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">${t.due}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <span class="px-2 py-0.5 rounded-full text-[10px] ${
+                        t.status === 'Open'
+                          ? 'bg-red-100 text-red-700'
+                          : 'bg-blue-100 text-blue-700'
+                      }">${t.status}</span>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderSettings() {
+      return `
+        <section class="space-y-4 max-w-xl">
+          <div>
+            <h2 class="text-xl font-semibold mb-1">Settings</h2>
+            <p class="text-sm text-gray-500">Basic configuration for this ISMS workspace (demo only).</p>
+          </div>
+
+          <div class="bg-white rounded-xl shadow p-4 space-y-4 text-sm">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Organization name</label>
+              <input type="text" class="w-full border rounded-lg px-3 py-2 text-sm" value="Demo Company Ltd." disabled>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Standard</label>
+              <select class="w-full border rounded-lg px-3 py-2 text-sm" disabled>
+                <option>ISO/IEC 27001:2022</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Timezone</label>
+              <input type="text" class="w-full border rounded-lg px-3 py-2 text-sm" value="UTC+03:00" disabled>
+            </div>
+            <p class="text-xs text-gray-500">
+              This is a static demo. In a real app, these values would be stored in a database and editable.
+            </p>
+          </div>
+        </section>
+      `;
+    }
+
+    // Routing
+    const mainContent = document.getElementById('main-content');
+
+    function setActiveNav(page) {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.page === page) {
+          btn.classList.add('bg-blue-50', 'text-blue-700', 'font-medium');
+        } else {
+          btn.classList.remove('bg-blue-50', 'text-blue-700', 'font-medium');
+        }
+      });
+    }
+
+    function renderPage(page) {
+      setActiveNav(page);
+      let html;
+      switch (page) {
+        case 'risk':
+          html = renderRiskRegister();
+          break;
+        case 'assets':
+          html = renderAssets();
+          break;
+        case 'documents':
+          html = renderDocuments();
+          break;
+        case 'tasks':
+          html = renderTasks();
+          break;
+        case 'settings':
+          html = renderSettings();
+          break;
+        case 'dashboard':
+        default:
+          html = renderDashboard();
+      }
+      mainContent.innerHTML = html;
+    }
+
+    // Sidebar navigation events
+    document.getElementById('sidebar-nav').addEventListener('click', (e) => {
+      const btn = e.target.closest('.nav-btn');
+      if (!btn) return;
+      renderPage(btn.dataset.page);
+    });
+
+    // Initial page
+    renderPage('dashboard');
+  </script>
+</body>
+</html>

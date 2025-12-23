@@ -87,7 +87,7 @@ DMI_QUESTION_SETS["business_excellence"] = {
       choices: [
         { value: 1, text: "1. Ad-hoc activity; undocumented or outdated policies." },
         { value: 2, text: "2. Partial documentation for major areas only." },
-        { value: 3, text: "3. Comprehensive policies maintained but not version-controlled by Automated system." },
+        { value: 3, text: "3. Comprehensive policies maintained but not version-controlled by ." },
         { value: 4, text: "4. Fully documented and approved policies managed digitally." },
         { value: 5, text: "5. Smart policy management system with review cycles and compliance tracking." }
       ]

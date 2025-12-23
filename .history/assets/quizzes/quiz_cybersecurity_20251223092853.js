@@ -360,36 +360,19 @@ DMI_QUESTION_SETS["cybersecurity"] = {
         { value: 5, text: "5. Fully optimized risk-based VA automation." }
       ]
     },
-{
-  id: "Q25",
-  area: "Infrastructure & Endpoint Security",
-  title: "Endpoint Detection and Response (EDR/XDR)",
-  text: "Is Endpoint Detection and Response (EDR) or Extended Detection and Response (XDR) deployed, monitored, and operationally integrated across organizational endpoints?",
-  Evidence: "EDR/XDR deployment reports, endpoint coverage metrics, SOC/SIEM integration diagrams, tuning records, incident response playbooks.",
+    {
+      id: "Q25",   area: "Data Classification & Protection",
+  title: "Data Classification Process",
+  text: "Is data categorized and classified based on its importance, sensitivity, and regulatory requirements?",
+  Evidence: "Classification policy, classification logs, data inventory.",
   choices: [
-    {
-      value: 1,
-      text: "1. No EDR or XDR solution is deployed on organizational devices."
-    },
-    {
-      value: 2,
-      text: "2. EDR or XDR is deployed on a limited number of critical endpoints with minimal monitoring."
-    },
-    {
-      value: 3,
-      text: "3. EDR or XDR is deployed on most critical endpoints, but coverage, tuning, or response processes are incomplete."
-    },
-    {
-      value: 4,
-      text: "4. EDR or XDR is fully deployed and enforced on all endpoints (servers and user devices), with centralized monitoring."
-    },
-    {
-      value: 5,
-      text: "5. EDR or XDR is fully deployed on all endpoints, actively monitored 24/7, regularly tuned, integrated with SOC/SIEM, and supported by defined incident response playbooks."
-    }
+    { value: 1, text: "1. No structured data classification process; activities handled ad-hoc." },
+    { value: 2, text: "2. Basic classification activities with limited digital tools." },
+    { value: 3, text: "3. Defined classification process with partially digital workflows." },
+    { value: 4, text: "4. Advanced digital classification tools applied consistently." },
+    { value: 5, text: "5. Fully automated classification engine with intelligent tagging and analytics." }
   ]
 }
-
 ,
 
 

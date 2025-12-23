@@ -33,11 +33,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Sprint calendars, attendance, retrospectives, reviews, backlog records, velocity trends.",
       choices: [
         { value: 0, text: " 0- No Agile practices; work handled reactively without structured sprints." },
-        { value: 1, text: " 1- Some teams occasionally hold ceremonies, but practices remain inconsistent." },
-        { value: 2, text: " 2- Basic Agile exists, but varies widely; backlog discipline partially applied." },
-        { value: 3, text: " 3- Teams follow consistent Agile cadence with all standard ceremonies." },
-        { value: 4, text: " 4- Agile KPIs tracked; dependencies planned; lessons shared across teams." },
-        { value: 5, text: " 5- Agile scaled fully; metrics enable prediction and continuous improvement." }
+        { value: 1, text: "Some teams occasionally hold ceremonies, but practices remain inconsistent." },
+        { value: 2, text: "Basic Agile exists, but varies widely; backlog discipline partially applied." },
+        { value: 3, text: "Teams follow consistent Agile cadence with all standard ceremonies." },
+        { value: 4, text: "Agile KPIs tracked; dependencies planned; lessons shared across teams." },
+        { value: 5, text: "Agile scaled fully; metrics enable prediction and continuous improvement." }
       ]
     },
 
@@ -48,11 +48,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Requirements, ADO stories, acceptance criteria, minutes, logs, prioritization.",
       choices: [
         { value: 0, text: " 0- No formal interaction; requirements arrive informally without clarity." },
-        { value: 1, text: " 1- POs consulted irregularly; priorities shift without clear assessment." },
-        { value: 2, text: " 2- Meetings exist but requirement documentation and criteria are inconsistent." },
-        { value: 3, text: " 3- Clear alignment cadence; structured stories and acceptance criteria used." },
-        { value: 4, text: " 4- Traceability established; prioritization frameworks applied consistently." },
-        { value: 5, text: " 5- Highly collaborative, data-driven alignment with predictive demand planning." }
+        { value: 1, text: "POs consulted irregularly; priorities shift without clear assessment." },
+        { value: 2, text: "Meetings exist but requirement documentation and criteria are inconsistent." },
+        { value: 3, text: "Clear alignment cadence; structured stories and acceptance criteria used." },
+        { value: 4, text: "Traceability established; prioritization frameworks applied consistently." },
+        { value: 5, text: "Highly collaborative, data-driven alignment with predictive demand planning." }
       ]
     },
 
@@ -63,11 +63,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "RAID logs, mitigation plans, boards, escalations, post-mortems.",
       choices: [
         { value: 0, text: " 0- No formal tracking; problems addressed only when they escalate." },
-        { value: 1, text: " 1- Risks discussed informally; dependencies discovered late." },
-        { value: 2, text: " 2- Basic RAID exists but irregularly updated with missing details." },
-        { value: 3, text: " 3- Risks logged with owners; periodic reviews occur." },
-        { value: 4, text: " 4- Trends monitored; dependencies visualized and proactively coordinated." },
-        { value: 5, text: " 5- Predictive indicators used to foresee issues and improve processes." }
+        { value: 1, text: "Risks discussed informally; dependencies discovered late." },
+        { value: 2, text: "Basic RAID exists but irregularly updated with missing details." },
+        { value: 3, text: "Risks logged with owners; periodic reviews occur." },
+        { value: 4, text: "Trends monitored; dependencies visualized and proactively coordinated." },
+        { value: 5, text: "Predictive indicators used to foresee issues and improve processes." }
       ]
     },
 
@@ -78,11 +78,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "RAG dashboards, reports, decisions, governance documents.",
       choices: [
         { value: 0, text: " 0- No governance; reporting unstructured and inconsistent." },
-        { value: 1, text: " 1- Informal updates; inconsistent documentation and transparency." },
-        { value: 2, text: " 2- Some reporting exists but lacks standardization across projects." },
-        { value: 3, text: " 3- Defined governance with standard templates and KPIs." },
-        { value: 4, text: " 4- Consolidated dashboards with drill-down capabilities." },
-        { value: 5, text: " 5- Fully data-driven governance with predictive indicators guiding decisions." }
+        { value: 1, text: "Informal updates; inconsistent documentation and transparency." },
+        { value: 2, text: "Some reporting exists but lacks standardization across projects." },
+        { value: 3, text: "Defined governance with standard templates and KPIs." },
+        { value: 4, text: "Consolidated dashboards with drill-down capabilities." },
+        { value: 5, text: "Fully data-driven governance with predictive indicators guiding decisions." }
       ]
     },
 
@@ -96,11 +96,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Boards, states, WIP limits, dashboards, updates.",
       choices: [
         { value: 0, text: " 0- ADO barely used; work tracked mainly outside the system." },
-        { value: 1, text: " 1- Boards exist but inconsistently updated across teams." },
-        { value: 2, text: " 2- Teams use ADO, but workflows lack standardization." },
-        { value: 3, text: " 3- Common workflow used; boards consistently updated." },
-        { value: 4, text: " 4- Automation and dashboards widely used across ADO." },
-        { value: 5, text: " 5- ADO data used for advanced analytics and predictive insights." }
+        { value: 1, text: "Boards exist but inconsistently updated across teams." },
+        { value: 2, text: "Teams use ADO, but workflows lack standardization." },
+        { value: 3, text: "Common workflow used; boards consistently updated." },
+        { value: 4, text: "Automation and dashboards widely used across ADO." },
+        { value: 5, text: "ADO data used for advanced analytics and predictive insights." }
       ]
     },
 
@@ -111,11 +111,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Pipelines, logs, rollback processes, promotion model.",
       choices: [
         { value: 0, text: " 0- Builds and deployments fully manual without pipelines." },
-        { value: 1, text: " 1- Basic scripts exist; many manual deployment steps remain." },
-        { value: 2, text: " 2- Some pipelines exist but limited coverage and standardization." },
-        { value: 3, text: " 3- Most applications use standardized CI/CD pipelines." },
-        { value: 4, text: " 4- Pipelines include quality gates and advanced deployment patterns." },
-        { value: 5, text: " 5- CI/CD integrated with DevSecOps and optimized using metrics." }
+        { value: 1, text: "Basic scripts exist; many manual deployment steps remain." },
+        { value: 2, text: "Some pipelines exist but limited coverage and standardization." },
+        { value: 3, text: "Most applications use standardized CI/CD pipelines." },
+        { value: 4, text: "Pipelines include quality gates and advanced deployment patterns." },
+        { value: 5, text: "CI/CD integrated with DevSecOps and optimized using metrics." }
       ]
     },
 
@@ -126,11 +126,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Coverage reports, test suites, CI integration.",
       choices: [
         { value: 0, text: " 0- Testing fully manual without usable automated suites." },
-        { value: 1, text: " 1- Some automated tests exist but inconsistent and unreviewed." },
-        { value: 2, text: " 2- Basic unit tests exist; automation coverage remains low." },
-        { value: 3, text: " 3- Automated tests cover key flows and run in CI." },
-        { value: 4, text: " 4- Coverage monitored; failing tests block deployment." },
-        { value: 5, text: " 5- Risk-based automated testing with continuous optimization." }
+        { value: 1, text: "Some automated tests exist but inconsistent and unreviewed." },
+        { value: 2, text: "Basic unit tests exist; automation coverage remains low." },
+        { value: 3, text: "Automated tests cover key flows and run in CI." },
+        { value: 4, text: "Coverage monitored; failing tests block deployment." },
+        { value: 5, text: "Risk-based automated testing with continuous optimization." }
       ]
     },
 
@@ -141,11 +141,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "CAB minutes, RFCs, calendars, PIRs.",
       choices: [
         { value: 0, text: " 0- Releases performed without planning or approvals." },
-        { value: 1, text: " 1- Some reviews happen, but most releases uncoordinated." },
-        { value: 2, text: " 2- Process exists but inconsistently followed across teams." },
-        { value: 3, text: " 3- Documented release process followed with approvals." },
-        { value: 4, text: " 4- Success and failure rates monitored; PIRs conducted." },
-        { value: 5, text: " 5- Integrated release planning with automation and analytics." }
+        { value: 1, text: "Some reviews happen, but most releases uncoordinated." },
+        { value: 2, text: "Process exists but inconsistently followed across teams." },
+        { value: 3, text: "Documented release process followed with approvals." },
+        { value: 4, text: "Success and failure rates monitored; PIRs conducted." },
+        { value: 5, text: "Integrated release planning with automation and analytics." }
       ]
     },
 
@@ -159,11 +159,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Standards, PRs, analysis reports, checklists.",
       choices: [
         { value: 0, text: " 0- No coding standards or review practices exist." },
-        { value: 1, text: " 1- Informal reviews occur without structured criteria." },
-        { value: 2, text: " 2- Basic conventions exist; reviews and tools inconsistently used." },
-        { value: 3, text: " 3- Standards enforced; mandatory PR reviews and analysis tools used." },
-        { value: 4, text: " 4- Quality metrics tracked and discussed regularly." },
-        { value: 5, text: " 5- Proactive refactoring based on quality and security insights." }
+        { value: 1, text: "Informal reviews occur without structured criteria." },
+        { value: 2, text: "Basic conventions exist; reviews and tools inconsistently used." },
+        { value: 3, text: "Standards enforced; mandatory PR reviews and analysis tools used." },
+        { value: 4, text: "Quality metrics tracked and discussed regularly." },
+        { value: 5, text: "Proactive refactoring based on quality and security insights." }
       ]
     },
 
@@ -174,11 +174,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "API specs, diagrams, logs, SLAs.",
       choices: [
         { value: 0, text: " 0- Integrations built ad-hoc with minimal documentation." },
-        { value: 1, text: " 1- Some documentation exists but inconsistent and incomplete." },
-        { value: 2, text: " 2- Gateway and standards partially implemented with basic monitoring." },
-        { value: 3, text: " 3- Standards defined; APIs catalogued and monitored." },
-        { value: 4, text: " 4- Integration SLAs tracked with dashboards and lifecycle control." },
-        { value: 5, text: " 5- Continuous analysis with automated alerts and impact mapping." }
+        { value: 1, text: "Some documentation exists but inconsistent and incomplete." },
+        { value: 2, text: "Gateway and standards partially implemented with basic monitoring." },
+        { value: 3, text: "Standards defined; APIs catalogued and monitored." },
+        { value: 4, text: "Integration SLAs tracked with dashboards and lifecycle control." },
+        { value: 5, text: "Continuous analysis with automated alerts and impact mapping." }
       ]
     },
 
@@ -189,11 +189,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Repository, diagrams, ADRs, runbooks.",
       choices: [
         { value: 0, text: " 0- Architecture undocumented and stored only in minds." },
-        { value: 1, text: " 1- Some artifacts exist but not centralized or updated." },
-        { value: 2, text: " 2- Documents exist for major systems but lack consistency." },
-        { value: 3, text: " 3- Structured architecture repository with reviews and runbooks." },
-        { value: 4, text: " 4- Conformance verified; risks and debt tracked." },
-        { value: 5, text: " 5- Architecture continuously refined using automation and operational insights." }
+        { value: 1, text: "Some artifacts exist but not centralized or updated." },
+        { value: 2, text: "Documents exist for major systems but lack consistency." },
+        { value: 3, text: "Structured architecture repository with reviews and runbooks." },
+        { value: 4, text: "Conformance verified; risks and debt tracked." },
+        { value: 5, text: "Architecture continuously refined using automation and operational insights." }
       ]
     },
 
@@ -207,11 +207,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Test plans, matrices, reports, UAT sign-offs.",
       choices: [
         { value: 0, text: " 0- No formal QA process; testing unstructured." },
-        { value: 1, text: " 1- Some testing occurs but documentation unclear." },
-        { value: 2, text: " 2- Basic QA strategy exists with partial coverage." },
-        { value: 3, text: " 3- Defined roles with structured test plans and coverage tracking." },
-        { value: 4, text: " 4- Quality metrics monitored; risk-based prioritization applied." },
-        { value: 5, text: " 5- Continuous testing with data-driven quality improvements." }
+        { value: 1, text: "Some testing occurs but documentation unclear." },
+        { value: 2, text: "Basic QA strategy exists with partial coverage." },
+        { value: 3, text: "Defined roles with structured test plans and coverage tracking." },
+        { value: 4, text: "Quality metrics monitored; risk-based prioritization applied." },
+        { value: 5, text: "Continuous testing with data-driven quality improvements." }
       ]
     },
 
@@ -222,11 +222,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Logs, classifications, triage notes, RCA reports.",
       choices: [
         { value: 0, text: " 0- Defects not systematically logged or tracked." },
-        { value: 1, text: " 1- Logged inconsistently; priorities subjective; triage irregular." },
-        { value: 2, text: " 2- Structured process exists but not consistently followed." },
-        { value: 3, text: " 3- Regular triage with SLAs and visible progress." },
-        { value: 4, text: " 4- Trends monitored; systemic issues addressed proactively." },
-        { value: 5, text: " 5- Predictive indicators guide prevention and process improvements." }
+        { value: 1, text: "Logged inconsistently; priorities subjective; triage irregular." },
+        { value: 2, text: "Structured process exists but not consistently followed." },
+        { value: 3, text: "Regular triage with SLAs and visible progress." },
+        { value: 4, text: "Trends monitored; systemic issues addressed proactively." },
+        { value: 5, text: "Predictive indicators guide prevention and process improvements." }
       ]
     },
 
@@ -237,11 +237,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Topology, schedules, logs, data management.",
       choices: [
         { value: 0, text: " 0- No dedicated test environments exist." },
-        { value: 1, text: " 1- Environments unstable and frequently block testing." },
-        { value: 2, text: " 2- Basic management exists but mostly reactive." },
-        { value: 3, text: " 3- Dedicated environments with documented configurations." },
-        { value: 4, text: " 4- Environment health monitored with defined data practices." },
-        { value: 5, text: " 5- Automated provisioning with analytics for planning." }
+        { value: 1, text: "Environments unstable and frequently block testing." },
+        { value: 2, text: "Basic management exists but mostly reactive." },
+        { value: 3, text: "Dedicated environments with documented configurations." },
+        { value: 4, text: "Environment health monitored with defined data practices." },
+        { value: 5, text: "Automated provisioning with analytics for planning." }
       ]
     },
 
@@ -255,11 +255,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Joint planning, shared boards, ceremonies.",
       choices: [
         { value: 0, text: " 0- Teams work independently with minimal collaboration." },
-        { value: 1, text: " 1- Collaboration occurs mostly during urgent issues." },
-        { value: 2, text: " 2- Some meetings exist; knowledge sharing inconsistent." },
-        { value: 3, text: " 3- Cross-functional collaboration embedded in ceremonies." },
-        { value: 4, text: " 4- Shared KPIs improve collaboration effectiveness." },
-        { value: 5, text: " 5- Teams operate as unified system with proactive collaboration." }
+        { value: 1, text: "Collaboration occurs mostly during urgent issues." },
+        { value: 2, text: "Some meetings exist; knowledge sharing inconsistent." },
+        { value: 3, text: "Cross-functional collaboration embedded in ceremonies." },
+        { value: 4, text: "Shared KPIs improve collaboration effectiveness." },
+        { value: 5, text: "Teams operate as unified system with proactive collaboration." }
       ]
     },
 
@@ -270,11 +270,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Handover docs, incident reports, reviews.",
       choices: [
         { value: 0, text: " 0- No structured engagement with Operations." },
-        { value: 1, text: " 1- Communication occurs mainly for major incidents." },
-        { value: 2, text: " 2- Handover exists but not systematically followed." },
-        { value: 3, text: " 3- Operational expectations defined; key incidents reviewed jointly." },
-        { value: 4, text: " 4- Metrics shared; problem management handled collaboratively." },
-        { value: 5, text: " 5- Proactive service transition with strong observability practices." }
+        { value: 1, text: "Communication occurs mainly for major incidents." },
+        { value: 2, text: "Handover exists but not systematically followed." },
+        { value: 3, text: "Operational expectations defined; key incidents reviewed jointly." },
+        { value: 4, text: "Metrics shared; problem management handled collaboratively." },
+        { value: 5, text: "Proactive service transition with strong observability practices." }
       ]
     },
 
@@ -285,11 +285,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "SOPs, version history, runbooks, audits.",
       choices: [
         { value: 0, text: " 0- Processes undocumented; teams rely on verbal knowledge." },
-        { value: 1, text: " 1- Documents exist but outdated or hard to locate." },
-        { value: 2, text: " 2- Repository exists with inconsistent updates." },
-        { value: 3, text: " 3- Documentation maintained, accessible and used regularly." },
-        { value: 4, text: " 4- Usage monitored; gaps updated through reviews." },
-        { value: 5, text: " 5- Documentation integrated into workflows with continuous updates." }
+        { value: 1, text: "Documents exist but outdated or hard to locate." },
+        { value: 2, text: "Repository exists with inconsistent updates." },
+        { value: 3, text: "Documentation maintained, accessible and used regularly." },
+        { value: 4, text: "Usage monitored; gaps updated through reviews." },
+        { value: 5, text: "Documentation integrated into workflows with continuous updates." }
       ]
     },
 
@@ -303,11 +303,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Tool usage, integrations, automation scripts.",
       choices: [
         { value: 0, text: " 0- Tools available but rarely used effectively." },
-        { value: 1, text: " 1- Basic usage; many capabilities unused; minimal integration." },
-        { value: 2, text: " 2- Core functions used but not optimized." },
-        { value: 3, text: " 3- Tools embedded in processes with training provided." },
-        { value: 4, text: " 4- Usage monitored; advanced capabilities increasingly adopted." },
-        { value: 5, text: " 5- Tools fully integrated, enabling predictive insights and automation." }
+        { value: 1, text: "Basic usage; many capabilities unused; minimal integration." },
+        { value: 2, text: "Core functions used but not optimized." },
+        { value: 3, text: "Tools embedded in processes with training provided." },
+        { value: 4, text: "Usage monitored; advanced capabilities increasingly adopted." },
+        { value: 5, text: "Tools fully integrated, enabling predictive insights and automation." }
       ]
     },
 
@@ -318,11 +318,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Wikis, sessions, onboarding, learnings.",
       choices: [
         { value: 0, text: " 0- Knowledge not captured formally; onboarding informal." },
-        { value: 1, text: " 1- Some content exists but uncurated and outdated." },
-        { value: 2, text: " 2- Repository exists with inconsistent contributions." },
-        { value: 3, text: " 3- Key knowledge documented with regular contributions." },
-        { value: 4, text: " 4- Usage monitored; regular knowledge-sharing sessions held." },
-        { value: 5, text: " 5- Knowledge treated strategically with intelligent search and reuse." }
+        { value: 1, text: "Some content exists but uncurated and outdated." },
+        { value: 2, text: "Repository exists with inconsistent contributions." },
+        { value: 3, text: "Key knowledge documented with regular contributions." },
+        { value: 4, text: "Usage monitored; regular knowledge-sharing sessions held." },
+        { value: 5, text: "Knowledge treated strategically with intelligent search and reuse." }
       ]
     },
 
@@ -333,11 +333,11 @@ DMI_QUESTION_SETS["solution_delivery"] = {
       Evidence: "Backlogs, pilots, feedback, outcomes.",
       choices: [
         { value: 0, text: " 0- No mechanism exists for proposing improvements." },
-        { value: 1, text: " 1- Ideas shared informally with little follow-up." },
-        { value: 2, text: " 2- Some channels exist but used irregularly." },
-        { value: 3, text: " 3- Formal backlog maintained; pilots conducted when feasible." },
-        { value: 4, text: " 4- Measured benefits influence scaling of successful ideas." },
-        { value: 5, text: " 5- Continuous improvement embedded with data-driven innovation." }
+        { value: 1, text: "Ideas shared informally with little follow-up." },
+        { value: 2, text: "Some channels exist but used irregularly." },
+        { value: 3, text: "Formal backlog maintained; pilots conducted when feasible." },
+        { value: 4, text: "Measured benefits influence scaling of successful ideas." },
+        { value: 5, text: "Continuous improvement embedded with data-driven innovation." }
       ]
     }
   ],

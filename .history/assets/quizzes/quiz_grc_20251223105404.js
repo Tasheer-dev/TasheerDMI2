@@ -215,8 +215,8 @@ DMI_QUESTION_SETS["grc"] = {
         { value: 1, text: " 1: handled ad-hoc. No structured tracking process " },
         { value: 2, text: " 2: Basic documentation of regulatory requirements using spreadsheets or static documents with limited monitoring." },
         { value: 3, text: " 3: Defined and managed compliance monitoring with partially digital tools, assigned ownership, and periodic assessments." },
-        { value: 4, text: " 4: Advanced digital compliance monitoring with automated tracking, dashboards, issue escalation, and management reporting." },
-        { value: 5, text: " 5 :Fully integrated regulatory compliance management using centralized digital platforms with real-time visibility, analytics, and continuous compliance improvement." }
+        { value: 4, text: " 4: Advanced digital SLA monitoring with automated alerts and escalation." },
+        { value: 5, text: " 5 : Fully optimized SLA and policy-adherence engine with intelligent analytics and continuous improvement." }
       ]
     },
     {

@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Immigration DMS – Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f3f5f9;
+      --bg-alt: #ffffff;
+      --primary: #1d4ed8;
+      --primary-soft: #e0ebff;
+      --accent: #f59e0b;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --sidebar-bg: #0f172a;
+      --sidebar-accent: #1e293b;
+      --badge-bg: #eef2ff;
+      --radius: 10px;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Layout */
+    .app {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 270px;
+      background: var(--sidebar-bg);
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fbbf24, #b45309);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111827;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .sidebar-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .sidebar-subtitle {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .sidebar-section {
+      padding: 18px 24px 6px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 0 8px;
+    }
+
+    .nav-item {
+      margin: 2px 0;
+    }
+
+    .nav-btn {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--sidebar-accent);
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(90deg, #2563eb, #22c55e);
+      color: #f9fafb;
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.15);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .nav-badge {
+      font-size: 10px;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 1px 6px;
+      border-radius: 999px;
+      color: #e5e7eb;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 14px 18px 18px;
+      border-top: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .sidebar-footer strong {
+      display: block;
+      font-size: 12px;
+      color: #e5e7eb;
+      margin-bottom: 3px;
+    }
+
+    .sidebar-logout {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 7px 9px;
+      border-radius: 7px;
+      background: rgba(15, 23, 42, 0.5);
+      color: #f97373;
+      font-size: 11px;
+    }
+
+    .sidebar-logout span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      background: var(--bg-alt);
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 0 rgba(148, 163, 184, 0.4);
+      z-index: 5;
+    }
+
+    .topbar-title {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topbar-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      color: #4338ca;
+      border: 1px solid #c4b5fd;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1d4ed8, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #f9fafb;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 18px 22px 24px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.3fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        display: none;
+      }
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--bg-alt);
+      border-radius: var(--radius);
+      padding: 16px 18px 14px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+
+    .btn {
+      border-radius: 7px;
+      border: none;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary);
+      color: #f9fafb;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #4b5563;
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .chip {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+
+    .chip.green {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .chip.orange {
+      background: #ffedd5;
+      color: #c2410c;
+    }
+
+    .chip.blue {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px 16px;
+      margin-top: 4px;
+    }
+
+    .field {
+      font-size: 12px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+    }
+
+    .field-value {
+      margin-top: 2px;
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 10px 0 6px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    /* Table / Checklist */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .input, select {
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      padding: 6px 9px;
+      font-size: 12px;
+      background: #fff;
+      color: #111827;
+      min-width: 140px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      background: #f9fafb;
+    }
+
+    tr:hover td {
+      background: #f9fafb;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .status-pill.pending {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .status-pill.completed {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-pill.missing {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .action-icons {
+      display: flex;
+      gap: 6px;
+      font-size: 11px;
+      color: #4b5563;
+    }
+
+    .action-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Progress */
+    .progress {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .progress-bar.orange {
+      background: linear-gradient(90deg, #f97316, #ea580c);
+    }
+
+    .progress-bar.red {
+      background: linear-gradient(90deg, #ef4444, #b91c1c);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .stat {
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      font-size: 12px;
+    }
+
+    .stat-label {
+      color: #6b7280;
+      font-size: 11px;
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-weight: 600;
+    }
+
+    .stat-tag {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-left: 4px;
+    }
+
+    /* Client Case Cards */
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .case-card {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      padding: 10px 11px;
+      font-size: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .case-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+
+    .case-name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .case-meta {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .case-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* Status Monitor */
+    .status-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .status-column {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 10px 11px;
+      border: 1px solid #e5e7eb;
+      font-size: 12px;
+    }
+
+    .status-column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+
+    .status-column-title {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .status-column-count {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .status-item {
+      padding: 5px 6px 6px;
+      border-radius: 8px;
+      margin-top: 5px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+    }
+
+    .status-item-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      margin-bottom: 2px;
+    }
+
+    /* Messaging */
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      font-size: 12px;
+      resize: vertical;
+    }
+
+    .file-input {
+      font-size: 12px;
+    }
+
+    .helper-text {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* Panels visibility */
+    .panel {
+      display: none;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .panel.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-circle">V</div>
+      <div>
+        <div class="sidebar-title">Immigration DMS</div>
+        <div class="sidebar-subtitle">Document Management System</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main navigation</div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <button class="nav-btn active" data-target="panel-client-info">
+          <div class="nav-left">
+            <div class="nav-icon">CI</div>
+            <span>Client Info</span>
+          </div>
+          <span class="nav-badge">v1.0</span>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-btn" data-target="panel-documents">
+          <div class="nav-left">
+            <div class="nav-icon">DC</div>
+            <span>Documents & Checklist</span>
+          </div>
+          <span class="nav-badge">44 docs</span>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-btn" data-target="panel-case-dashboard">
+          <div class="nav-left">
+            <div class="nav-icon">CD</div>
+            <span>Client Case Dashboard</span>
+          </div>
+          <span class="nav-badge">9 active</span>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-btn" data-target="panel-status-monitor">
+          <div class="nav-left">
+            <div class="nav-icon">SM</div>
+            <span>Status Monitor</span>
+          </div>
+          <span class="nav-badge">Overview</span>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-btn" data-target="panel-messaging">
+          <div class="nav-left">
+            <div class="nav-icon">CM</div>
+            <span>Client Communication</span>
+          </div>
+          <span class="nav-badge">Multi-channel</span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="sidebar-section">Company</div>
+    <ul class="nav-list">
+      <li class="nav-item">
+        <button class="nav-btn" data-target="panel-settings">
+          <div class="nav-left">
+            <div class="nav-icon">CO</div>
+            <span>Company Profile</span>
+          </div>
+        </button>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <strong>Your Firm Name</strong>
+      Immigration Consulting • Admin Portal
+      <div class="sidebar-logout">
+        <span>⏏ Logout</span>
+        <span>v1.0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <span id="topbar-title-text">Client Info</span>
+        <span class="topbar-tag">Demo Environment</span>
+      </div>
+      <div class="topbar-right">
+        <span class="pill">Admin Portal</span>
+        <span>Today: <span id="today-label"></span></span>
+        <div class="avatar">AA</div>
+      </div>
+    </header>
+
+    <section class="content">
+      <!-- CLIENT INFO PANEL -->
+      <div class="panel active" id="panel-client-info">
+        <div class="grid">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">
+                  Main Applicant & Representative
+                  <span class="badge">Client ID: C-2024-001</span>
+                </div>
+                <div class="card-subtitle">
+                  Core demographic details used to pre-fill all immigration forms.
+                </div>
+              </div>
+              <button class="btn btn-secondary">
+                <span class="btn-icon">✎</span> Edit
+              </button>
+            </div>
+
+            <div class="chip-row">
+              <span class="chip blue">Program: Visitor Visa</span>
+              <span class="chip green">Status: In Process</span>
+              <span class="chip orange">Priority: High</span>
+            </div>
+
+            <div class="divider"></div>
+            <div class="section-title">
+              <span class="dot"></span> Personal Information
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <div class="field-label">Full Name</div>
+                <div class="field-value">John Alexander Doe</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Email</div>
+                <div class="field-value">john.doe@example.com</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Phone</div>
+                <div class="field-value">+1 (604) 555-0199</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Date of Birth</div>
+                <div class="field-value">1989-03-17</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Country of Citizenship</div>
+                <div class="field-value">Egypt</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Current Residence</div>
+                <div class="field-value">Riyadh, Saudi Arabia</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="section-title">
+              <span class="dot"></span> Travel & Identity Documents
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <div class="field-label">Passport No.</div>
+                <div class="field-value">XK1234567</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Passport Issue / Expiry</div>
+                <div class="field-value">2019-01-10 → 2029-01-09</div>
+              </div>
+              <div class="field">
+                <div class="field-label">National ID</div>
+                <div class="field-value">29803174500012</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Marital Status</div>
+                <div class="field-value">Married</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Academic Degree</div>
+                <div class="field-value">B.Sc. Computer Science</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Current Occupation</div>
+                <div class="field-value">Chief Enterprise Architect</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="section-title">
+              <span class="dot"></span> Financial Summary
+            </div>
+            <div class="field-grid">
+              <div class="field">
+                <div class="field-label">Liquid Assets</div>
+                <div class="field-value">$85,000 CAD</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Real Estate Value</div>
+                <div class="field-value">$220,000 CAD</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Total Assets</div>
+                <div class="field-value">$305,000 CAD</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Case Overview</div>
+                <div class="card-subtitle">
+                  Snapshot of overall progress for this client.
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-grid">
+              <div class="stat">
+                <div class="stat-label">Checklist Completion</div>
+                <div class="stat-value">78%<span class="stat-tag">34 / 44 docs</span></div>
+                <div class="progress">
+                  <div class="progress-bar" style="width:78%"></div>
+                </div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Dataset Completion</div>
+                <div class="stat-value">92%</div>
+                <div class="progress">
+                  <div class="progress-bar" style="width:92%"></div>
+                </div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Client Portal Activity</div>
+                <div class="stat-value">Active<span class="stat-tag">Last login: 2h ago</span></div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Internal SLA</div>
+                <div class="stat-value">On Track<span class="stat-tag">ETA: 14 days</span></div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="section-title">
+              <span class="dot"></span> Case Tags
+            </div>
+            <div class="tag-row">
+              <span class="tag">🇨🇦 Canada</span>
+              <span class="tag">Visitor Visa</span>
+              <span class="tag">Family Included</span>
+              <span class="tag">Source: Referral</span>
+            </div>
+
+            <div class="divider"></div>
+            <div class="section-title">
+              <span class="dot"></span> To-Do / Notice Board
+            </div>
+            <ul style="font-size:12px; color:#4b5563; margin-left:16px; margin-top:3px;">
+              <li>Request updated bank statements (last 6 months).</li>
+              <li>Confirm intended travel date & duration.</li>
+              <li>Upload signed representative form (IMM 5476).</li>
+            </ul>
+
+            <div style="margin-top:10px; display:flex; gap:8px;">
+              <button class="btn">
+                <span class="btn-icon">➜</span> Open in Client Portal
+              </button>
+              <button class="btn btn-ghost">
+                <span class="btn-icon">⬇</span> Download Case PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTS PANEL -->
+      <div class="panel" id="panel-documents">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                Document Checklist
+                <span class="badge">44 items</span>
+              </div>
+              <div class="card-subtitle">
+                Upload, validate, and track all required documents for this application.
+              </div>
+            </div>
+            <button class="btn btn-secondary">
+              <span class="btn-icon">⟳</span> Refresh
+            </button>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar-group">
+              <input type="text" class="input" id="doc-search" placeholder="Search documents…" />
+              <select id="doc-filter-status">
+                <option value="all">All statuses</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="missing">Missing</option>
+              </select>
+            </div>
+            <div class="toolbar-group">
+              <span style="font-size:11px; color:#6b7280;">View:</span>
+              <button class="btn btn-ghost" id="btn-doc-unchecked">Unchecked</button>
+              <button class="btn btn-ghost" id="btn-doc-checked">Checked</button>
+              <button class="btn btn-ghost" id="btn-doc-both">Both</button>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+            <tr>
+              <th style="width:60px;">Details</th>
+              <th>Document name</th>
+              <th style="width:34%;">Instructions</th>
+              <th style="width:120px;">Status</th>
+              <th style="width:90px;">Options</th>
+            </tr>
+            </thead>
+            <tbody id="doc-table-body">
+            <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CASE DASHBOARD PANEL -->
+      <div class="panel" id="panel-case-dashboard">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                Client Case Management Dashboard
+              </div>
+              <div class="card-subtitle">
+                Filter and manage all active client cases in a single view.
+              </div>
+            </div>
+            <div class="toolbar-group">
+              <select id="case-filter-status">
+                <option value="all">All statuses</option>
+                <option value="Assigned">Assigned</option>
+                <option value="In Process">In Process</option>
+                <option value="Authorized">Authorized</option>
+              </select>
+              <button class="btn btn-secondary">
+                <span class="btn-icon">＋</span> New Case
+              </button>
+            </div>
+          </div>
+
+          <div class="case-grid" id="case-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- STATUS MONITOR PANEL -->
+      <div class="panel" id="panel-status-monitor">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Client Status Monitor</div>
+              <div class="card-subtitle">
+                Real-time overview of applications across all stages in your pipeline.
+              </div>
+            </div>
+            <button class="btn btn-secondary">
+              <span class="btn-icon">⟳</span> Sync
+            </button>
+          </div>
+
+          <div class="status-columns" id="status-columns">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- MESSAGING PANEL -->
+      <div class="panel" id="panel-messaging">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Client Communication Centre</div>
+              <div class="card-subtitle">
+                Send compliant, logged messages to your clients directly from the DMS.
+              </div>
+            </div>
+            <button class="btn btn-secondary">
+              <span class="btn-icon">☁</span> Templates
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <div class="field-label" style="margin-bottom:2px;">Channel</div>
+              <select id="msg-channel">
+                <option value="Email">Email</option>
+                <option value="SMS">SMS</option>
+                <option value="Telegram">Telegram</option>
+                <option value="WhatsApp">WhatsApp</option>
+              </select>
+            </div>
+            <div>
+              <div class="field-label" style="margin-bottom:2px;">Recipient</div>
+              <input id="msg-recipient" class="input" placeholder="Select or type recipient…" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <div class="field-label" style="margin-bottom:2px;">Message</div>
+            <textarea id="msg-body" placeholder="Type your message…"></textarea>
+            <div class="helper-text">
+              All messages are stored in the case communication log and time-stamped automatically.
+            </div>
+          </div>
+
+          <div class="form-row" style="align-items:center;">
+            <div>
+              <div class="field-label" style="margin-bottom:2px;">Attachments</div>
+              <input type="file" class="file-input" multiple />
+              <div class="helper-text">Max 50MB per file, 200MB per video.</div>
+            </div>
+            <div style="text-align:right;">
+              <button class="btn" id="btn-send-message">
+                <span class="btn-icon">➤</span> Send
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS PANEL -->
+      <div class="panel" id="panel-settings">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Company Profile</div>
+              <div class="card-subtitle">
+                Configure branding and contact details used in the client portal.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <div class="field-label" style="margin-bottom:2px;">Company Name</div>
+              <input class="input" value="Your Immigration Firm Inc." />
+            </div>
+            <div>
+              <div class="field-label" style="margin-bottom:2px;">Primary Email</div>
+              <input class="input" value="info@yourfirm.com" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <div class="field-label" style="margin-bottom:2px;">Phone Number</div>
+              <input class="input" value="+1 (604) 555-0000" />
+            </div>
+            <div>
+              <div class="field-label" style="margin-bottom:2px;">Portal URL</div>
+              <input class="input" value="https://portal.yourfirm.com" />
+            </div>
+          </div>
+          <div style="margin-top:10px;">
+            <button class="btn">
+              <span class="btn-icon">💾</span> Save Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  // --- UTIL: date label ---
+  (function () {
+    const label = document.getElementById("today-label");
+    const d = new Date();
+    label.textContent = d.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+  })();
+
+  // --- NAVIGATION ---
+  const navButtons = document.querySelectorAll(".nav-btn");
+  const panels = document.querySelectorAll(".panel");
+  const topbarTitle = document.getElementById("topbar-title-text");
+
+  navButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.getAttribute("data-target");
+      if (!targetId) return;
+
+      navButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      panels.forEach((p) => p.classList.remove("active"));
+      document.getElementById(targetId).classList.add("active");
+
+      // Update topbar title from button text
+      const label = btn.querySelector(".nav-left span");
+      if (label) topbarTitle.textContent = label.textContent;
+    });
+  });
+
+  // --- SAMPLE DATA --- //
+  const documents = [
+    {
+      id: 1,
+      name: "Passport (current, all pages)",
+      instructions: "Upload a clear, full-color scan of all pages including stamps.",
+      status: "completed",
+      checked: true,
+    },
+    {
+      id: 2,
+      name: "Expired Passports",
+      instructions: "Include any expired passports covering the last 10 years.",
+      status: "pending",
+      checked: true,
+    },
+    {
+      id: 3,
+      name: "Birth Certificate",
+      instructions: "Government-issued birth certificate; if not in English, provide a certified translation.",
+      status: "completed",
+      checked: true,
+    },
+    {
+      id: 4,
+      name: "Marriage Certificate",
+      instructions: "Provide legal marriage certificate; translation required if not English/French.",
+      status: "pending",
+      checked: false,
+    },
+    {
+      id: 5,
+      name: "National Identity Card",
+      instructions: "Front and back, in a single PDF file.",
+      status: "completed",
+      checked: true,
+    },
+    {
+      id: 6,
+      name: "Digital Photo",
+      instructions: "Recent photo (last 6 months) that meets IRCC specifications (600x600 px, neutral background).",
+      status: "missing",
+      checked: false,
+    },
+    {
+      id: 7,
+      name: "Proof of Funds – Bank Statements",
+      instructions: "Last 6 months bank statements for all accounts, stamped by bank.",
+      status: "pending",
+      checked: true,
+    },
+    {
+      id: 8,
+      name: "Employment Letter",
+      instructions: "On company letterhead, showing salary, position, start date and duties.",
+      status: "pending",
+      checked: false,
+    },
+  ];
+
+  const cases = [
+    {
+      client: "John Doe",
+      program: "Visitor Visa",
+      id: "C-2024-001",
+      status: "In Process",
+      checklist: 78,
+      dataset: 92,
+      assigned: "A. Admin",
+    },
+    {
+      client: "Family – Ahmed Ali",
+      program: "Study Permit + Spouse OWP",
+      id: "C-2024-002",
+      status: "Assigned",
+      checklist: 34,
+      dataset: 60,
+      assigned: "L. Caseworker",
+    },
+    {
+      client: "Corp – Tech Solutions Inc.",
+      program: "LMIA – Global Talent",
+      id: "C-2024-003",
+      status: "Authorized",
+      checklist: 100,
+      dataset: 100,
+      assigned: "M. Senior RCIC",
+    },
+    {
+      client: "Mariam Hassan",
+      program: "Express Entry – CEC",
+      id: "C-2024-004",
+      status: "In Process",
+      checklist: 88,
+      dataset: 95,
+      assigned: "J. Caseworker",
+    },
+    {
+      client: "Family – Omar & Lina",
+      program: "Parents Super Visa",
+      id: "C-2024-005",
+      status: "Assigned",
+      checklist: 40,
+      dataset: 80,
+      assigned: "A. Admin",
+    },
+  ];
+
+  const statusColumns = [
+    {
+      title: "In Process",
+      key: "In Process",
+      color: "green",
+    },
+    {
+      title: "LMIA – Advertising Period (30 days)",
+      key: "LMIA",
+      color: "blue",
+    },
+    {
+      title: "Queued for Assessment",
+      key: "Queued",
+      color: "orange",
+    },
+    {
+      title: "Closed / Abandoned",
+      key: "Closed",
+      color: "red",
+    },
+  ];
+
+  const statusItems = [
+    { name: "C-2024-001 – John Doe", column: "In Process", progress: 100 },
+    { name: "C-2024-004 – Mariam Hassan", column: "In Process", progress: 90 },
+    { name: "LMIA-2024-009 – Tech Solutions Inc.", column: "LMIA", progress: 100 },
+    { name: "C-2023-112 – Retail Staffing", column: "Queued", progress: 63 },
+    { name: "C-2023-045 – Visitor Case", column: "Closed", progress: 27 },
+    { name: "C-2023-058 – Super Visa", column: "Closed", progress: 31 },
+  ];
+
+  // --- DOCUMENT TABLE RENDERING --- //
+  const docTableBody = document.getElementById("doc-table-body");
+  const docSearchInput = document.getElementById("doc-search");
+  const docFilterStatus = document.getElementById("doc-filter-status");
+  let currentCheckedFilter = "both"; // unchecked / checked / both
+
+  function renderDocuments() {
+    const q = docSearchInput.value.toLowerCase();
+    const statusFilter = docFilterStatus.value;
+
+    docTableBody.innerHTML = "";
+
+    documents.forEach((doc) => {
+      const matchesSearch =
+        !q ||
+        doc.name.toLowerCase().includes(q) ||
+        doc.instructions.toLowerCase().includes(q);
+
+      const matchesStatus =
+        statusFilter === "all" ? true : doc.status === statusFilter;
+
+      const matchesChecked =
+        currentCheckedFilter === "both"
+          ? true
+          : currentCheckedFilter === "checked"
+          ? doc.checked
+          : !doc.checked;
+
+      if (!matchesSearch || !matchesStatus || !matchesChecked) return;
+
+      const tr = document.createElement("tr");
+
+      // Details col
+      const tdDetails = document.createElement("td");
+      tdDetails.textContent = "#" + String(doc.id).padStart(2, "0");
+      tdDetails.style.color = "#6b7280";
+      tr.appendChild(tdDetails);
+
+      // Name col
+      const tdName = document.createElement("td");
+      tdName.innerHTML =
+        "<strong>" +
+        doc.name +
+        "</strong><br/><span style='color:#6b7280;font-size:11px;'>Required</span>";
+      tr.appendChild(tdName);
+
+      // Instructions col
+      const tdInstr = document.createElement("td");
+      tdInstr.textContent = doc.instructions;
+      tr.appendChild(tdInstr);
+
+      // Status col
+      const tdStatus = document.createElement("td");
+      const statusSpan = document.createElement("span");
+      statusSpan.classList.add(
+        "status-pill",
+        doc.status === "completed"
+          ? "completed"
+          : doc.status === "pending"
+          ? "pending"
+          : "missing"
+      );
+      const icon = doc.status === "completed" ? "✔" : doc.status === "pending" ? "…" : "!";
+      statusSpan.innerHTML = icon + " " + doc.status.charAt(0).toUpperCase() + doc.status.slice(1);
+      tdStatus.appendChild(statusSpan);
+      tr.appendChild(tdStatus);
+
+      // Options col
+      const tdOptions = document.createElement("td");
+      const actions = document.createElement("div");
+      actions.className = "action-icons";
+
+      ["⬆", "👁", "✎"].forEach((symbol) => {
+        const span = document.createElement("div");
+        span.className = "action-icon";
+        span.textContent = symbol;
+        actions.appendChild(span);
+      });
+
+      tdOptions.appendChild(actions);
+      tr.appendChild(tdOptions);
+
+      docTableBody.appendChild(tr);
+    });
+  }
+
+  docSearchInput.addEventListener("input", renderDocuments);
+  docFilterStatus.addEventListener("change", renderDocuments);
+
+  document.getElementById("btn-doc-unchecked").addEventListener("click", () => {
+    currentCheckedFilter = "unchecked";
+    renderDocuments();
+  });
+  document.getElementById("btn-doc-checked").addEventListener("click", () => {
+    currentCheckedFilter = "checked";
+    renderDocuments();
+  });
+  document.getElementById("btn-doc-both").addEventListener("click", () => {
+    currentCheckedFilter = "both";
+    renderDocuments();
+  });
+
+  // --- CASE DASHBOARD RENDERING --- //
+  const caseGrid = document.getElementById("case-grid");
+  const caseFilterStatus = document.getElementById("case-filter-status");
+
+  function renderCases() {
+    const filter = caseFilterStatus.value;
+    caseGrid.innerHTML = "";
+
+    cases.forEach((c) => {
+      if (filter !== "all" && c.status !== filter) return;
+
+      const card = document.createElement("div");
+      card.className = "case-card";
+
+      const header = document.createElement("div");
+      header.className = "case-header";
+      header.innerHTML =
+        '<div class="case-name">' +
+        c.client +
+        '</div><div class="chip ' +
+        (c.status === "Authorized"
+          ? "green"
+          : c.status === "In Process"
+          ? "blue"
+          : "orange") +
+        '">' +
+        c.status +
+        "</div>";
+      card.appendChild(header);
+
+      const meta = document.createElement("div");
+      meta.className = "case-meta";
+      meta.textContent = c.program + " • " + c.id;
+      card.appendChild(meta);
+
+      const progLabel = document.createElement("div");
+      progLabel.style.marginTop = "4px";
+      progLabel.style.fontSize = "11px";
+      progLabel.style.color = "#6b7280";
+      progLabel.textContent =
+        "Checklist " +
+        c.checklist +
+        "% • Dataset " +
+        c.dataset +
+        "%";
+      card.appendChild(progLabel);
+
+      const progressWrapper = document.createElement("div");
+      progressWrapper.className = "progress";
+      progressWrapper.style.marginTop = "3px";
+      const progressBar = document.createElement("div");
+      progressBar.className = "progress-bar";
+      progressBar.style.width = c.checklist + "%";
+      progressWrapper.appendChild(progressBar);
+      card.appendChild(progressWrapper);
+
+      const footer = document.createElement("div");
+      footer.className = "case-footer";
+      footer.innerHTML =
+        '<span>Assigned to: <strong>' +
+        c.assigned +
+        "</strong></span><span>Open case ▶</span>";
+      card.appendChild(footer);
+
+      caseGrid.appendChild(card);
+    });
+  }
+
+  caseFilterStatus.addEventListener("change", renderCases);
+
+  // --- STATUS MONITOR RENDERING --- //
+  const statusColumnsContainer = document.getElementById("status-columns");
+
+  function renderStatusMonitor() {
+    statusColumnsContainer.innerHTML = "";
+
+    statusColumns.forEach((col) => {
+      const columnEl = document.createElement("div");
+      columnEl.className = "status-column";
+
+      const header = document.createElement("div");
+      header.className = "status-column-header";
+      const title = document.createElement("div");
+      title.className = "status-column-title";
+      title.textContent = col.title;
+
+      const itemsForColumn = statusItems.filter((i) =>
+        col.key === "In Process"
+          ? i.column === "In Process"
+          : col.key === "LMIA"
+          ? i.column === "LMIA"
+          : col.key === "Queued"
+          ? i.column === "Queued"
+          : i.column === "Closed"
+      );
+
+      const count = document.createElement("div");
+      count.className = "status-column-count";
+      count.textContent = itemsForColumn.length + " case(s)";
+      header.appendChild(title);
+      header.appendChild(count);
+      columnEl.appendChild(header);
+
+      itemsForColumn.forEach((item) => {
+        const itemEl = document.createElement("div");
+        itemEl.className = "status-item";
+
+        const itemHeader = document.createElement("div");
+        itemHeader.className = "status-item-header";
+        const left = document.createElement("span");
+        left.textContent = item.name;
+        const right = document.createElement("span");
+        right.textContent = item.progress + "%";
+        itemHeader.appendChild(left);
+        itemHeader.appendChild(right);
+
+        const progressWrapper = document.createElement("div");
+        progressWrapper.className = "progress";
+        const bar = document.createElement("div");
+        bar.className =
+          "progress-bar " +
+          (col.color === "green"
+            ? ""
+            : col.color === "blue"
+            ? ""
+            : col.color === "orange"
+            ? "orange"
+            : "red");
+        bar.style.width = item.progress + "%";
+        progressWrapper.appendChild(bar);
+
+        itemEl.appendChild(itemHeader);
+        itemEl.appendChild(progressWrapper);
+        columnEl.appendChild(itemEl);
+      });
+
+      statusColumnsContainer.appendChild(columnEl);
+    });
+  }
+
+  // --- Messaging demo ---
+  document
+    .getElementById("btn-send-message")
+    .addEventListener("click", function () {
+      const channel = document.getElementById("msg-channel").value;
+      const recipient = document.getElementById("msg-recipient").value || "client";
+      const body = document.getElementById("msg-body").value.trim();
+
+      if (!body) {
+        alert("Please type a message before sending.");
+        return;
+      }
+
+      alert(
+        "Message sent via " +
+          channel +
+          " to " +
+          recipient +
+          ":\n\n" +
+          body
+      );
+    });
+
+  // Initial renders
+  renderDocuments();
+  renderCases();
+  renderStatusMonitor();
+</script>
+</body>
+</html>
